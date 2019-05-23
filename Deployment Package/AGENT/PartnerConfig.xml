@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+# ABOUT
+# - Partner Configuration File for the InstallAgent Automation Suite
+#   by Ryan Crowther Jr, RADCOMP Technologies - 2018-11-08
+# - Original Configuration File (InstallAgent.ini) by Jon Czerwinski, Cohn Consulting Corp. - 2017-01-20
+# Maintained by the Solarwinds MSP Community
+# File Version - 5.0.0
+
+# USAGE
+Set your Configuration Values for your Deployment Package here. See the Deployment Steps section of
+README.md for detailed Instructions.
+
+Each configurable value has a header with the following information:
+- Required, Recommended (but Optional) or Optional Value
+- Expected Data Format and/or Values
+- Brief Description
+- Default Value
+
+Required Values CANNOT be left blank (the Event Log will inform you of this). Additional Notes
+and/or Recommendations may be added here with regard to new Configuration Values.
+-->
+<Config>
+ <Branding>
+  <!-- [OPTIONAL - (Business Contact Info)] Partner Contact Information to display in the Event Log
+  when a Documented Error occurs -->
+  <ErrorContactInfo>
+My MSP
+(888) MSP-4ALL
+help@mymsp.com
+  </ErrorContactInfo>
+ </Branding> 
+ <ScriptBehavior>
+  <!-- [RECOMMENDED - (0-60)] Amount of time (in minutes) to wait since the Last System Boot before
+  diagnosing the Agent -->
+  <BootTimeWaitPeriod>5</BootTimeWaitPeriod> <!-- Default Value is 5 -->
+  <!-- [REQUIRED - (1-60)] Amount of time (in minutes) to wait for the Windows Installer Service
+  while another installation is in progress -->
+  <InstallTimeoutPeriod>5</InstallTimeoutPeriod> <!-- Default Value is 5 -->
+ </ScriptBehavior>
+ <Server>
+  <!-- [REQUIRED - (URL Without Protocol)] Your N-Central Server Address (get this from the
+  SO-Level Administration > Defaults > Appliance Settings > Communication Settings > Server
+  Address box) -->
+  <NCServerAddress></NCServerAddress>
+  <!-- [REQUIRED - (0-100)] - Allowed Percentage of Dropped Packets during a Connectivity Test -->
+  <PingTolerance>20</PingTolerance>
+  <!-- [REQUIRED - (1-100)] - Number of Pings to make during a Connectivity Test -->
+  <PingCount>20</PingCount>
+  <!-- [OPTIONAL - See Below] Agent Proxy String -->
+  <ProxyString></ProxyString>
+  <!--
+  AVAILABLE PROXY FORMATS
+  Non-Authenticating Proxy - [ServerFQDN or IP]:[PortNumber]
+  Authenticating Proxy - [ProxyUser]:[ProxyPassword]@[ServerFQDN or IP]:[Port Number]
+  ISA 2000/2004 - [ProxyDomain]\\[ProxyUser]:[ProxyPassword]@[ServerFQDN or IP]:[Port Number]
+  -->
+ </Server>
+ <ServiceBehavior>
+  <!-- [RECOMMENDED - (RESTART, RUN, REBOOT)] Windows Service Recovery Actions -->
+  <ActionA>RESTART</ActionA> <!-- Default Value is RESTART -->
+  <ActionB>RESTART</ActionB> <!-- Default Value is RESTART -->
+  <ActionC>RESTART</ActionC> <!-- Default Value is RESTART -->
+  <!-- You cannot designate an Action B or C without also designating all preceding Actions -->
+  <!-- [RECOMMENDED - (0-3600)] Windows Service Recovery Delays (in Seconds) -->
+  <DelayA>120</DelayA> <!-- Default Value is 120 -->
+  <DelayB>120</DelayB> <!-- Default Value is 120 -->
+  <DelayC>120</DelayC> <!-- Default Value is 120 -->
+  <!-- You cannot designate a Delay B or C without also designating all preceding Delays -->
+  <!-- [OPTIONAL - ("C:\Absolute\PathTo\Command.bat" Parameters)] Command to Execute for each RUN
+  Service Recovery Action -->
+  <Command></Command>
+  <!-- [RECOMMENDED - (0-44640)] Windows Service Recovery Action Reset Period (in Minutes) -->
+  <Reset>1440</Reset> <!-- Default Value is 1440 -->
+  <!-- [REQUIRED - (Auto or Delay)] Windows Service Startup Type -->
+  <Startup>Auto</Startup> <!-- Default Value is Auto -->
+ </ServiceBehavior>
+ <Deployment>
+  <!-- [REQUIRED - (Local Absolute Folder Path)] Local Retention Folder for Activation Info File
+  Example - C:\Windows\SecurityThroughObscurity -->
+  <LocalFolder>C:\AGENT</LocalFolder> <!-- Default Value is C:\AGENT -->
+  <!-- [REQUIRED - (Folder Name)] Root Folder for the Deployment Package -->
+  <NetworkFolder>AGENT</NetworkFolder> <!-- Default Value is AGENT -->
+  <Typical>
+   <!-- [REQUIRED - (Folder Name)] Root Folder to contain Installers for deploying Current Agent
+   Versions (11.0.1.xxxx and Above) - Stored in <NetworkFolder> -->
+   <InstallFolder>CurrentAgent</InstallFolder> <!-- Default Value is CurrentAgent -->
+   <!-- [REQUIRED - (File Name)] .NET Framework Installer Name - Stored in <InstallFolder> -->
+   <NETFileName>NET4_5_2-Universal.exe</NETFileName>
+   <!-- [REQUIRED - (4.5.2 or 4.6)] Desired .NET Framework Version for Installation on systems
+   with Current Agent Versions (11.0.1.xxxx and Above) -->
+   <NETVersion>4.5.2</NETVersion>
+   <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the .NET Framework Installer (from 
+   Properties > Details > File Version) -->
+   <NETFileVersion>4.5.51209.34209</NETFileVersion>
+   <!-- [REQUIRED - (File Name)] System-Level Agent Installer Name - Stored in <InstallFolder> -->
+   <SOAgentFileName>WindowsAgentSetup.exe</SOAgentFileName> <!-- Default Value is WindowsAgentSetup.exe -->
+   <!-- [REQUIRED - (#.#.#.#)] Desired Agent Version for Installation on systems with Current
+   Agent Versions (11.0.1.xxxx and Above) -->
+   <SOAgentVersion>12.0.1.118</SOAgentVersion>
+   <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the System-Level Agent Installer (from
+   Properties > Details > File Version) -->
+   <SOAgentFileVersion>12.0.10118.0</SOAgentFileVersion>
+  </Typical>
+  <Legacy>
+   <!-- [REQUIRED - (Folder Name)] Root Folder to contain Installers for deploying Legacy Agent
+   Versions (11.0.0.xxxx and Below) - Stored in <NetworkFolder> -->
+   <InstallFolder>LegacyAgent</InstallFolder> <!-- Default Value is LegacyAgent -->
+   <!-- [REQUIRED - (File Name)] .NET Framework Installer Name - Stored in <InstallFolder> -->
+   <NETFileName>NET4_0-Universal.exe</NETFileName>
+   <!-- [REQUIRED - (4.0)] Desired .NET Framework Version for Installation on systems
+   with Legacy Agent Versions (11.0.0.xxxx and Below) -->
+   <NETVersion>4.0</NETVersion> <!-- Default Value is 4.0 (minimum and maximum requirement for
+   Windows XP / Server 2003) -->
+   <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the .NET Framework Installer (from 
+   Properties > Details > File Version) -->
+   <NETFileVersion>4.0.30319.1</NETFileVersion>
+   <!-- [REQUIRED - (File Name)] System-Level Agent Installer Name - Stored in <InstallFolder> -->
+   <SOAgentFileName>WindowsAgentSetup.exe</SOAgentFileName> <!-- Default Value is WindowsAgentSetup.exe -->
+   <!-- [REQUIRED - (#.#.#.#)] Desired Agent Version for Installation on systems with Legacy
+   Agent Versions (11.0.0.xxxx and Below) -->
+   <SOAgentVersion>11.0.0.1114</SOAgentVersion>
+   <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the System-Level Agent Installer (from
+   Properties > Details > File Version) -->
+   <SOAgentFileVersion>11.0.2114.0</SOAgentFileVersion>
+   <!--
+   IMPORTANT NOTE ABOUT LEGACY AGENT INSTALLATION - A copy of
+   N-Central's 11.0 Initial Release Agent is provided for your
+   convenience. If you prefer another Agent version for your
+   Legacy Devices, feel free to use your own copy and adjust
+   these values accordingly.
+   -->
+  </Legacy>
+ </Deployment>
+</Config>
