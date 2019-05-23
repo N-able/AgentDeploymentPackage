@@ -437,11 +437,10 @@ Special Thanks go to the following Partners and Community Members for their cont
 
 *   Pat Albert of N-Able Technologies, for creation and development of the AGENTCLEANUP4.EXE utility, implemented in earlier Versions of the Deployment Package
 *   Tim Wiser of GCI Managed IT
-    *   **Deployment Package** VBScript (InstallAgent.vbs) Version - Initial Release and Development of Majority Updates
+    *   **InstallAgent** VBScript (InstallAgent.vbs) Version - Initial Release and Development of Majority Updates
 *   Jon Czerwinksi of Cohn Consulting Corporation
-    *   **Deployment Package** VBScript (InstallAgent.vbs) Version - Optimization, Unified Configuration and Development of Ongoing Updates
+    *   **InstallAgent** VBScript (InstallAgent.vbs) Version - Optimization, Unified Configuration and Development of Ongoing Updates
 *   Ryan Crowther Jr of RADCOMP Technologies
-    *   **Deployment Package** PowerShell (InstallAgent.ps1) Version - Initial Release
+    *   **Agent Deployment Package** PowerShell (InstallAgent.ps1) Version - Initial Release
 
 *   All Partners and SolarWinds MSP Community Members who have helped and contributed ideas to this **Automation Suite**
-
