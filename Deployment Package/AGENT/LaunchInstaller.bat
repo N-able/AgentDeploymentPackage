@@ -5,7 +5,7 @@ SET NL=^
 
 REM = ### ABOUT
 REM - Agent Setup Launcher
-REM   by Ryan Crowther Jr, RADCOMP Technologies - 2018-11-08
+REM   by Ryan Crowther Jr, RADCOMP Technologies - 2019-08-26
 REM - Original Script (InstallAgent.vbs) by Tim Wiser, GCI Managed IT - 2015-03
 
 REM = ### USAGE
@@ -48,6 +48,10 @@ REM - Windows XP SP3
 SET "PS2_XP-x86=http://download.windowsupdate.com/msdownload/update/software/updt/2009/11/windowsxp-kb968930-x86-eng_540d661066953d76a6907b6ee0d1cd4531c1e1c6.exe"
 
 REM = ### DEFINITIONS
+REM - Launcher Script Name
+SET LauncherScript=Agent Setup Launcher
+REM - Setup Script Name
+SET SetupScript=Agent Setup Script
 REM - Default Customer ID
 SET CustomerID=%1%
 REM - Working Library Folder
@@ -56,12 +60,12 @@ REM - Deployment Folder
 SET DeployFolder=%~dp0
 SET DeployLib=%DeployFolder%Lib
 REM - OS Display Name
-FOR /F "delims=|" %%A IN ('WMIC OS GET NAME ^| FIND "Windows"') DO SET OSCaption=%%A
+FOR /F "DELIMS=|" %%A IN ('WMIC OS GET NAME ^| FIND "Windows"') DO SET OSCaption=%%A
 ECHO "%OSCaption%" | FIND "Server" >NUL
 REM - Server OS Type
 IF %ERRORLEVEL% EQU 0 (SET OSType=Server)
 REM - OS Build Number
-FOR /F "tokens=2 delims=[]" %%A IN ('VER') DO SET OSBuild=%%A
+FOR /F "TOKENS=2 DELIMS=[]" %%A IN ('VER') DO SET OSBuild=%%A
 SET OSBuild=%OSBuild:~8%
 REM - OS Architecture
 ECHO %PROCESSOR_ARCHITECTURE% | FIND "64" >NUL
@@ -77,11 +81,11 @@ ECHO == Launcher Started ==
 REM = Check for OS that may Require PowerShell 2.0 Installation
 REM - Windows 10
 IF "%OSBuild:~0,3%" EQU "10." (
-  IF %OSBuild:~3,1% EQU 0 (GOTO LaunchScript)
+  IF "%OSBuild:~3,1%" EQU 0 (GOTO LaunchScript)
 )
 REM - Windows 7/8/8.1 and Server 2008 R2/2012/2012 R2
 IF "%OSBuild:~0,2%" EQU "6." (
-  IF %OSBuild:~2,1% GTR 0 (GOTO LaunchScript)
+  IF "%OSBuild:~2,1%" GTR 0 (GOTO LaunchScript)
 )
 REM - Windows Vista and Server 2008
 IF "%OSBuild:~0,3%" EQU "6.0" (SET OSLevel=Vista)
@@ -91,17 +95,17 @@ REM - Windows XP
 IF "%OSBuild:~0,3%" EQU "5.1" (SET OSLevel=XP)
 REM - Older Versions (NT and Below)
 IF "%OSBuild:~0,3%" EQU "5.0" (GOTO QuitIncompatible)
-IF %OSBuild:~0,1% LSS 5 (GOTO QuitIncompatible)
+IF "%OSBuild:~0,1%" LSS 5 (GOTO QuitIncompatible)
 
 :CheckPSVersion
 REM - Verify PowerShell Installation
 REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1" /v Install 2>NUL | FIND "Install" >NUL
 IF %ERRORLEVEL% EQU 0 (
-  FOR /F "tokens=3" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1" /v Install ^| FIND "Install"') DO SET PSInstalled=%%A
+  FOR /F "TOKENS=3" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1" /v Install ^| FIND "Install"') DO SET PSInstalled=%%A
 )
 IF "%PSInstalled%" EQU "0x1" (
   REM - Get PowerShell Version
-  FOR /F "tokens=3" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine" /v PowerShellVersion ^| FIND "PowerShellVersion"') DO SET PSVersion=%%A
+  FOR /F "TOKENS=3" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\PowerShell\1\PowerShellEngine" /v PowerShellVersion ^| FIND "PowerShellVersion"') DO SET PSVersion=%%A
 )
 IF "%PSVersion%" EQU "2.0" (GOTO LaunchScript)
 
@@ -129,7 +133,7 @@ REM - Get Current Service Pack
 SET ServicePack=0
 REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CSDVersion >NUL 2>NUL
 IF %ERRORLEVEL% EQU 0 (
-  FOR /F "tokens=5" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CSDVersion ^| FIND "Service Pack"') DO SET ServicePack=%%A
+  FOR /F "TOKENS=5" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CSDVersion ^| FIND "Service Pack"') DO SET ServicePack=%%A
 )
 
 :SetDownloadInfo
@@ -274,9 +278,9 @@ IF %ERRORLEVEL% NEQ 0 (
 REM - Check Current .NET Framework
 REG QUERY "HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727" /v SP 2>NUL | FIND "SP" >NUL
 IF %ERRORLEVEL% EQU 0 (
-  FOR /F "tokens=3" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727" /v SP ^| FIND "SP"') DO SET NETInstalled=%%A
+  FOR /F "TOKENS=3" %%A IN ('REG QUERY "HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727" /v SP ^| FIND "SP"') DO SET NETInstalled=%%A
 )
-IF %NETInstalled:~2,1% GTR 0 (GOTO InstallPS2)
+IF "%NETInstalled:~2,1%" GTR 0 (GOTO InstallPS2)
 
 :GetNET2SP1
 REM - Get Appropriate Service Pack for Install
@@ -441,27 +445,27 @@ IF %ERRORLEVEL% EQU 0 (
     GOTO QuitSuccess
   )
 ) ELSE (
-  SET "Message=Agent Setup Script was missing or not found after transfer."
+  SET "Message=%SetupScript% was missing or not found after transfer."
   GOTO QuitFailure
 )
 
 :QuitIncompatible
-ECHO X  OS Not Compatible with Agent or Setup Script
-EVENTCREATE /T INFORMATION /ID 13 /L APPLICATION /SO "Agent Setup Launcher" /D "The OS is not compatible with the N-Central Agent or the Agent Setup Script." >NUL
+ECHO X  OS Not Compatible with either the Agent or the %SetupScript%
+EVENTCREATE /T INFORMATION /ID 13 /L APPLICATION /SO "%LauncherScript%" /D "The OS is not compatible with the N-Central Agent or the %SetupScript%." >NUL
 GOTO Done
 
 :QuitFailure
-ECHO X  Execution Failed - Setup Script Not Started (See Application Event Log for Details)
-EVENTCREATE /T ERROR /ID 11 /L APPLICATION /SO "Agent Setup Launcher" /D "!Message!" >NUL
+ECHO X  Execution Failed - %SetupScript% Not Started (See Application Event Log for Details)
+EVENTCREATE /T ERROR /ID 11 /L APPLICATION /SO "%LauncherScript%" /D "!Message!" >NUL
 GOTO Cleanup
 
 :QuitRestart
 ECHO !  Reboot Required for Prerequisite Installation - Please Re-run this Script after a Reboot
-EVENTCREATE /T WARNING /ID 12 /L APPLICATION /SO "Agent Setup Launcher" /D "The system requires a reboot for %Installed%.!NL!!NL!For Group Policy Deployments - The Agent Setup Launcher will start at next Domain boot.!NL!For On-Demand Deployments - Reboot the Device and re-run the Agent Setup Launcher to continue." >NUL
+EVENTCREATE /T WARNING /ID 12 /L APPLICATION /SO "%LauncherScript%" /D "The system requires a reboot for %Installed%.!NL!!NL!For Group Policy Deployments - The %LauncherScript% will start at next Domain boot.!NL!For On-Demand Deployments - Reboot the Device and re-run the %LauncherScript% to continue." >NUL
 GOTO Cleanup
 
 :QuitSuccess
-ECHO O  Agent Setup Script Launched Successfully
+ECHO O  %SetupScript% Launched Successfully
 GOTO Done
 
 :Cleanup

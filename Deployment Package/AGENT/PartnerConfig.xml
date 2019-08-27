@@ -2,10 +2,10 @@
 <!--
 # ABOUT
 # - Partner Configuration File for the InstallAgent Automation Suite
-#   by Ryan Crowther Jr, RADCOMP Technologies - 2018-11-08
+#   by Ryan Crowther Jr, RADCOMP Technologies - 2019-08-26
 # - Original Configuration File (InstallAgent.ini) by Jon Czerwinski, Cohn Consulting Corp. - 2017-01-20
 # Maintained by the Solarwinds MSP Community
-# File Version - 5.0.0
+# File Version - 5.0.1
 
 # USAGE
 Set your Configuration Values for your Deployment Package here. See the Deployment Steps section of
@@ -76,8 +76,8 @@ help@mymsp.com
   <Startup>Auto</Startup> <!-- Default Value is Auto -->
  </ServiceBehavior>
  <Deployment>
-  <!-- [REQUIRED - (Local Absolute Folder Path)] Local Retention Folder for Activation Info File
-  Example - C:\Windows\SecurityThroughObscurity -->
+  <!-- [REQUIRED - (Local Absolute Folder Path)] Local Retention Folder for Deployment Package and
+  Activation Info File - Example - C:\Windows\SecurityThroughObscurity -->
   <LocalFolder>C:\AGENT</LocalFolder> <!-- Default Value is C:\AGENT -->
   <!-- [REQUIRED - (Folder Name)] Root Folder for the Deployment Package -->
   <NetworkFolder>AGENT</NetworkFolder> <!-- Default Value is AGENT -->
@@ -85,7 +85,7 @@ help@mymsp.com
    <!-- [REQUIRED - (Folder Name)] Root Folder to contain Installers for deploying Current Agent
    Versions (11.0.1.xxxx and Above) - Stored in <NetworkFolder> -->
    <InstallFolder>CurrentAgent</InstallFolder> <!-- Default Value is CurrentAgent -->
-   <!-- [REQUIRED - (File Name)] .NET Framework Installer Name - Stored in <InstallFolder> -->
+   <!-- [REQUIRED - (File Name - EXE)] .NET Framework Installer Name - Stored in <InstallFolder> -->
    <NETFileName>NET4_5_2-Universal.exe</NETFileName>
    <!-- [REQUIRED - (4.5.2 or 4.6)] Desired .NET Framework Version for Installation on systems
    with Current Agent Versions (11.0.1.xxxx and Above) -->
@@ -93,7 +93,7 @@ help@mymsp.com
    <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the .NET Framework Installer (from 
    Properties > Details > File Version) -->
    <NETFileVersion>4.5.51209.34209</NETFileVersion>
-   <!-- [REQUIRED - (File Name)] System-Level Agent Installer Name - Stored in <InstallFolder> -->
+   <!-- [REQUIRED - (File Name - EXE)] System-Level Agent Installer Name - Stored in <InstallFolder> -->
    <SOAgentFileName>WindowsAgentSetup.exe</SOAgentFileName> <!-- Default Value is WindowsAgentSetup.exe -->
    <!-- [REQUIRED - (#.#.#.#)] Desired Agent Version for Installation on systems with Current
    Agent Versions (11.0.1.xxxx and Above) -->
@@ -106,7 +106,7 @@ help@mymsp.com
    <!-- [REQUIRED - (Folder Name)] Root Folder to contain Installers for deploying Legacy Agent
    Versions (11.0.0.xxxx and Below) - Stored in <NetworkFolder> -->
    <InstallFolder>LegacyAgent</InstallFolder> <!-- Default Value is LegacyAgent -->
-   <!-- [REQUIRED - (File Name)] .NET Framework Installer Name - Stored in <InstallFolder> -->
+   <!-- [REQUIRED - (File Name - EXE)] .NET Framework Installer Name - Stored in <InstallFolder> -->
    <NETFileName>NET4_0-Universal.exe</NETFileName>
    <!-- [REQUIRED - (4.0)] Desired .NET Framework Version for Installation on systems
    with Legacy Agent Versions (11.0.0.xxxx and Below) -->
@@ -115,7 +115,7 @@ help@mymsp.com
    <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the .NET Framework Installer (from 
    Properties > Details > File Version) -->
    <NETFileVersion>4.0.30319.1</NETFileVersion>
-   <!-- [REQUIRED - (File Name)] System-Level Agent Installer Name - Stored in <InstallFolder> -->
+   <!-- [REQUIRED - (File Name - EXE)] System-Level Agent Installer Name - Stored in <InstallFolder> -->
    <SOAgentFileName>WindowsAgentSetup.exe</SOAgentFileName> <!-- Default Value is WindowsAgentSetup.exe -->
    <!-- [REQUIRED - (#.#.#.#)] Desired Agent Version for Installation on systems with Legacy
    Agent Versions (11.0.0.xxxx and Below) -->

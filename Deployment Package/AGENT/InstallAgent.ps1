@@ -6,28 +6,44 @@
 ########## Change Log ##########
 ################################
 
+### 5.0.1 on 2019-08-26 - Ryan Crowther Jr
+##################################################################
+# FIXES/FEATURES
+# - Added Detection Support for .NET Framework 4.8
+# - Fixed an issue where a newer Agent Version was not Detected because of the bizarre Windows
+#   Versioning method for the Agent Installer, for example Version 12.1.2008.0 (12.1 HF1) is
+#   "greater than" Version 12.1.10241.0 (12.1 SP1 HF1)
+# - Added Script Instance Awareness
+#   - The Script will first check to see if another Instance is already in progress, and if so,
+#     terminate the Script with an Event Log entry indicating this, in order to preserve Registry
+#     results of the pre-existing Instance
+#   - If the pre-existing Instance has been active for more than 30 minutes, the Script will
+#     proceed anyway, thus overwriting results
+# - Removed references to the PS 3.0 function Get-CIMInstance (from a previous optimization) to
+#   maintain PS 2.0 Compatibility
+# - Fixed a premature stop error in the Launcher when a Device has .NET 2.0 SP1 installed, but
+#   needs to install PowerShell 2.0 (Thank you, Harvey!)
+# - Fixed an issue during Diagnosis phase where incorrect Service Startup Behavior was ALWAYS
+#   detected, even after Repairs complete successfully
+
 ### 5.0.0 on 2018-11-08 - Ryan Crowther Jr
 ##################################################################
 # OPTIMIZATION
-# - Converted InstallAgent.vbs to PowerShell 2.0 Compatible Script
-#   (InstallAgent.ps1) (SEE NOTES SECTION BELOW)
-# - Converted InstallAgent.ini to XML file (PartnerConfig.xml) for direct
-#   parsing and variable-typing in PowerShell 2.0
+# - Converted InstallAgent.vbs to PowerShell 2.0 Compatible Script (InstallAgent.ps1) (SEE NOTES
+#   SECTION BELOW)
+# - Converted InstallAgent.ini to XML file (PartnerConfig.xml) for direct parsing and variable
+#   typing in PowerShell 2.0
 # FIXES/FEATURES
 # - Reworked Windows Event Log Reporting
 #   1 - Detailed Script Results are packaged in a single Event
-#   2 - Missing/Invalid Items required by the Script are identified along
-#       with provided resolutions
-#   3 - Problems discovered with the Agent are listed in addition to Repair
-#       actions taken and their results
+#   2 - Missing/Invalid Items required by the Script are identified along with provided resolutions
+#   3 - Problems discovered with the Agent are listed in addition to Repair actions taken and their
+#       results
 #   4 - Details regarding Installers used and Install Methods attempted
 # - Reworked Windows Registry Reporting
-#   1 - Prerequisite Launcher now stores Execution values in the same root
-#       key as the Setup Script
-#   2 - Action and Sequence Updates are made to the Registry in real time
-#       as the Script progresses
-# - Added Local Agent Activation Info retention (Location specified in
-#   Partner Configuration)
+#   1 - Prerequisite Launcher now stores Execution values in the same root key as the Setup Script
+#   2 - Action and Sequence Updates are made to the Registry in real time as the Script progresses
+# - Added Local Agent Activation Info retention (Location specified in Partner Configuration)
 # - Added Activation Key Builder (based on Appliance Info)
 # - Script prioritizes Activation Info as follows:
 #   1 - Discovered Activation Key (currently installed Agent)
@@ -35,27 +51,23 @@
 #   3 - Historical Activation Key (Local History File)
 #   4 - Historical Customer/Site ID (Local History File)
 #   5 - Default Customer ID for New Devices (GPO/Command-Line Parameter)
-#   6 - Historical Default Customer ID (Local History File, if no GPO/
-#       Command-Line Parameter is Present/Valid)
-# - Added Repair for Invalid Appliance ID in ApplianceConfig.xml,
-#   typically -1, which causes the N-Central Server to be unable to map
-#   the Agent to a Device (results in an Agent that either never Imports
-#   or spontaneously dies)
-# - Added Legacy Agent parameters to Partner Configuration to support
-#   installation/repair of an older Agent on Windows XP/Server 2003
-#   (provided Agent copy is 11.0.0.1114 aka 11.0 HF3)
-# - Added Takeover Action for Rogue/Competitor-Controlled Agents (if the
-#   configured Server in the current installation does not match the
-#   N-Central Server Address in the Partner Configuration, the Agent will
-#   be reinstalled using the Script Customer ID - this also fixes an Agent
+#   6 - Historical Default Customer ID (Local History File, if no GPO/Command-Line Parameter is
+#       Present/Valid)
+# - Added Repair for Invalid Appliance ID in ApplianceConfig.xml, typically -1, which causes the
+#   N-Central Server to be unable to map the Agent to a Device (results in an Agent that either
+#   never Imports or spontaneously dies)
+# - Added Legacy Agent parameters to Partner Configuration to support installation/repair of an
+#   older Agent on Windows XP/Server 2003 (provided Agent copy is 11.0.0.1114 aka 11.0 HF3)
+# - Added Takeover Action for Rogue/Competitor-Controlled Agents (if the configured Server in the
+#   current installation does not match the N-Central Server Address in the Partner Configuration,
+#   the Agent will be reinstalled using the Script Customer ID - this also fixes an Agent
 #   configured with "localhost" N-Central Server Address)
 # HOUSEKEEPING
-# - Re-published Change Log with most recent developments up top and some
-#   basic Categories for updates
-# - Moved Script Execution Registry Key to HKLM:SOFTWARE\Solarwinds MSP Community
-# - Added a Legacy Version Cleanup section which will automatically remove
-#   values/files created by older versions of the Script (Huge thanks to
-#   Tim and Jon for their contributions!)
+# - Re-published Change Log with most recent developments up top and some basic Categories for
+#   updates
+# - Moved Script Execution Registry Key to HKLM:\SOFTWARE\Solarwinds MSP Community
+# - Added a Legacy Version Cleanup section which will automatically remove values/files created by
+#   older versions of the Script (Huge thanks to Tim and Jon for their contributions!)
 #
 ### NOTES ON POWERSHELL 2.0 CONVERSION IN 5.0.0
 ##################################################################
@@ -66,11 +78,15 @@
 # 4 - Categorize Script actions by Sequence for better reporting clarity
 # 5 - Simplify and organize Script body by making use of PowerShell Modules
 
+### 4.26 on 2018-10-17 - Jon Czerwinski
+##################################################################
+# FIXES/FEATURES
+# - Fixed strScriptPath bad declaration
+
 ### 4.25 on 2018-01-28 - Jon Czerwinski
 ##################################################################
 # FIXES/FEATURES
-# - Detect whether .ini file is saved with ASCII encoding (Log error and
-#   exit if not)
+# - Detect whether .ini file is saved with ASCII encoding (Log error and exit if not)
 
 ### 4.24 on 2017-10-16 - Jon Czerwinski
 ##################################################################
@@ -107,7 +123,7 @@
 # - Aligned XP < SP3 exit code with documentation (was 3, should be 1)
 # - Added localhost zombie checking
 # HOUSEKEEPING
-# - Changed registry location to HKLM:Software\N-Central
+# - Changed registry location to HKLM:\Software\N-Central
 # OPTIMIZATION
 # - Refactored code (SEE NOTES SECTION BELOW)
 # - Moved mainline code to subroutines, replaced literals with CONSTs
@@ -115,11 +131,11 @@
 ### NOTES ON REFACTORING IN 4.10
 ##################################################################
 # The intent of the refactoring is:
-# 1 - Shorten and simplify the mainline of code by moving larger sections of
-#     mainline code to subroutines
-# 2 - Replace areas where the code quit from subroutines and functions with
-#     updates to runState variable and flow control in the mainline. The
-#     script will quit the mainline with its final runState.
+# 1 - Shorten and simplify the mainline of code by moving larger sections of mainline code to
+#     subroutines
+# 2 - Replace areas where the code quit from subroutines and functions with updates to runState
+#     variable and flow control in the mainline. The script will quit the mainline with its final
+#     runState.
 # 3 - Remove the duplication of code
 # 4 - Remove inaccessible code
 
@@ -133,8 +149,8 @@
 # FIXES/FEATURES
 # - Formatting changes and more friendly startup message
 # - Dirty exit now shows error message and contact information on console
-# - Added 'Checking files' bit to remove confusing delay at that stage
-#   (No spinner though, unfortunately)
+# - Added 'Checking files' bit to remove confusing delay at that stage (No spinner though,
+#   unfortunately)
 # HOUSEKEEPING
 # - Final Release by Tim Wiser :o(
 # - Committed to github by Jon Czerwinski
@@ -171,16 +187,17 @@ $NC.InstallParameters = @{
 $NC.Paths = @{
  "BinFolder" = "N-Able Technologies\Windows Agent\bin"
  "ConfigFolder" = "N-Able Technologies\Windows Agent\config"
- "UninstallKey32" = "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
- "UninstallKey64" = "HKLM:SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+ "UninstallKey32" = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
+ "UninstallKey64" = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
 }
 # Product Constants
 $NC.Products = @{
  "Agent" = @{
   "ApplianceConfig" = "ApplianceConfig.xml"
   "ApplianceConfigBackup" = "ApplianceConfig.xml.backup"
+  "IDName" = "N-Central Customer ID"
   "InstallLog" = "Checker.log"
-  "InstallLogFields" = @(    
+  "InstallLogFields" = @(
    "Activation Key",
    "Appliance ID",
    "Customer ID",
@@ -198,6 +215,9 @@ $NC.Products = @{
   "ServerDefaultValue" = "localhost"
   "Service" = "Windows Agent Service"
   "WindowsName" = "Windows Agent"
+ }
+ "NCServer" = @{
+  "Name" = "Partner N-Central Server"
  }
 }
 # Validation Constants
@@ -233,8 +253,9 @@ $SC = @{
   "B" = "Group Policy"
   "C" = "On-Demand"
  }
+ "RunningInstanceTimeout" = 30
  "ScriptEventLog" = "Application"
- "ScriptVersion" = "5.0.0"
+ "ScriptVersion" = "5.0.1"
  "SuccessScriptAction" = "Graceful Exit"
  "SuccessScriptResult" = "Script Completed Successfully"
 }
@@ -286,7 +307,7 @@ $SC.Exit = @{
   "ExitType" = $SC.ExitTypes.B
  }
  "G" = @{
-  "ExitResult" = "Unable to Reach Partner N-Central Server"
+  "ExitResult" = ("Unable to Reach " + $NC.Products.NCServer.Name)
   "ExitType" = $SC.ExitTypes.C
  }
  "H" = @{
@@ -376,8 +397,8 @@ $SC.Names = @{
 }
 # Path Constants
 $SC.Paths = @{
- "ExecutionKey" = "HKLM:SOFTWARE\Solarwinds MSP Community"
- "ServiceKey" = "HKLM:SYSTEM\CurrentControlSet\Services"
+ "ExecutionKey" = "HKLM:\SOFTWARE\Solarwinds MSP Community"
+ "ServiceKey" = "HKLM:\SYSTEM\CurrentControlSet\Services"
  "TempFolder" = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 $SC.Paths.EventServiceKey = @($SC.Paths.ServiceKey, "EventLog") -join '\'
@@ -412,11 +433,6 @@ $SC.Repairs = @{
   "Name" = "Fix - Process/Service Not Running"
   "PostRepairAction" = $null
   "RecoveryAction" = $SC.RepairActions.A
- }
- "E" = @{
-  "Name" = "Fix - Insufficient History Data"
-  "PostRepairAction" = $null
-  "RecoveryAction" = $null
  }
 }
 # Sequence Constants
@@ -453,10 +469,11 @@ $SC.Validation = @{
  }
  "FileNameEXE" = '^((?![<>:"/\\|?*]).)+\.[Ee][Xx][Ee]$'
  "FileNameXML" = '^((?![<>:"/\\|?*]).)+\.[Xx][Mm][Ll]$'
- "FolderName" = '^((?![<>:"/\\|?*]).)+$'
  "InternalErrorCode" = '^1[0-9]{2}$'
+ "ItemName" = '^((?![<>:"/\\|?*]).)+$'
  "LocalFilePathXML" = '^[a-zA-Z]:\\([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*\.[Xx][Mm][Ll]$'
  "LocalFolderPath" = '^[a-zA-Z]:\\([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*$'
+ "RelativeItemPath" = '^([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*$'
  "TypicalErrorCode" = '^[0-9]{1,2}$'
  "VersionNumber" = @{
   "Accepted" = '^[0-9]+(\.[0-9]+){1,3}$'
@@ -472,9 +489,9 @@ $SC.Validation = @{
 }
 ### Retired Values - PLACE RETIRED VALUES HERE TO CLEANUP OLD SCRIPT ENTRIES
 $SC.Paths.Old = @{
- "ExecutionKeyTim" = "HKLM:SOFTWARE\Tim Wiser"
- "ExecutionKey" = "HKLM:SOFTWARE\N-Central"
- "EventKey" = "HKLM:SYSTEM\CurrentControlSet\Services\EventLog\InstallAgent"
+ "ExecutionKeyTim" = "HKLM:\SOFTWARE\Tim Wiser"
+ "ExecutionKey" = "HKLM:\SOFTWARE\N-Central"
+ "EventKey" = "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\InstallAgent"
 }
 
 ######################################
@@ -565,6 +582,39 @@ $Repair = @{
  "Required" = @()
  "Results" = @{}
 }
+### Check for an Active Script Instance Before Logging Execution
+if (
+ (
+  (
+   Get-ItemProperty $Script.Results.ScriptKey 2>$null |
+   Select-Object -ExpandProperty ScriptResult 2>$null
+  ) -eq $SC.InitialScriptResult
+ ) -and
+ (
+  (
+   Get-Date (
+    Get-ItemProperty $Script.Results.ScriptKey 2>$null | 
+    Select-Object -ExpandProperty ScriptLastRan 2>$null
+   )
+  ) -gt
+  (Get-Date).AddMinutes(-($SC.RunningInstanceTimeout))
+ )
+)
+{ # Another Script is in Progress
+  # Create a New Key for the Event Source if Required
+  if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
+  { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
+  # Write the Event
+  $Message = (
+   "Another Instance of the " + $SC.Names.ScriptProduct + " is currently in progress. " +
+   "Please review the status of the current Instance by opening the Registry to [" +
+   $Script.Results.ScriptKey + "].`n"
+  )
+  Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
+  # Cleanup Working Folder
+  Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
+  exit
+}
 ### Write Registry Values for Script Startup
 # Create Script Execution Key if Required
 if ((Test-Path $Script.Results.ScriptKey) -eq $false)
@@ -573,10 +623,10 @@ else
 { # Remove Sequence Data from Previous Run
   Get-ChildItem $Script.Results.ScriptKey | Remove-Item -Force
   # Remove Transient Properties from Previous Run
-  Get-ItemProperty $Script.Results.ScriptKey |
+  Get-ItemProperty $Script.Results.ScriptKey 2>$null |
   Get-Member -MemberType NoteProperty |
   Where-Object { $_.Name -match '^Script' } |
-  ForEach-Object { Remove-ItemProperty "HKLM:SOFTWARE\Solarwinds MSP Community\InstallAgent" -Name $_.Name -Force }
+  ForEach-Object { Remove-ItemProperty $Script.Results.ScriptKey -Name $_.Name -Force }
 }
 # Update Execution Properties
 $Script.Execution.Keys |
@@ -596,12 +646,13 @@ ForEach-Object {
     { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
     # Write the Event
     $Message = (
-      "The Function Library for the Agent Setup Script is either missing or corrupt. Please verify " +
-      $ModuleName +
-      " exists in the [" +
-      $Script.Path.Library + "] folder, or restore the file to its original state.`n"
+      "The Function Library for the " + $SC.Names.ScriptProduct + " is either missing or corrupt. " +
+      "Please verify " + $ModuleName + " exists in the [" + $Script.Path.Library + "] folder, or restore the file to its original state.`n"
     )
     Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
+    # Update Execution Properties
+    $Script.Execution.Keys |
+    ForEach-Object { New-ItemProperty -Path $Script.Results.ScriptKey -Name $_ -Value $Script.Execution.$_ -Force >$null }
     # Cleanup Working Folder
     Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
     exit

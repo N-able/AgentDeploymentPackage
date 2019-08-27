@@ -1,6 +1,6 @@
 ﻿# Core Functions for the Agent Setup Script (InstallAgent.ps1)
-# Last Revised:   2018-11-08
-# Module Version: 5.0.0
+# Last Revised:   2019-08-26
+# Module Version: 5.0.1
 
 ### INITIALIZATION FUNCTIONS
 ###############################
@@ -326,7 +326,6 @@ function GetDeviceInfo
   ### Computer Details
   $WMIinfo = Get-WmiObject Win32_ComputerSystem
   $WMIos = Get-WmiObject Win32_OperatingSystem
-  $SysInfo = & "$env:windir\SYSTEM32\SYSTEMINFO.EXE" | FIND "Boot Time"
   # Device Name
   [String] $Device.Hostname = & "$env:windir\SYSTEM32\HOSTNAME.EXE"
   [String] $Device.Name = $WMIinfo.Name
@@ -360,8 +359,8 @@ function GetDeviceInfo
   }
   # Last Boot Time
   [DateTime] $Device.LastBootTime =
-   if ($null -ne $SysInfo)
-   { Get-Date (($SysInfo -split (':  '))[-1]).Trim() } else { 0 }
+   if ($null -ne $WMIos.LastBootUpTime)
+   { Get-Date ($WMIos.ConvertToDateTime($WMIos.LastBootUpTime)) -UFormat "%Y-%m-%d %r" } else { 0 }
   ### OS/Software Details
   # PowerShell Version
   [Version] $Device.PSVersion =
@@ -387,7 +386,7 @@ function GetDeviceInfo
    { ($env:SystemDrive + "\Program Files (x86)") }
    else
    { ($env:SystemDrive + "\Program Files") }
-  [String] $Device.PF64 = ($env:SystemDrive + "\Program Files")
+  [String] $Device.PF = ($env:SystemDrive + "\Program Files")
   # Server Core Installation
   $CoreSKUs = @(12..14), 29, @(39..41), @(43..46), 53, 63, 64
   [Boolean] $Device.ServerCore =
@@ -398,12 +397,13 @@ function GetDeviceInfo
 function GetNETVersion
 { ### Function Body
   ###############################
-  # Retrieve .NET Framework Version
+  ### Retrieve .NET Framework Version
   $NETinfo =
    Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse |
    Get-ItemProperty -Name Version, Release -ErrorAction SilentlyContinue |
    Where-Object { $_.PSChildName -eq "Full" } |
-   Select-Object Version, Release, @{
+   Select-Object Version, Release,
+   @{
     Name = "Product"
     Expression = {
      $NET = $_
@@ -427,10 +427,12 @@ function GetNETVersion
         { "4.7"; break }
        { @(461308, 461310) -contains $_.Release }
         { "4.7.1"; break }
-       { @(461810, 461814) -contains $_.Release } 
+       { @(461808, 461814) -contains $_.Release } 
         { "4.7.2"; break }
-       { $_.Release -gt 461814 }
-        { "4.7.2"; $DisplayProduct = "4.7.2 or Newer"; break }
+       { @(528040, 528049) -contains $_.Release } 
+        { "4.8"; break }
+       { $_.Release -gt 528049 }
+        { "4.8"; $DisplayProduct = "4.8 or Newer"; break }
        Default
         {
           $NETVer = $NET.Version.Split(".")
@@ -441,14 +443,15 @@ function GetNETVersion
         }
      }
     }
-  }
+   }
+  ### Summarize Version Info
   if ($null -ne $NETinfo)
   {
     $Device.NETVersion = [Version] (ValidateVersion $($NETinfo.Version))
     $Device.NETProduct = [Version] (ValidateVersion $($NETinfo.Product))
     $Device.NETDisplayProduct =
-    if ($null -ne $DisplayProduct)
-    { $DisplayProduct } else { $Device.NETProduct }
+     if ($null -ne $DisplayProduct)
+     { $DisplayProduct } else { $Device.NETProduct }
   }
 }
 
@@ -642,7 +645,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # No Validation for Branding
           $false
           break
@@ -652,7 +655,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { "0" }
+           { ($Config.$i).Trim() }
           # Must be a Number from 0 to 60
           if (
            ($ConfigUpdate.$i -notmatch $SC.Validation.WholeNumberUpto2Digit) -or
@@ -674,7 +677,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be a Number from 1 to 60
           if (
            ($ConfigUpdate.$i -notmatch $SC.Validation.WholeNumberUpto2Digit) -or
@@ -697,7 +700,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks/Slashes if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim('/ ') } else { $null }
+           { ($Config.$i).Trim('/ ') }
           # Remove Protocol Header if Present
           if ($ConfigUpdate.$i -match $NC.Validation.ServerAddress.Accepted)
           { $ConfigUpdate.$i = ($ConfigUpdate.$i).Split('/')[2] }
@@ -710,7 +713,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be a Number from 1 to 100
           if (
            ($ConfigUpdate.$i -notmatch $SC.Validation.WholeNumberUpto3Digit) -or
@@ -732,7 +735,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be a Number from 0 to 100
           if (
            ($ConfigUpdate.$i -notmatch $SC.Validation.WholeNumberUpto3Digit) -or
@@ -754,7 +757,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # No Validation for Proxy String
           $false
           break
@@ -764,7 +767,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be one of these Values and No Previous Service Actions can be Empty
           if (
            (
@@ -794,7 +797,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # No Validation for Command
           $false
           break
@@ -803,7 +806,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Assume No Delay if there is No Corresponding Action
           if ($null -eq $ConfigUpdate.$($i -creplace (('Delay' + $i[-1]), ('Action' + $i[-1]))))
           { $ConfigUpdate.$i = $null }
@@ -833,7 +836,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be a Number from 0 to 44640
           if (
            ($null -ne $ConfigUpdate.$i) -and
@@ -860,7 +863,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Accept Partial String Values
           if ("Automatic" -like ($ConfigUpdate.$i + "*"))
           {
@@ -868,7 +871,7 @@ function ValidatePartnerConfig
             $ConfigUpdate.$i = "Automatic"
             $ConfigUpdate.$($j + 'QueryString') = "Auto"
             $ConfigUpdate.$($j + 'RepairString') = "Auto"
-            $ConfigUpdate.$($j + 'RequireDelay') = $null
+            $ConfigUpdate.$($j + 'RequireDelay') = $false
           }
           if ("Delay" -like ($ConfigUpdate.$i + "*"))
           {
@@ -888,7 +891,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks/Periods if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim('. ') } else { $null }
+           { ($Config.$i).Trim('. ') }
           # Must be a Valid Executable File Name
           if ($ConfigUpdate.$i -notmatch $SC.Validation.FileNameEXE)
           { $true } else { $false }
@@ -898,7 +901,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be a Version Number with up to 4 Digits
           if ($ConfigUpdate.$i -notmatch $SC.Validation.VersionNumber.Accepted)
           { $true }
@@ -917,7 +920,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be a Version Number with up to 4 Digits
           if ($ConfigUpdate.$i -notmatch $SC.Validation.VersionNumber.Accepted)
           { $true }
@@ -936,9 +939,9 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks/Periods if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim('. ') } else { $null }
+           { ($Config.$i).Trim('. ') }
           # Must be a Valid Folder Name
-          if ($ConfigUpdate.$i -notmatch $SC.Validation.FolderName)
+          if ($ConfigUpdate.$i -notmatch $SC.Validation.ItemName)
           { $true } else { $false }
           break
         }
@@ -946,7 +949,7 @@ function ValidatePartnerConfig
         { # Remove Trailing Slash if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim('/ ') } else { $null }
+           { ($Config.$i).Trim('\ ') }
           # Must be a Local Absolute Path
           if ($ConfigUpdate.$i -notmatch $SC.Validation.LocalFolderPath)
           { $true } else { $false }
@@ -956,7 +959,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks/Periods if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim('. ') } else { $null }
+           { ($Config.$i).Trim('. ') }
           # Must be a Valid Executable File Name
           if ($ConfigUpdate.$i -notmatch $SC.Validation.FileNameEXE)
           { $true } else { $false }
@@ -966,7 +969,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be a Version Number with up to 4 Digits
           if ($ConfigUpdate.$i -notmatch $SC.Validation.VersionNumber.Accepted)
           { $true }
@@ -985,7 +988,7 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim() } else { $null }
+           { ($Config.$i).Trim() }
           # Must be a Version Number with up to 4 Digits
           if ($ConfigUpdate.$i -notmatch $SC.Validation.VersionNumber.Accepted)
           { $true }
@@ -1004,9 +1007,9 @@ function ValidatePartnerConfig
         { # Remove Outlying Blanks/Periods if Present
           $ConfigUpdate.$i =
            if (@($null, '') -notcontains $Config.$i)
-           { ($Config.$i).Trim('. ') } else { $null }
+           { ($Config.$i).Trim('. ') }
           # Must be a Valid Folder Name
-          if ($ConfigUpdate.$i -notmatch $SC.Validation.FolderName)
+          if ($ConfigUpdate.$i -notmatch $SC.Validation.ItemName)
           { $true } else { $false }
           break
         }
@@ -1024,7 +1027,7 @@ function ValidatePartnerConfig
      "One or more items in the Partner Configuration was invalid.`n",
      "Please verify the following values:"
     $InvalidConfig |
-	Sort-Object |
+	  Sort-Object |
     ForEach-Object { $Out += @($_) }
     Log E 2 $Out -Exit
   }
@@ -1052,7 +1055,7 @@ function ValidateExecution
   WriteKey $Script.Results.ScriptKey $Script.Execution
   ### Function Body
   ###############################
-  # Build Installation Source Paths
+  ### Build Installation Source Paths
   $Install.Sources = @{
    "Demand" = @{ "Path" = ($LauncherPath + $Config.InstallFolder) }
    "Network" = @{
@@ -1062,7 +1065,7 @@ function ValidateExecution
     ) -join '\'
    }
   }
-  # Log Execution Mode
+  ### Determine Execution Mode
   $Script.Execution.ScriptMode =
    switch ($Install.Sources.Demand.Path)
    {
@@ -1071,16 +1074,20 @@ function ValidateExecution
      Default
       { $SC.ExecutionMode.A; break }
    }
+  ### Log Execution Mode
   WriteKey $Script.Results.ScriptKey $Script.Execution
   # Wait if Device has Recently Booted
-  if ($Device.LastBootTime -ge (Get-Date).AddSeconds(-($Config.BootTimeWaitPeriod)))
+  if (
+   ($null -ne $Device.LastBootTime) -and
+   ($Device.LastBootTime -ge (Get-Date).AddSeconds(-($Config.BootTimeWaitPeriod)))
+  )
   { # Update Execution Info
     $Script.Execution.ScriptAction = "Waiting Before Diagnosis"
     WriteKey $Script.Results.ScriptKey $Script.Execution
     # Wait for Required Duration
     [Int] $WaitTime =
      $Config.BootTimeWaitPeriod - (
-      ((Get-Date) - $Device.LastBootTime) |
+      ((Get-Date) - ([DateTime] $Device.LastBootTime)) |
       Select-Object -ExpandProperty TotalSeconds
      )
     $Out =
@@ -1317,83 +1324,116 @@ function QueryServices
   }
   ### Report Current Status
   # Agent Exectuables Exist
-  $Agent.Health.ProcessesExist = (
-   (
-    $Agent.Processes.GetEnumerator() |
-    Where-Object { $null -ne $_.Value.FilePath } |
-    ForEach-Object { (Test-Path $_.Value.FilePath -PathType Leaf) -eq $true }
-   ).Count -eq $Agent.Services.Data.Count
-  )
+  $Agent.Health.ProcessesExist =
+   if (
+    (
+     $Agent.Processes.GetEnumerator() |
+     Where-Object { $null -ne $_.Value.FilePath } |
+     ForEach-Object { (Test-Path $_.Value.FilePath -PathType Leaf) -eq $true }
+    ).Count -eq $Agent.Services.Data.Count
+   )
+   { $true } else { $false }
   # Agent Processes Running
-  $Agent.Health.ProcessesRunning = (
-   ($Agent.Health.ProcessesExist -eq $true) -and
-   (($Agent.Processes.GetEnumerator() | ForEach-Object { $null -ne $_.Value.ID }) -notcontains $false)
-  )
+  $Agent.Health.ProcessesRunning =
+   if (
+    ($Agent.Health.ProcessesExist -eq $true) -and
+    (
+     (
+      $Agent.Processes.GetEnumerator() |
+      ForEach-Object { $null -ne $_.Value.ID }
+     ) -notcontains $false
+    )
+   )
+   { $true } else { $false }
   # Agent Services Exist
-  $Agent.Health.ServicesExist = $Agent.Services.Data.Values -notcontains $null
+  $Agent.Health.ServicesExist =
+   if ($Agent.Services.Data.Values -notcontains $null)
+   { $true } else { $false }
   # Agent Services Failure Behavior Configured
-  $Agent.Health.ServicesBehaviorCorrect = (
-   $Agent.Services.Failure.GetEnumerator() |
-   ForEach-Object {
-     switch ($_)
-     {
-       { $null -eq $_.Value }
-        { $false; break }
+  $Agent.Health.ServicesBehaviorCorrect =
+   if (
+    (
+     $Agent.Services.Failure.GetEnumerator() |
+     ForEach-Object {
+       switch ($_)
        {
-         (
-          (
+         { $null -eq $_.Value }
+          { $false; break }
+         {
            (
-            $_.Value.Actions.GetEnumerator() |
-            ForEach-Object { $_.Value -eq $Config.$("ServiceAction" + $_.Name) }
-           ) -notcontains $false
-          ) -and
-          (
-           (
-            $_.Value.Delays.GetEnumerator() |
-            ForEach-Object { $_.Value -eq $Config.$("ServiceDelay" + $_.Name) }
-           ) -notcontains $false
-          ) -and
-          ($_.Value.Reset -eq $Config.ServiceReset) -and
-          ($_.Value.Command -eq $Config.ServiceCommand)
-         )
+            (
+             (
+              $_.Value.Actions.GetEnumerator() |
+              ForEach-Object {
+                if ($null -ne $_.Value)
+                { $_.Value.Split()[0] -eq $Config.$("ServiceAction" + $_.Name) }
+                else { $false }
+              }
+             ) -notcontains $false
+            ) -and
+            (
+             (
+              $_.Value.Delays.GetEnumerator() |
+              ForEach-Object { $_.Value -eq $Config.$("ServiceDelay" + $_.Name) }
+             ) -notcontains $false
+            ) -and
+            ($_.Value.Reset -eq $Config.ServiceReset) -and
+            ($_.Value.Command -eq $Config.ServiceCommand)
+           )
+         }
+          { $true; break }
+         Default
+          { $false; break }
        }
-        { $true; break }
-       Default
-        { $false; break }
      }
-    }
-  ) -notcontains $false
+    ) -notcontains $false
+   )
+   { $true } else { $false }
   # Agent Services Running
-  $Agent.Health.ServicesRunning = (
+  $Agent.Health.ServicesRunning =
+   if (
     ($Agent.Health.ServicesExist -eq $true) -and
-    (($Agent.Services.Data.GetEnumerator() | ForEach-Object { $_.Value.State -eq "Running" }) -notcontains $false)
-  )
+    (
+     (
+      $Agent.Services.Data.GetEnumerator() |
+      ForEach-Object { $_.Value.State -eq "Running" }
+     ) -notcontains $false
+    )
+   )
+   { $true } else { $false }
   # Agent Services Startup Configured
-  $Agent.Health.ServicesStartupCorrect = (
-   $Agent.Services.Data.GetEnumerator() |
-   ForEach-Object {
-    switch ($_)
-    {
-      { $null -eq $_.Value }
-       { $false; break }
-      {
-        ($_.Value.StartMode -eq $Config.ServiceQueryString) -and
-        (
-         ($_.Value.DelayedAutoStart -eq $Config.ServiceRequireDelay) -or
-         (
-          (
-           Get-ItemProperty (@($SC.Paths.ServiceKey, $_.Value.Name) -join '\') |
-           Select-Object -ExpandProperty DelayedAutoStart
-          ) -eq $Config.ServiceRequireDelay
-         )
-        )
-      }
-       { $true; break }
-      Default
-       { $false; break }
-    }
-   }
-  ) -notcontains $false
+  $Agent.Health.ServicesStartupCorrect =
+   if (
+    (
+     $Agent.Services.Data.GetEnumerator() |
+     ForEach-Object {
+       switch ($_)
+       {
+         { $null -eq $_.Value }
+          { $false; break }
+         {
+           ($_.Value.StartMode -eq $Config.ServiceQueryString) -and
+           (
+            ($_.Value.DelayedAutoStart -eq $Config.ServiceRequireDelay) -or
+            @(
+             if (
+              (
+               Get-ItemProperty (@($SC.Paths.ServiceKey, $_.Value.Name) -join '\') 2>$null |
+               Select-Object -ExpandProperty DelayedAutoStart 2>$null
+              ) -eq 1
+             )
+             { $Config.ServiceRequireDelay -eq $true } else { $Config.ServiceRequireDelay -eq $false }
+            )
+           )
+         }
+          { $true; break }
+         Default
+          { $false; break }
+       }
+     }
+    ) -notcontains $false
+   )
+   { $true } else { $false }
 }
 
 function TestNCServer
@@ -1432,7 +1472,7 @@ function TestNCServer
           $false
            { "Device appears not to have Internet connectivity at present.`n"; break }
           $true
-           { "Device appears to have Internet connectivity, but is unable to reliably connect to the Partner N-Central Server.`n"; break }
+           { ("Device appears to have Internet connectivity, but is unable to reliably connect to the " + $NC.Products.NCServer.Name + ".`n"); break }
         },
         "The Script will assess and perform Offline Repairs where possible until connectivity is restored."
        )
@@ -1450,13 +1490,13 @@ function TestNCServer
                { $_ -lt 1 }
                 { # Warn on Dropped Packets
                   $Flag = "W"
-                  "Device appears to have connectivity to the Partner N-Central Server, but is dropping some packets."
+                  ("Device appears to have connectivity to the " + $NC.Products.NCServer.Name + ", but is dropping some packets.")
                   break
                 }
                1
                 {
                   $Flag = "I"
-                  "Device has reliable connectivity to the Partner N-Central Server."
+                  ("Device has reliable connectivity to the " + $NC.Products.NCServer.Name + ".")
                   break
                 }
              },
@@ -1470,13 +1510,13 @@ function TestNCServer
                { $_ -lt 1 }
                 { # Warn on Dropped Packets
                   $Flag = "W"
-                  "Device appears to have connectivity to the Partner N-Central Server, but is dropping some packets."
+                  ("Device appears to have connectivity to the " + $NC.Products.NCServer.Name + ", but is dropping some packets.")
                   break
                 }
                1
                 {
                   $Flag = "I"
-                  "Device has reliable connectivity to the Partner N-Central Server."
+                  ("Device has reliable connectivity to the " + $NC.Products.NCServer.Name + ".")
                   break
                 }
              },
@@ -1746,12 +1786,13 @@ function DiagnoseAgent
   $Agent.Health.Installed =
    if (
     ($null -ne $Agent.Path.Registry) -and
-    ($null -ne (Get-CIMInstance CIM_DataFile -Filter ("Name='" + (@($Device.PF32, $NC.Paths.BinFolder, $NC.Products.Agent.Process) -join '\').Replace('\','\\') + "'")))
+    ((ValidateItem $(@($Device.PF32, $NC.Paths.BinFolder, $NC.Products.Agent.Process) -join '\') -NoNewItem) -eq $true)
    )
    {
      if ((Test-Path $Agent.Path.Registry) -eq $true)
      { $true } else { $false }
    } else { $false }
+  # Log Discovered Agent Status
   if (($Agent.Health.Installed -eq $true) -and ($NoLog -eq $false))
   {
     $Out = @("Found:")
@@ -1787,16 +1828,22 @@ function DiagnoseAgent
     Log I 0 -Message $Out
   }
   ### Check if Appliance ID is Invalid
-  $Agent.Health.ApplianceIDValid = $Agent.Docs.$($NC.Products.Agent.ApplianceConfig).ApplianceID -match $NC.Validation.ApplianceID
+  $Agent.Health.ApplianceIDValid =
+   if ($Agent.Docs.$($NC.Products.Agent.ApplianceConfig).ApplianceID -match $NC.Validation.ApplianceID)
+   { $true } else { $false }
   ### Check if Installed Agent is Up to Date
   $Agent.Health.VersionCorrect =
    if ($Agent.Health.Installed)
    {
      if (
-      (($null -ne $Agent.Appliance.Version) -and
-       ($Agent.Appliance.Version -ge $Config.AgentVersion)) -or
-      (($null -ne $Agent.Appliance.WindowsVersion) -and
-       ($Agent.Appliance.WindowsVersion -ge $Config.AgentFileVersion))
+      (
+       ($null -ne $Agent.Appliance.Version) -and
+       (([Version] $Agent.Appliance.Version) -ge ([Version] $Config.AgentVersion))
+      ) -or
+      (
+       ($null -ne $Agent.Appliance.WindowsVersion) -and
+       (([Version] $Agent.Appliance.WindowsVersion) -ge ([Version] $Config.AgentFileVersion))
+      )
      )
      { $true } else { $false }
    } else { $false }
@@ -2149,13 +2196,13 @@ function RepairAgent
    switch ($Agent.Health.AgentStatus)
    {
      $SC.ApplianceStatus.G
-      { "The " + $NC.Products.Agent.Name + " is currently not installed."; break }
+      { ("The " + $NC.Products.Agent.Name + " is currently not installed."); break }
      $SC.ApplianceStatus.F
-      { "The current " + $NC.Products.Agent.Name + " installation is damaged and must be re-installed."; break }
+      { ("The current " + $NC.Products.Agent.Name + " installation is damaged and must be re-installed."); break }
      $SC.ApplianceStatus.E
-      { "The current " + $NC.Products.Agent.Name + " installation is not authenticating with the Partner N-Central Server and must be re-installed."; break }
+      { ("The current " + $NC.Products.Agent.Name + " installation is not authenticating with the Partner N-Central Server and must be re-installed."); break }
      { $Agent.Health.VersionCorrect -eq $false }
-      { "The current " + $NC.Products.Agent.Name + " installation is out of date and must be upgraded."; break }
+      { ("The current " + $NC.Products.Agent.Name + " installation is out of date and must be upgraded."); break }
    }
   if ($null -ne $Out)
   { # Skip Repair Sequence
@@ -2282,7 +2329,7 @@ function RepairAgent
     $Script.Execution.AgentLastRepaired = Get-Date -UFormat $SC.DateFormat.Full
     WriteKey $Script.Results.ScriptRepairKey $Repair.Results
     # Log Detailed Repair Results
-    $Out = @("The following Repairs were attempted on the existing " + $NC.Products.Agent.Name + " installation:")
+    $Out = @("The following Repairs were attempted by the Script:")
     $Out +=
      $Repair.Results.Keys |
      Sort-Object |
@@ -2303,62 +2350,65 @@ function RepairAgent
     switch ($Agent.Health.AgentStatus)
     {
       $SC.ApplianceStatus.A
-        { # Complete Repair Sequence and Exit
-          $Out = @(
-           switch ($Repair.Results)
-           {
-             { @($_.$($SC.Repairs.PostRepair.Name), $_.$($SC.Repairs.Recovery.Name)) -contains $false }
-              { # Errors in Post-Repair/Recovery
-                "Some minor issues were encountered during Repairs, however the Script has found them to be resolved.",
-                "Possible reasons for this result may include:",
-                ("- A request to one or more " + $NC.Products.Agent.Name + " Services timed out"),
-                ("- A pre-existing operation was in place on one or more " + $NC.Products.Agent.Name + " Services")
-                break
-              }
-             Default
-              { # Agent Successfully Repaired without Issue
-                "The existing " + $NC.Products.Agent.Name + " installation was repaired successfully, without the need for installation."
-                break
-              }
-           }
-          )
-          Log I 0 $Out
-          Log -EndSequence -Code 0 -Exit
-        }
+       { # Complete Repair Sequence and Exit
+         $Out = @(
+          switch ($Repair.Results)
+          {
+            { @($_.$($SC.Repairs.PostRepair.Name), $_.$($SC.Repairs.Recovery.Name)) -contains $false }
+             { # Errors in Post-Repair/Recovery
+               "Some minor issues were encountered during Repairs, however the Script has found them to be resolved.",
+               "Possible reasons for this result may include:",
+               ("- A request to one or more " + $NC.Products.Agent.Name + " Services timed out"),
+               ("- A pre-existing operation was in place on one or more " + $NC.Products.Agent.Name + " Services")
+               break
+             }
+            Default
+             { # Agent Successfully Repaired without Issue
+               "The existing " + $NC.Products.Agent.Name + " installation was repaired successfully, without the need for installation."
+               break
+             }
+          }
+         )
+         Log I 0 $Out
+         Log -EndSequence -Code 0 -Exit
+       }
       Default
       {
         $Out = @(
          switch ($Script.Sequence.Status[-1])
          {
            $SC.SequenceStatus.C
-           { # Fail Repair Sequence and Require an Install
-             $Script.Sequence.Status[-1] = $SC.SequenceStatus.F
-             switch ($Repair.Results)
-             {
-               { @($_.$($SC.Repairs.PostRepair.Name), $_.$($SC.Repairs.Recovery.Name)) -contains $false }
+            { # Fail Repair Sequence
+              $Script.Sequence.Status[-1] = $SC.SequenceStatus.F
+              switch ($Repair.Results)
+              {
                 { # Errors in Post-Repair/Recovery
-                  ("One or more Post-Repair or Recovery Actions failed. The current " + $NC.Products.Agent.Name + " must be re-installed.")
+                 @(
+                  $_.$($SC.Repairs.PostRepair.Name),
+                  $_.$($SC.Repairs.Recovery.Name)
+                 ) -contains $false
+                }
+                 { # Require Installation
+                   ("One or more Post-Repair or Recovery Actions failed. The current " + $NC.Products.Agent.Name + " must be re-installed.")
+                   break
+                 }
+                Default
+                 { # Error(s) in Standard Repair
+                  ("Standard Repairs failed to fully correct all identified issues. The current " + $NC.Products.Agent.Name + " must be re-installed.")
                   break
-                }
-               Default
-                { # Error(s) in Standard Repair
-                 ("Standard Repairs failed to fully correct all identified issues. The current " + $NC.Products.Agent.Name + " must be re-installed.")
-                 break
-                }
-             }
-           }
+                 }
+              }
+            }
            $SC.SequenceStatus.E
-           { # Abort Repair Sequence and Require an Install
-             ("The Repair Sequence was aborted. The current " + $NC.Products.Agent.Name + " cannot be fixed with standard repairs and must be re-installed.")
-             break
-           }
+            { # Abort Repair Sequence and Require an Install
+              ("The Repair Sequence was aborted. The current " + $NC.Products.Agent.Name + " cannot be fixed with standard repairs and must be re-installed.")
+              break
+            }
          }
         )
         Log I 0 $Out
       }
     }
-    if ($null -ne $RepairMessage)
-    { Log I 0 $RepairMessage }
   }
 }
 
@@ -2920,7 +2970,7 @@ function VerifyPrerequisites
   if ($Install.NCServerAccess -eq $false)
   { # Exit - Installer will Fail to Authenticate with Server
     $Out =
-     "The Device is currently unable to reliably reach the Partner N-Central Server. Installation attempts will fail authentication.`n",
+     ("The Device is currently unable to reliably reach the " + $NC.Products.NCServer.Name + ". Installation attempts will fail authentication.`n"),
      "This may be caused by lack of Internet connectivity, a poor connection, or DNS is unavailable or unable to resolve the address.",
      "If this issue persists, verify the <NCServerAddress> value in the Partner Configuration is correct."
     Log E 6 $Out -Exit
@@ -2939,21 +2989,21 @@ function VerifyPrerequisites
     $Out =
      if ($null -eq $CustomerID)
      {
-       @("An N-Central Customer ID was not provided to the Script and is required for Installation.`n")
+       @("An " + $NC.Products.Agent.IDName + " was not provided to the Script and is required for Installation.`n")
        $ExitCode = 7
      }
      else
      {
-       @("The N-Central Customer ID provided to the Script [" + $CustomerID + "] is invalid. A valid Customer ID is required for Installation.`n")
+      @("The " + $NC.Products.Agent.IDName + " provided to the Script [" + $CustomerID + "] is invalid. A valid Customer ID is required for Installation.`n")
        $ExitCode = 8
      }
     $Out +=
      switch ($Script.Execution.ScriptMode)
      {
        $SC.ExecutionMode.A
-        { @("For On-Demand Deployment - Please specify a valid N-Central Customer ID when running " + $SC.Names.LauncherFile + "."); break }
+        { @("For On-Demand Deployment - Please specify a valid " + $NC.Products.Agent.IDName + " when running " + $SC.Names.LauncherFile + "."); break }
        $SC.ExecutionMode.B
-        { @("For Group Policy Deployment - Verify the N-Central Customer ID is free of typographical errors, and is the only item present in the Parameters field for the GPO."); break }
+        { @("For Group Policy Deployment - Verify the " + $NC.Products.Agent.IDName + " is free of typographical errors, and is the only item present in the Parameters field for the GPO."); break }
      }
     Log E $ExitCode $Out -Exit
   }
