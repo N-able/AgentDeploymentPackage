@@ -49,9 +49,9 @@ The **Deployment Package** is suitable by itself for all deployments, and contai
 
 *   **AGENT** Folder
     *   **CurrentAgent** Folder
-        *   **NET4_5_2-Universal.exe** - .NET Framework Installer required by Current Agents (11.0.1.xxxx and Above)
+        *   <sup>1</sup>**NET4_5_2-Universal.exe** - .NET Framework Installer required by Current Agents (11.0.1.xxxx and Above)
     *   **LegacyAgent** Folder
-        *   **NET4_0-Universal.exe** - .NET Framework Installer required by Legacy Agents (11.0.0.xxxx and Below)
+        *   <sup>1</sup>**NET4_0-Universal.exe** - .NET Framework Installer required by Legacy Agents (11.0.0.xxxx and Below)
         *   **WindowsAgentSetup.exe** - System-Level Agent Installer 11.0.0.1114 (latest Agent Installer compatible with Windows XP / Server 2003)
     *   **Lib** Folder
         *   **InstallAgent-Core.psm1** - Core Functions file for the **Agent Setup Script** (InstallAgent.ps1) which contains most of its key operations
@@ -68,6 +68,8 @@ The **Deployment Package** is suitable by itself for all deployments, and contai
     *   **InstallAgent.ps1** - **Agent Setup Script,** the main/wrapper script, which contains most pre-defined constants and structures for execution
     *   **LaunchInstaller.bat** - **Agent Setup Launcher,** the launcher script, which is called On-Demand (click-to-run) or by Group Policy (calling the Launcher by either method **requires an N-Central Customer/Site ID number as a Parameter for any new Agent installations**)
     *   **PartnerConfig.xml** - **Partner Configuration,** which is used to dictate most variable options to the **Agent Setup Script**
+
+<sup>1</sup> Download Instructions for these items are included at the designated location in order to reduce overall package size, as they are already freely available on the web
 
 ## AMP-Based Custom Service Package
 
@@ -171,9 +173,9 @@ In N-Central, Devices are **not automatically imported into the All Devices View
 *   *(Typical)SOAgentVersion*
 *   *(Typical)SOAgentFileVersion*
 
-4 -  Add the System-Level Agent Installer to the ***NetworkFolder*\**(Typical)InstallFolder*** location
+4 -  Add the System-Level Agent Installer to the ***NetworkFolder\\(Typical)InstallFolder*** location
 
-5 -  If you choose to use a different Legacy Agent, perform steps 4 and 5 for the *(Legacy)* variety of each value in the **Partner Configuration,** and replace the existing Agent Installer in the ***NetworkFolder*\**(Legacy)InstallFolder*** location
+5 -  If you choose to use a different Legacy Agent, perform steps 4 and 5 for the *(Legacy)* variety of each value in the **Partner Configuration,** and replace the existing Agent Installer in the ***NetworkFolder\\(Legacy)InstallFolder*** location
 
 The **Deployment Package** is now ready for On-Demand or Group Policy deployments!
 
@@ -193,7 +195,7 @@ This method is suitable for one-off Devices, or those that do not belong to a Wi
 
 Example - **DO NOT USE**
 
-F:\DeploymentStuff\AGENT\LaunchInstaller.bat 170
+**F:\DeploymentStuff\AGENT\LaunchInstaller.bat 170**
 
 Another use case for On-Demand Deployment may be running the **Deployment Package** for **Repair or Re-Installation purposes.**
 
@@ -210,7 +212,7 @@ If you're looking at targeting multiple systems with the **Deployment Package,**
 
 This is by far, the preferred method for enterprise, or Windows Domain-managed environments of any size. This will allow the **Deployment Package** to run from the network on **any Domain system that has contact with a Domain Controller at boot.**
 
-1 -  On a Domain Controller (preferably the Baseline Domain Controller), open the NETLOGON Folder (typically **\\clientdomain.name\NETLOGON**) and place the entire **Deployment Package** (*NetworkFolder*) here
+1 -  On a Domain Controller (preferably the Baseline Domain Controller), open the NETLOGON Folder (typically **\\\clientdomain.name\NETLOGON**) and place the entire **Deployment Package** (*NetworkFolder*) here
 
 **NOTE - Partners CURRENTLY using Versions of the InstallAgent Deployment Package PRIOR to 5.0.0**
 *   Simply replace the **AGENT** Folder in its entirety with the *NetworkFolder* you've defined in the **Partner Configuration**
