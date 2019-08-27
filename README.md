@@ -2,7 +2,7 @@
 
 This is a community-based Automation Suite intended as a replacement for the stock N-central Group Policy Installer Script as provided by N-able. It is not supported by SolarWinds MSP or N-able, so please do not contact their support department regarding any problems or questions about this script. In addition, please do not contact the support departments of any individual Partners in the SolarWinds MSP Community regarding the Automation Suite or its components.
 
-If you discover a problem with any component of the Automation Suite or have ideas on how it could be improved, post an issue on [GitHub](https://github.com/N-able/AgentDeploymentPackage/issues). Alternatively, post on the NRC discussion forum.
+If you discover a problem with any component of the Automation Suite or have ideas on how it could be improved, post an issue on GitHub [](https://github.com/N-able/AgentDeploymentPackage/issues). Alternatively, post on the NRC discussion forum.
 
 These tools are provided as-is, in the best of faith, by those Partners and Community Members involved in their development. If you use this in your environment, we would love to hear from you on GitHub!
 
@@ -73,7 +73,7 @@ The **Deployment Package** is suitable by itself for all deployments, and contai
 
 The **Custom Service Package** is an optional download available with the **Deployment Package,** which integrates with N-Central to collect and monitor information about the most recent run of the **Deployment Package.**
 
-***ATTENTION - The Custom Service Package is currently NOT compatible with Deployment Package 5.0.0; however, a NEW Custom Service Package is currently under development!***
+***ATTENTION - The Custom Service Package is no longer compatible with Deployment Package 5.0.0 and above***
 
 The **Custom Service Package** contains the following items:
 
@@ -115,9 +115,9 @@ Open **PartnerConfig.xml** to begin. This **Partner Configuration** is your one-
 | | *NETFileName* | NET4_5_2-Universal.exe | Yes | Name of the .NET Framework Installer supplied in the Typical *InstallFolder* - change this only you elect to use a different package (i.e. .NET 4.6 for Vista/2008) |
 | | *NETVersion* | 4.5.2 | Yes | User-Friendly Version of .NET Framework to install on Typical systems - for verification/logging purposes |
 | | *NETFileVersion* | 4.5.51209.34209 | Yes | Windows Version of the .NET Framework Installer to use on Typical systems, which should match the **File Version** property when you right-click **Properties > Details.** |
-| | *SOAgentFileName* | WindowsAgentSetup.exe | Yes | Name of the Agent Installer supplied in the Typical *InstallFolder* - **Be sure to use the System-Level Agent Installer** - This value should not need to be changed unless Solarwinds MSP changes the default Installer name |
+| | *SOAgentFileName* | WindowsAgentSetup.exe | Yes | Name of the Agent Installer supplied in the Typical *InstallFolder* - change this each time you upgrade your N-Central Server, and **be sure to use the System-Level Agent Installer** |
 | | *SOAgentVersion* | 12.0.1.118 | Yes | User-Friendly (N-Central) Version of the Agent to install on Typical systems - for verification/logging purposes |
-| | *SOAgentFileVersion* | 12.0.10118.0 | Yes | Windows Version of the Agent Installer to use on Typical systems, which should match the **File Version** property when you right-click **Properties > Details.** This value (and the Installer file itself) will need to be updated each time you upgrade your N-Central Server. |
+| | *SOAgentFileVersion* | 12.0.10118.0 | Yes | Windows Version of the Agent Installer to use on Typical systems, which should match the **File Version** property when you right-click **Properties > Details.** |
 | **Deployment (Legacy)** | *InstallFolder* | LegacyAgent | Yes | Name of the Folder used by the Package to hold relevant Installers for Legacy Agents (11.0.0.xxxx and Below) |
 | | *NETFileName* | NET4_0-Universal.exe | Yes | Name of the .NET Framework Installer supplied in the Legacy *InstallFolder* - The supplied Installer is the only version suitable for Windows XP / Server 2003 and the N-Central Agent (since .NET 4.0 is a minimum requirement of the Agent, and maximum version for XP / 2003) |
 | | *NETVersion* | 4.0 | Yes | User-Friendly Version of .NET Framework to install on Legacy systems - for verification/logging purposes |
@@ -235,7 +235,7 @@ Congratulations! Your **Group Policy Deployment** is ready for action!
 ## OPTIONAL
 ## 1a - Setup the N-Central Custom Service (Version 4.xx)
 
-***ATTENTION - The Custom Service Package is currently NOT compatible with Deployment Package 5.0.0; however, a NEW Custom Service Package is currently under development!***
+***ATTENTION - The Custom Service Package is no longer compatible with Deployment Package 5.0.0 and above***
 
 Another option for viewing results of the **Deployment Package** is to **Monitor the Registry updates it makes to the Device with N-Central.** You can setup the **Custom Service Package** to do exactly that! The current Version of the **Custom Service** is called **Agent Installer Script Status** in N-Central, and is compatible with the following:
 
@@ -346,7 +346,7 @@ Lastly in our example, the Agent Service Configuration has been compromised once
 
 ### N-Central Custom Service
 
-***The Custom Service Package is currently NOT compatible with Deployment Package 5.0.0; however, a NEW Custom Service Package is currently under development!***
+***ATTENTION - The Custom Service Package is no longer compatible with Deployment Package 5.0.0 and above***
 
 If you have setup the **Custom Service Package,** you can also review the results of the most recent run of the **Deployment Package** directly in N-Central!
 
@@ -402,7 +402,7 @@ That said, due to the complexity of the **Deployment Package,** there are severa
 | | 103 | 9103 | File Not Found | A required File was not found at the location specified. Please submit an Issue to GitHub as described below. |
 | | 104 | 9104 | File/Folder Creation Failed | The Script was unable to create a required File/Folder. Please submit an Issue to GitHub as described below. |
 
-**Internal Execution Codes** should not be encountered during any routine run of the **Agent Setup Script.** If you encounter such an issue, please submit the following items in an issue on [GitHub](https://github.com/N-able/AgentDeploymentPackage/issues):
+**Internal Execution Codes** should not be encountered during any routine run of the **Agent Setup Script.** If you encounter such an issue, please submit the following items in an Issue to GitHub at [](https://github.com/N-able/AgentDeploymentPackage/issues):
 
 *   **Agent Setup Script** Event Log Entry
 *   **InstallAgent** Registry Key
@@ -437,10 +437,11 @@ Special Thanks go to the following Partners and Community Members for their cont
 
 *   Pat Albert of N-Able Technologies, for creation and development of the AGENTCLEANUP4.EXE utility, implemented in earlier Versions of the Deployment Package
 *   Tim Wiser of GCI Managed IT
-    *   **InstallAgent** VBScript (InstallAgent.vbs) Version - Initial Release and Development of Majority Updates
+    *   **Deployment Package** VBScript (InstallAgent.vbs) Version - Initial Release and Development of Majority Updates
 *   Jon Czerwinksi of Cohn Consulting Corporation
-    *   **InstallAgent** VBScript (InstallAgent.vbs) Version - Optimization, Unified Configuration and Development of Ongoing Updates
+    *   **Deployment Package** VBScript (InstallAgent.vbs) Version - Optimization, Unified Configuration and Development of Ongoing Updates
 *   Ryan Crowther Jr of RADCOMP Technologies
-    *   **Agent Deployment Package** PowerShell (InstallAgent.ps1) Version - Initial Release
+    *   **Deployment Package** PowerShell (InstallAgent.ps1) Version - Initial Release
 
 *   All Partners and SolarWinds MSP Community Members who have helped and contributed ideas to this **Automation Suite**
+
