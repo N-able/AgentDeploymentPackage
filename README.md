@@ -265,8 +265,8 @@ To get a better idea of exactly how damaged this installation is, we can supplem
 
 Values are logged and regularly updated by the **Deployment Package** during execution, at the following keys and their children:
 
-*   **HKLM:SOFTWARE\SolarWinds MSP Community\LaunchInstaller** - For values logged by the **Agent Setup Launcher**
-*   **HKLM:SOFTWARE\SolarWinds MSP Community\InstallAgent** - For values logged by the **Agent Setup Script**
+*   **HKLM:\SOFTWARE\SolarWinds MSP Community\LaunchInstaller** - For values logged by the **Agent Setup Launcher**
+*   **HKLM:\SOFTWARE\SolarWinds MSP Community\InstallAgent** - For values logged by the **Agent Setup Script**
 
 Therefore, you can poll this data at any time and get a sense of what the **Deployment Package** is doing or has done **both during and after execution.** The next section details the Registry Keys and Values that appear here.
 
