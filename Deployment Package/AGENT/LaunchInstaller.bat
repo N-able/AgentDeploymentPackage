@@ -81,11 +81,11 @@ ECHO == Launcher Started ==
 REM = Check for OS that may Require PowerShell 2.0 Installation
 REM - Windows 10
 IF "%OSBuild:~0,3%" EQU "10." (
-  IF "%OSBuild:~3,1%" EQU 0 (GOTO LaunchScript)
+  IF %OSBuild:~3,1% EQU 0 (GOTO LaunchScript)
 )
 REM - Windows 7/8/8.1 and Server 2008 R2/2012/2012 R2
 IF "%OSBuild:~0,2%" EQU "6." (
-  IF "%OSBuild:~2,1%" GTR 0 (GOTO LaunchScript)
+  IF %OSBuild:~2,1% GTR 0 (GOTO LaunchScript)
 )
 REM - Windows Vista and Server 2008
 IF "%OSBuild:~0,3%" EQU "6.0" (SET OSLevel=Vista)
@@ -95,7 +95,7 @@ REM - Windows XP
 IF "%OSBuild:~0,3%" EQU "5.1" (SET OSLevel=XP)
 REM - Older Versions (NT and Below)
 IF "%OSBuild:~0,3%" EQU "5.0" (GOTO QuitIncompatible)
-IF "%OSBuild:~0,1%" LSS 5 (GOTO QuitIncompatible)
+IF %OSBuild:~0,1% LSS 5 (GOTO QuitIncompatible)
 
 :CheckPSVersion
 REM - Verify PowerShell Installation
