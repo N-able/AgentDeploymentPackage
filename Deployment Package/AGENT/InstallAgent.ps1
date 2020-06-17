@@ -176,7 +176,7 @@
 ##################################################################
 param (
  [Parameter(Mandatory=$true)]
- $LauncherPath = "C:\temp\AGENT",
+ $LauncherPath,
  [Parameter(Mandatory=$false)]
  $CustomerID
 )
