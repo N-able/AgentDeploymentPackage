@@ -1,6 +1,13 @@
+# 2020-06-17
+
+## New Features
+
+* Created a CustomerID option for the PartnerConfig.xml
+
 # 2019-08-26
 
 ## Fixes and Bug Control
+
 * Fixed an issue with the Agent Version comparator, partly due to the bizarre Windows Version numbering method for the Agent Installer - e.g. Version 12.1.2008.0 (12.1 HF1) is "greater than" Version 12.1.10241.0 (12.1 SP1 HF1)
 * Fixed an issue during Diagnosis phase where incorrect Service Startup Behavior was ALWAYS detected, even after Repairs complete successfully
 * The following issues were identified, explored and reported by **Harvey** via SolarWinds MSP Slack (thank you!):

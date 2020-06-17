@@ -3,9 +3,10 @@
 # ABOUT
 # - Partner Configuration File for the InstallAgent Automation Suite
 #   by Ryan Crowther Jr, RADCOMP Technologies - 2019-08-26
+#   by Robby Swartenbroekx, b-inside bv - 2020-06-17
 # - Original Configuration File (InstallAgent.ini) by Jon Czerwinski, Cohn Consulting Corp. - 2017-01-20
 # Maintained by the Solarwinds MSP Community
-# File Version - 5.0.1
+# File Version - 5.0.2
 
 # USAGE
 Set your Configuration Values for your Deployment Package here. See the Deployment Steps section of
@@ -81,6 +82,9 @@ help@mymsp.com
   <LocalFolder>C:\AGENT</LocalFolder> <!-- Default Value is C:\AGENT -->
   <!-- [REQUIRED - (Folder Name)] Root Folder for the Deployment Package -->
   <NetworkFolder>AGENT</NetworkFolder> <!-- Default Value is AGENT -->
+  <!-- [OPTIONAL - (CustomerID)] fallback CustomerID if not given with startup parameters -->
+  <!-- this is to make the GPO completely customer independant and to deploy it without any interaction through Automation Manager -->
+  <CustomerID></CustomerID> <!-- Default value is Empty -->
   <Typical>
    <!-- [REQUIRED - (Folder Name)] Root Folder to contain Installers for deploying Current Agent
    Versions (11.0.1.xxxx and Above) - Stored in <NetworkFolder> -->
@@ -97,10 +101,10 @@ help@mymsp.com
    <SOAgentFileName>WindowsAgentSetup.exe</SOAgentFileName> <!-- Default Value is WindowsAgentSetup.exe -->
    <!-- [REQUIRED - (#.#.#.#)] Desired Agent Version for Installation on systems with Current
    Agent Versions (11.0.1.xxxx and Above) -->
-   <SOAgentVersion>12.0.1.118</SOAgentVersion>
+   <SOAgentVersion>12.3.0.650</SOAgentVersion>
    <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the System-Level Agent Installer (from
    Properties > Details > File Version) -->
-   <SOAgentFileVersion>12.0.10118.0</SOAgentFileVersion>
+   <SOAgentFileVersion>12.3.1650.0</SOAgentFileVersion>
   </Typical>
   <Legacy>
    <!-- [REQUIRED - (Folder Name)] Root Folder to contain Installers for deploying Legacy Agent

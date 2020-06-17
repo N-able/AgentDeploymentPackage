@@ -1,6 +1,6 @@
 ﻿# Core Functions for the Agent Setup Script (InstallAgent.ps1)
-# Last Revised:   2019-08-26
-# Module Version: 5.0.1
+# Last Revised:   2020-06-17
+# Module Version: 5.0.2
 
 ### INITIALIZATION FUNCTIONS
 ###############################
@@ -615,6 +615,11 @@ function ValidatePartnerConfig
   ### Deployment Values
   $Config.LocalFolder = $Partner.Config.Deployment.LocalFolder
   $Config.NetworkFolder = $Partner.Config.Deployment.NetworkFolder
+  if ($null -eq $Script.CustomerID)
+    { $Script.CustomerID = 
+      if ($Partner.Config.Deployment.CustomerID -match $NC.Validation.CustomerID)
+      { $Partner.Config.Deployment.CustomerID }
+  }
   # Installer Values
   if ($Device.OSBuild -gt "6.0")
   { # Use Typical (Latest) Agent

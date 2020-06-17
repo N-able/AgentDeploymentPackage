@@ -6,6 +6,19 @@
 ########## Change Log ##########
 ################################
 
+### 5.0.2 on 2020-06-17 - Robby Swartenbroekx
+##################################################################
+# FIXES/FEATURES
+# - Script prioritizes Activation Info as follows:
+#   1 - Discovered Activation Key (currently installed Agent)
+#   2 - Discovered Customer/Site ID (currently installed Agent)
+#   3 - Historical Activation Key (Local History File)
+#   4 - Historical Customer/Site ID (Local History File)
+#   5 - Default Customer ID for New Devices (GPO/Command-Line Parameter)
+#   6 - Default Customer ID for New Devices (from the settings file)
+#   7 - Historical Default Customer ID (Local History File, if no GPO/Command-Line Parameter is
+#       Present/Valid)
+
 ### 5.0.1 on 2019-08-26 - Ryan Crowther Jr
 ##################################################################
 # FIXES/FEATURES
@@ -163,7 +176,7 @@
 ##################################################################
 param (
  [Parameter(Mandatory=$true)]
- $LauncherPath,
+ $LauncherPath = "C:\temp\AGENT",
  [Parameter(Mandatory=$false)]
  $CustomerID
 )
@@ -255,7 +268,7 @@ $SC = @{
  }
  "RunningInstanceTimeout" = 30
  "ScriptEventLog" = "Application"
- "ScriptVersion" = "5.0.1"
+ "ScriptVersion" = "5.0.2"
  "SuccessScriptAction" = "Graceful Exit"
  "SuccessScriptResult" = "Script Completed Successfully"
 }
