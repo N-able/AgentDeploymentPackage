@@ -54,6 +54,8 @@ REM - Setup Script Name
 SET SetupScript=Agent Setup Script
 REM - Default Customer ID
 SET CustomerID=%1%
+REM - Customer Registration Token
+SET RegistrationToken=%2%
 REM - Working Library Folder
 SET LibFolder=%TempFolder%\Lib
 REM - Deployment Folder
@@ -438,7 +440,7 @@ COPY /Y "%DeployLib%\*" "%LibFolder%" >NUL
 IF %ERRORLEVEL% EQU 0 (
   REM - Launch Agent Setup Script
   IF "%CustomerID%" NEQ "" (
-    START "" %WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoLogo -NoProfile -WindowStyle Hidden -File "%TempFolder%\InstallAgent.ps1" -CustomerID %CustomerID% -LauncherPath "%DeployFolder%
+    START "" %WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoLogo -NoProfile -WindowStyle Hidden -File "%TempFolder%\InstallAgent.ps1" -CustomerID %CustomerID% -RegistrationToken %RegistrationToken% -LauncherPath "%DeployFolder%
     GOTO QuitSuccess
   ) ELSE (
     START "" %WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoLogo -NoProfile -WindowStyle Hidden -File "%TempFolder%\InstallAgent.ps1" -LauncherPath "%DeployFolder%

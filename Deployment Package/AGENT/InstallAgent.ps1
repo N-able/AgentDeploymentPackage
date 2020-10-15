@@ -6,6 +6,25 @@
 ########## Change Log ##########
 ################################
 
+### 5.0.3 on 2020-10-15 - Will Rutherford
+##################################################################
+# FIXES/FEATURES
+# - Added RegistrationToken value to ParterConfig.xml
+#   - RegistrationToken can also be fed via GPO as %2 on the batch file
+
+### 5.0.2 on 2020-06-17 - Robby Swartenbroekx
+##################################################################
+# FIXES/FEATURES
+# - Script prioritizes Activation Info as follows:
+#   1 - Discovered Activation Key (currently installed Agent)
+#   2 - Discovered Customer/Site ID (currently installed Agent)
+#   3 - Historical Activation Key (Local History File)
+#   4 - Historical Customer/Site ID (Local History File)
+#   5 - Default Customer ID for New Devices (GPO/Command-Line Parameter)
+#   6 - Default Customer ID for New Devices (from the settings file)
+#   7 - Historical Default Customer ID (Local History File, if no GPO/Command-Line Parameter is
+#       Present/Valid)
+
 ### 5.0.1 on 2019-08-26 - Ryan Crowther Jr
 ##################################################################
 # FIXES/FEATURES
@@ -165,7 +184,9 @@ param (
  [Parameter(Mandatory=$true)]
  $LauncherPath,
  [Parameter(Mandatory=$false)]
- $CustomerID
+ $CustomerID,
+ [Parameter(Mandatory=$false)]
+ $RegistrationToken
 )
 
 ### N-Central Constants
@@ -198,17 +219,17 @@ $NC.Products = @{
   "IDName" = "N-Central Customer ID"
   "InstallLog" = "Checker.log"
   "InstallLogFields" = @(
-   "Activation Key",
-   "Appliance ID",
-   "Customer ID",
-   "Install Time",
-   "Package Version",
-   "Server Endpoint"
+  "Activation Key",
+  "Appliance ID",
+  "Customer ID",
+  "Install Time",
+  "Package Version",
+  "Server Endpoint"
   )
   "InstallerName" = "Windows Agent Installer"
   "MaintenanceProcess" = "AgentMaint.exe"
   "MaintenanceService" = "Windows Agent Maintenance Service"
-  "Name" = "N-Central Agent"  
+  "Name" = "N-Central Agent"
   "Process" = "agent.exe"
   "ServerConfig" = "ServerConfig.xml"
   "ServerConfigBackup" = "ServerConfig.xml.backup"
@@ -255,7 +276,7 @@ $SC = @{
  }
  "RunningInstanceTimeout" = 30
  "ScriptEventLog" = "Application"
- "ScriptVersion" = "5.0.1"
+ "ScriptVersion" = "5.0.3"
  "SuccessScriptAction" = "Graceful Exit"
  "SuccessScriptResult" = "Script Completed Successfully"
 }
@@ -477,7 +498,7 @@ $SC.Validation = @{
  "TypicalErrorCode" = '^[0-9]{1,2}$'
  "VersionNumber" = @{
   "Accepted" = '^[0-9]+(\.[0-9]+){1,3}$'
-  "Valid" = '^[0-9]+(\.[0-9]+){3}$' 
+  "Valid" = '^[0-9]+(\.[0-9]+){3}$'
  }
  "VersionNumberDigits" = '^[2-4]$'
  "WholeNumberUpto2Digit" = '^[0-9]{1,2}$'
@@ -508,7 +529,7 @@ $Script = @{
   "ScriptLastRan" = Get-Date -UFormat $SC.DateFormat.Full
   "ScriptResult" = $SC.InitialScriptResult
   "ScriptVersion" = [Version] $SC.ScriptVersion
- } 
+ }
  "Invocation" = $MyInvocation.MyCommand.Definition
  "Parameters" = $PSBoundParameters
  "Path" = @{
@@ -534,8 +555,9 @@ $Script = @{
  }
 }
 $Script.CustomerID =
- if ($CustomerID -match $NC.Validation.CustomerID)
- { $CustomerID }
+if ($CustomerID -match $NC.Validation.CustomerID)
+{ $CustomerID }
+$Script.RegistrationToken = $RegistrationToken
 ### Create Variable Tables Required by Functions
 # Agent Info Table
 $Agent = @{
@@ -584,36 +606,36 @@ $Repair = @{
 }
 ### Check for an Active Script Instance Before Logging Execution
 if (
- (
-  (
-   Get-ItemProperty $Script.Results.ScriptKey 2>$null |
-   Select-Object -ExpandProperty ScriptResult 2>$null
-  ) -eq $SC.InitialScriptResult
- ) -and
- (
-  (
-   Get-Date (
-    Get-ItemProperty $Script.Results.ScriptKey 2>$null | 
-    Select-Object -ExpandProperty ScriptLastRan 2>$null
-   )
-  ) -gt
-  (Get-Date).AddMinutes(-($SC.RunningInstanceTimeout))
- )
+(
+(
+Get-ItemProperty $Script.Results.ScriptKey 2>$null |
+        Select-Object -ExpandProperty ScriptResult 2>$null
+) -eq $SC.InitialScriptResult
+) -and
+        (
+        (
+        Get-Date (
+        Get-ItemProperty $Script.Results.ScriptKey 2>$null |
+                Select-Object -ExpandProperty ScriptLastRan 2>$null
+        )
+        ) -gt
+                (Get-Date).AddMinutes(-($SC.RunningInstanceTimeout))
+        )
 )
 { # Another Script is in Progress
-  # Create a New Key for the Event Source if Required
-  if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
-  { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
-  # Write the Event
-  $Message = (
-   "Another Instance of the " + $SC.Names.ScriptProduct + " is currently in progress. " +
-   "Please review the status of the current Instance by opening the Registry to [" +
-   $Script.Results.ScriptKey + "].`n"
-  )
-  Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
-  # Cleanup Working Folder
-  Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
-  exit
+ # Create a New Key for the Event Source if Required
+ if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
+ { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
+ # Write the Event
+ $Message = (
+ "Another Instance of the " + $SC.Names.ScriptProduct + " is currently in progress. " +
+         "Please review the status of the current Instance by opening the Registry to [" +
+         $Script.Results.ScriptKey + "].`n"
+ )
+ Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
+ # Cleanup Working Folder
+ Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
+ exit
 }
 ### Write Registry Values for Script Startup
 # Create Script Execution Key if Required
@@ -621,51 +643,51 @@ if ((Test-Path $Script.Results.ScriptKey) -eq $false)
 { New-Item $Script.Results.ScriptKey -Force >$null }
 else
 { # Remove Sequence Data from Previous Run
-  Get-ChildItem $Script.Results.ScriptKey | Remove-Item -Force
-  # Remove Transient Properties from Previous Run
-  Get-ItemProperty $Script.Results.ScriptKey 2>$null |
-  Get-Member -MemberType NoteProperty |
-  Where-Object { $_.Name -match '^Script' } |
-  ForEach-Object { Remove-ItemProperty $Script.Results.ScriptKey -Name $_.Name -Force }
+ Get-ChildItem $Script.Results.ScriptKey | Remove-Item -Force
+ # Remove Transient Properties from Previous Run
+ Get-ItemProperty $Script.Results.ScriptKey 2>$null |
+         Get-Member -MemberType NoteProperty |
+         Where-Object { $_.Name -match '^Script' } |
+         ForEach-Object { Remove-ItemProperty $Script.Results.ScriptKey -Name $_.Name -Force }
 }
 # Update Execution Properties
 $Script.Execution.Keys |
-ForEach-Object { New-ItemProperty -Path $Script.Results.ScriptKey -Name $_ -Value $Script.Execution.$_ -Force >$null }
+        ForEach-Object { New-ItemProperty -Path $Script.Results.ScriptKey -Name $_ -Value $Script.Execution.$_ -Force >$null }
 ### Import Library Items
 $SC.Names.LibraryFiles |
-ForEach-Object {
-  $ModuleName = $_
-  try
-  { Import-Module $(@($Script.Path.Library, $ModuleName) -join '\') -ErrorAction Stop }
-  catch
-  { # Get the Exception Info
-    $ExceptionInfo = $_.Exception
-    # Create a New Key for the Event Source if Required
-    $Script.Execution.LastResult = $SC.ErrorScriptResult
-    if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
-    { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
-    # Write the Event
-    $Message = (
-      "The Function Library for the " + $SC.Names.ScriptProduct + " is either missing or corrupt. " +
-      "Please verify " + $ModuleName + " exists in the [" + $Script.Path.Library + "] folder, or restore the file to its original state.`n"
-    )
-    Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
-    # Update Execution Properties
-    $Script.Execution.Keys |
-    ForEach-Object { New-ItemProperty -Path $Script.Results.ScriptKey -Name $_ -Value $Script.Execution.$_ -Force >$null }
-    # Cleanup Working Folder
-    Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
-    exit
-  }
-}
+        ForEach-Object {
+         $ModuleName = $_
+         try
+         { Import-Module $(@($Script.Path.Library, $ModuleName) -join '\') -ErrorAction Stop }
+         catch
+         { # Get the Exception Info
+          $ExceptionInfo = $_.Exception
+          # Create a New Key for the Event Source if Required
+          $Script.Execution.LastResult = $SC.ErrorScriptResult
+          if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
+          { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
+          # Write the Event
+          $Message = (
+          "The Function Library for the " + $SC.Names.ScriptProduct + " is either missing or corrupt. " +
+                  "Please verify " + $ModuleName + " exists in the [" + $Script.Path.Library + "] folder, or restore the file to its original state.`n"
+          )
+          Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
+          # Update Execution Properties
+          $Script.Execution.Keys |
+                  ForEach-Object { New-ItemProperty -Path $Script.Results.ScriptKey -Name $_ -Value $Script.Execution.$_ -Force >$null }
+          # Cleanup Working Folder
+          Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
+          exit
+         }
+        }
 ### Import Partner Configuration
 try
 { [Xml] $Partner = Get-Content $Script.Path.PartnerFile 2>&1 -ErrorAction Stop }
 catch
 {
-  $ExceptionInfo = $_.Exception
-  $InvocationInfo = $_.InvocationInfo
-  CatchError 1 ("Unable to read Partner Configuration at [" + $Script.Path.PartnerFile + "]") -Exit
+ $ExceptionInfo = $_.Exception
+ $InvocationInfo = $_.InvocationInfo
+ CatchError 1 ("Unable to read Partner Configuration at [" + $Script.Path.PartnerFile + "]") -Exit
 }
 ### Get Local Device Info
 GetDeviceInfo
@@ -686,50 +708,50 @@ SelfElevate
 
 try
 { ### VALIDATION SEQUENCE
-  ##################################################################
-  Log -BeginSequence -Message $SC.SequenceMessages.B -Sequence $SC.SequenceNames.B
-  # Validate Partner Configuration Values
-  ValidatePartnerConfig
-  # Validate Execution Mode
-  ValidateExecution
-  Log -EndSequence
-  ##################################################################
-  ###
+ ##################################################################
+ Log -BeginSequence -Message $SC.SequenceMessages.B -Sequence $SC.SequenceNames.B
+ # Validate Partner Configuration Values
+ ValidatePartnerConfig
+ # Validate Execution Mode
+ ValidateExecution
+ Log -EndSequence
+ ##################################################################
+ ###
 
-  ### DIAGNOSIS SEQUENCE
-  ##################################################################
-  Log -BeginSequence -Message $SC.SequenceMessages.C -Sequence $SC.SequenceNames.C
-  # Diagnose Current Installation Status
-  DiagnoseAgent
-  Log -EndSequence
-  ##################################################################
-  ###
+ ### DIAGNOSIS SEQUENCE
+ ##################################################################
+ Log -BeginSequence -Message $SC.SequenceMessages.C -Sequence $SC.SequenceNames.C
+ # Diagnose Current Installation Status
+ DiagnoseAgent
+ Log -EndSequence
+ ##################################################################
+ ###
 
-  ### REPAIR SEQUENCE
-  ##################################################################
-  Log -BeginSequence -Message $SC.SequenceMessages.D -Sequence $SC.SequenceNames.D
-  # Repair the Current Installation
-  RepairAgent
-  Log -EndSequence
-  ##################################################################
-  ###
+ ### REPAIR SEQUENCE
+ ##################################################################
+ Log -BeginSequence -Message $SC.SequenceMessages.D -Sequence $SC.SequenceNames.D
+ # Repair the Current Installation
+ RepairAgent
+ Log -EndSequence
+ ##################################################################
+ ###
 
-  ### INSTALL SEQUENCE
-  ##################################################################
-  Log -BeginSequence -Message $SC.SequenceMessages.E -Sequence $SC.SequenceNames.E
-  # Verify Install Prerequisites
-  VerifyPrerequisites
-  # Replace/Upgrade or Install a New Agent
-  InstallAgent
-  Log -EndSequence
-  ##################################################################
-  ###
+ ### INSTALL SEQUENCE
+ ##################################################################
+ Log -BeginSequence -Message $SC.SequenceMessages.E -Sequence $SC.SequenceNames.E
+ # Verify Install Prerequisites
+ VerifyPrerequisites
+ # Replace/Upgrade or Install a New Agent
+ InstallAgent
+ Log -EndSequence
+ ##################################################################
+ ###
 }
 catch
 { # Terminate Abnormally (Undocumented Error Occurred)
-  $ExceptionInfo = $_.Exception
-  $InvocationInfo = $_.InvocationInfo
-  CatchError -Exit
+ $ExceptionInfo = $_.Exception
+ $InvocationInfo = $_.InvocationInfo
+ CatchError -Exit
 }
 
 # Terminate Successfully
