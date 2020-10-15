@@ -1,3 +1,15 @@
+# 2020-10-15
+
+## New Features
+
+* Created a RegistrationToken option for the PartnerConfig.xml
+
+# 2020-06-17
+
+## New Features
+
+* Created a CustomerID option for the PartnerConfig.xml
+
 # 2019-08-26
 
 ## Fixes and Bug Control
