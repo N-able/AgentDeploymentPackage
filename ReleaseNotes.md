@@ -1,3 +1,7 @@
+# 2020-10-16
+
+* Made sure that when a CustomerID is given through commandline arguments, the Registration token is also supplied.
+
 # 2020-10-15
 
 ## New Features
