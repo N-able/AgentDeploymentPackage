@@ -1,3 +1,9 @@
+# 2020-10-15
+
+## New Features
+
+* Created a RegistrationToken option for the PartnerConfig.xml
+
 # 2020-06-17
 
 ## New Features
