@@ -3,9 +3,11 @@
 # ABOUT
 # - Partner Configuration File for the InstallAgent Automation Suite
 #   by Ryan Crowther Jr, RADCOMP Technologies - 2019-08-26
+#   by Robby Swartenbroekx, b-inside bv - 2020-06-17
+#   by Will Rutherford, Xantrion Inc. - 2020-10-15
 # - Original Configuration File (InstallAgent.ini) by Jon Czerwinski, Cohn Consulting Corp. - 2017-01-20
 # Maintained by the Solarwinds MSP Community
-# File Version - 5.0.1
+# File Version - 5.0.3
 
 # USAGE
 Set your Configuration Values for your Deployment Package here. See the Deployment Steps section of
@@ -25,11 +27,11 @@ and/or Recommendations may be added here with regard to new Configuration Values
   <!-- [OPTIONAL - (Business Contact Info)] Partner Contact Information to display in the Event Log
   when a Documented Error occurs -->
   <ErrorContactInfo>
-My MSP
-(888) MSP-4ALL
-help@mymsp.com
+   My MSP
+   (888) MSP-4ALL
+   help@mymsp.com
   </ErrorContactInfo>
- </Branding> 
+ </Branding>
  <ScriptBehavior>
   <!-- [RECOMMENDED - (0-60)] Amount of time (in minutes) to wait since the Last System Boot before
   diagnosing the Agent -->
@@ -81,6 +83,12 @@ help@mymsp.com
   <LocalFolder>C:\AGENT</LocalFolder> <!-- Default Value is C:\AGENT -->
   <!-- [REQUIRED - (Folder Name)] Root Folder for the Deployment Package -->
   <NetworkFolder>AGENT</NetworkFolder> <!-- Default Value is AGENT -->
+  <!-- [OPTIONAL - (CustomerID)] fallback CustomerID if not given with startup parameters -->
+  <!-- this is to make the GPO completely customer-independent and to deploy it without any interaction through Automation Manager -->
+  <CustomerID></CustomerID> <!-- Default value is Empty -->
+  <!-- [OPTIONAL - (RegistrationToken)] fallback registrationToken if not given with startup parameters -->
+  <!-- this is to make the GPO completely customer-independent and to deploy it without any interaction through Automation Manager -->
+  <RegistrationToken></RegistrationToken> <!-- Default value is Empty -->
   <Typical>
    <!-- [REQUIRED - (Folder Name)] Root Folder to contain Installers for deploying Current Agent
    Versions (11.0.1.xxxx and Above) - Stored in <NetworkFolder> -->
@@ -90,17 +98,17 @@ help@mymsp.com
    <!-- [REQUIRED - (4.5.2 or 4.6)] Desired .NET Framework Version for Installation on systems
    with Current Agent Versions (11.0.1.xxxx and Above) -->
    <NETVersion>4.5.2</NETVersion>
-   <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the .NET Framework Installer (from 
+   <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the .NET Framework Installer (from
    Properties > Details > File Version) -->
    <NETFileVersion>4.5.51209.34209</NETFileVersion>
    <!-- [REQUIRED - (File Name - EXE)] System-Level Agent Installer Name - Stored in <InstallFolder> -->
    <SOAgentFileName>WindowsAgentSetup.exe</SOAgentFileName> <!-- Default Value is WindowsAgentSetup.exe -->
    <!-- [REQUIRED - (#.#.#.#)] Desired Agent Version for Installation on systems with Current
    Agent Versions (11.0.1.xxxx and Above) -->
-   <SOAgentVersion>12.0.1.118</SOAgentVersion>
+   <SOAgentVersion>2020.1.20326</SOAgentVersion>
    <!-- [REQUIRED - (#.#.#.#)] Windows "File Version" of the System-Level Agent Installer (from
    Properties > Details > File Version) -->
-   <SOAgentFileVersion>12.0.10118.0</SOAgentFileVersion>
+   <SOAgentFileVersion>2020.1.20326.0</SOAgentFileVersion>
   </Typical>
   <Legacy>
    <!-- [REQUIRED - (Folder Name)] Root Folder to contain Installers for deploying Legacy Agent

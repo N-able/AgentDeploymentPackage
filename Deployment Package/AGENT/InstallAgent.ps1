@@ -6,6 +6,25 @@
 ########## Change Log ##########
 ################################
 
+### 5.0.3 on 2020-10-15 - Will Rutherford
+##################################################################
+# FIXES/FEATURES
+# - Added RegistrationToken value to ParterConfig.xml
+#   - RegistrationToken can also be fed via GPO as %2 on the batch file
+
+### 5.0.2 on 2020-06-17 - Robby Swartenbroekx
+##################################################################
+# FIXES/FEATURES
+# - Script prioritizes Activation Info as follows:
+#   1 - Discovered Activation Key (currently installed Agent)
+#   2 - Discovered Customer/Site ID (currently installed Agent)
+#   3 - Historical Activation Key (Local History File)
+#   4 - Historical Customer/Site ID (Local History File)
+#   5 - Default Customer ID for New Devices (GPO/Command-Line Parameter)
+#   6 - Default Customer ID for New Devices (from the settings file)
+#   7 - Historical Default Customer ID (Local History File, if no GPO/Command-Line Parameter is
+#       Present/Valid)
+
 ### 5.0.1 on 2019-08-26 - Ryan Crowther Jr
 ##################################################################
 # FIXES/FEATURES
@@ -162,10 +181,12 @@
 ### Command-Line/Group Policy Parameters
 ##################################################################
 param (
- [Parameter(Mandatory=$true)]
- $LauncherPath,
- [Parameter(Mandatory=$false)]
- $CustomerID
+        [Parameter(Mandatory = $true)]
+        $LauncherPath,
+        [Parameter(Mandatory = $false)]
+        $CustomerID,
+        [Parameter(Mandatory = $false)]
+        $RegistrationToken
 )
 
 ### N-Central Constants
@@ -175,60 +196,60 @@ param (
 $NC = @{}
 # Install Constants
 $NC.InstallParameters = @{
- "A" = "AGENTACTIVATIONKEY"
- "B" = "CUSTOMERID"
- "C" = "CUSTOMERSPECIFIC"
- "D" = "SERVERADDRESS"
- "E" = "SERVERPORT"
- "F" = "SERVERPROTOCOL"
- "G" = "AGENTPROXY"
+        "A" = "AGENTACTIVATIONKEY"
+        "B" = "CUSTOMERID"
+        "C" = "CUSTOMERSPECIFIC"
+        "D" = "SERVERADDRESS"
+        "E" = "SERVERPORT"
+        "F" = "SERVERPROTOCOL"
+        "G" = "AGENTPROXY"
 }
 # Path Constants
 $NC.Paths = @{
- "BinFolder" = "N-Able Technologies\Windows Agent\bin"
- "ConfigFolder" = "N-Able Technologies\Windows Agent\config"
- "UninstallKey32" = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
- "UninstallKey64" = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+        "BinFolder"      = "N-Able Technologies\Windows Agent\bin"
+        "ConfigFolder"   = "N-Able Technologies\Windows Agent\config"
+        "UninstallKey32" = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"
+        "UninstallKey64" = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
 }
 # Product Constants
 $NC.Products = @{
- "Agent" = @{
-  "ApplianceConfig" = "ApplianceConfig.xml"
-  "ApplianceConfigBackup" = "ApplianceConfig.xml.backup"
-  "IDName" = "N-Central Customer ID"
-  "InstallLog" = "Checker.log"
-  "InstallLogFields" = @(
-   "Activation Key",
-   "Appliance ID",
-   "Customer ID",
-   "Install Time",
-   "Package Version",
-   "Server Endpoint"
-  )
-  "InstallerName" = "Windows Agent Installer"
-  "MaintenanceProcess" = "AgentMaint.exe"
-  "MaintenanceService" = "Windows Agent Maintenance Service"
-  "Name" = "N-Central Agent"  
-  "Process" = "agent.exe"
-  "ServerConfig" = "ServerConfig.xml"
-  "ServerConfigBackup" = "ServerConfig.xml.backup"
-  "ServerDefaultValue" = "localhost"
-  "Service" = "Windows Agent Service"
-  "WindowsName" = "Windows Agent"
- }
- "NCServer" = @{
-  "Name" = "Partner N-Central Server"
- }
+        "Agent"    = @{
+                "ApplianceConfig"       = "ApplianceConfig.xml"
+                "ApplianceConfigBackup" = "ApplianceConfig.xml.backup"
+                "IDName"                = "N-Central Customer ID"
+                "InstallLog"            = "Checker.log"
+                "InstallLogFields"      = @(
+                        "Activation Key",
+                        "Appliance ID",
+                        "Customer ID",
+                        "Install Time",
+                        "Package Version",
+                        "Server Endpoint"
+                )
+                "InstallerName"         = "Windows Agent Installer"
+                "MaintenanceProcess"    = "AgentMaint.exe"
+                "MaintenanceService"    = "Windows Agent Maintenance Service"
+                "Name"                  = "N-Central Agent"
+                "Process"               = "agent.exe"
+                "ServerConfig"          = "ServerConfig.xml"
+                "ServerConfigBackup"    = "ServerConfig.xml.backup"
+                "ServerDefaultValue"    = "localhost"
+                "Service"               = "Windows Agent Service"
+                "WindowsName"           = "Windows Agent"
+        }
+        "NCServer" = @{
+                "Name" = "Partner N-Central Server"
+        }
 }
 # Validation Constants
 $NC.Validation = @{
- "ActivationKey" = @{ "Encoded" = '^[a-zA-Z0-9+/]{25,}={0,2}$' }
- "ApplianceID" = '^[0-9]{5,}$'
- "CustomerID" = '^[0-9]{3,4}$'
- "ServerAddress" = @{
-  "Accepted" = '^[a-zA-Z]{3,}://[a-zA-Z_0-9\.\-]+$'
-  "Valid" = '^[a-zA-Z_0-9\.\-]+$'
- }
+        "ActivationKey" = @{ "Encoded" = '^[a-zA-Z0-9+/]{25,}={0,2}$' }
+        "ApplianceID"   = '^[0-9]{5,}$'
+        "CustomerID"    = '^[0-9]{3,4}$'
+        "ServerAddress" = @{
+                "Accepted" = '^[a-zA-Z]{3,}://[a-zA-Z_0-9\.\-]+$'
+                "Valid"    = '^[a-zA-Z_0-9\.\-]+$'
+        }
 }
 
 ### Script Constants
@@ -236,262 +257,262 @@ $NC.Validation = @{
 ### Current Values
 # Execution Constants
 $SC = @{
- "DateFormat" = @{
-  "FullMessageOnly" = "%Y-%m-%d at %r"
-  "Full" = "%Y-%m-%d %r"
-  "Short" = "%Y-%m-%d"
- }
- "ExecutionMode" = @{
-  "A" = "On-Demand"
-  "B" = "Group Policy"
- }
- "ErrorScriptResult" = "Script Terminated Unexpectedly"
- "InitialScriptAction" = "Importing Function Library"
- "InitialScriptResult" = "Script In Progress"
- "InstallKit" = @{
-  "A" = "None Eligible"
-  "B" = "Group Policy"
-  "C" = "On-Demand"
- }
- "RunningInstanceTimeout" = 30
- "ScriptEventLog" = "Application"
- "ScriptVersion" = "5.0.1"
- "SuccessScriptAction" = "Graceful Exit"
- "SuccessScriptResult" = "Script Completed Successfully"
+        "DateFormat"             = @{
+                "FullMessageOnly" = "%Y-%m-%d at %r"
+                "Full"            = "%Y-%m-%d %r"
+                "Short"           = "%Y-%m-%d"
+        }
+        "ExecutionMode"          = @{
+                "A" = "On-Demand"
+                "B" = "Group Policy"
+        }
+        "ErrorScriptResult"      = "Script Terminated Unexpectedly"
+        "InitialScriptAction"    = "Importing Function Library"
+        "InitialScriptResult"    = "Script In Progress"
+        "InstallKit"             = @{
+                "A" = "None Eligible"
+                "B" = "Group Policy"
+                "C" = "On-Demand"
+        }
+        "RunningInstanceTimeout" = 30
+        "ScriptEventLog"         = "Application"
+        "ScriptVersion"          = "5.0.3"
+        "SuccessScriptAction"    = "Graceful Exit"
+        "SuccessScriptResult"    = "Script Completed Successfully"
 }
 # Appliance Status Constants
 $SC.ApplianceStatus = @{
- "A" = "Optimal"
- "B" = "Marginal"
- "C" = "Orphaned"
- "D" = "Disabled"
- "E" = "Rogue / Competitor-Controlled"
- "F" = "Corrupt"
- "G" = "Missing"
+        "A" = "Optimal"
+        "B" = "Marginal"
+        "C" = "Orphaned"
+        "D" = "Disabled"
+        "E" = "Rogue / Competitor-Controlled"
+        "F" = "Corrupt"
+        "G" = "Missing"
 }
 # Exit Code Constants
 $SC.ExitTypes = @{
- "A" = "Successful"
- "B" = "Check Configuration"
- "C" = "Server Unavailable"
- "D" = "Unsuccessful"
- "E" = "Report This Error"
+        "A" = "Successful"
+        "B" = "Check Configuration"
+        "C" = "Server Unavailable"
+        "D" = "Unsuccessful"
+        "E" = "Report This Error"
 }
 $SC.Exit = @{
- "Error" = @{
-  "ExitResult" = "Undocumented Error (See Event Log)"
-  "ExitType" = $SC.ExitTypes.E
- }
- "A" = @{
-  "ExitResult" = $SC.SuccessScriptResult
-  "ExitType" = $SC.ExitTypes.A
- }
- "B" = @{
-  "ExitResult" = "Partner Configuration File is Missing"
-  "ExitType" = $SC.ExitTypes.B
- }
- "C" = @{
-  "ExitResult" = "Partner Configuration is Invalid"
-  "ExitType" = $SC.ExitTypes.B
- }
- "D" = @{
-  "ExitResult" = "No Installation Sources Available"
-  "ExitType" = $SC.ExitTypes.B
- }
- "E" = @{
-  "ExitResult" = "Installer File is Missing"
-  "ExitType" = $SC.ExitTypes.B
- }
- "F" = @{
-  "ExitResult" = "Installer Version Mismatch"
-  "ExitType" = $SC.ExitTypes.B
- }
- "G" = @{
-  "ExitResult" = ("Unable to Reach " + $NC.Products.NCServer.Name)
-  "ExitType" = $SC.ExitTypes.C
- }
- "H" = @{
-  "ExitResult" = "Customer ID Parameter Required"
-  "ExitType" = $SC.ExitTypes.B
- }
- "I" = @{
-  "ExitResult" = "Customer ID Parameter Invalid"
-  "ExitType" = $SC.ExitTypes.B
- }
- "J" = @{
-  "ExitResult" = "Windows Installer Service Unavailable"
-  "ExitType" = $SC.ExitTypes.D
- }
- "K" = @{
-  "ExitResult" = ".NET Framework Installation Failed"
-  "ExitType" = $SC.ExitTypes.D
- }
- "L" = @{
-  "ExitResult" = "Agent Removal Failed"
-  "ExitType" = $SC.ExitTypes.D
- }
- "M" = @{
-  "ExitResult" = "No Installation Methods Remaining"
-  "ExitType" = $SC.ExitTypes.D
- }
- "AA" = @{
-  "ExitMessage" = "An invalid Parameter value or type was provided to a Script Function."
-  "ExitResult" = "Invalid Parameter"
-  "ExitType" = $SC.ExitTypes.E
- }
- "AB" = @{
-  "ExitMessage" = ("The current " + $NC.Products.Agent.Name + " installation requires repair, but no Repairs were selected to be applied.")
-  "ExitResult" = "No Repairs Selected"
-  "ExitType" = $SC.ExitTypes.E
- }
- "AC" = @{
-  "ExitMessage" = "An error occurred during a file transfer and the Script cannot proceed."
-  "ExitResult" = "File Transfer Failed"
-  "ExitType" = $SC.ExitTypes.E
- }
- "AD" = @{
-  "ExitMessage" = "The file at the specified path does not exist."
-  "ExitResult" = "File Not Found"
-  "ExitType" = $SC.ExitTypes.E
- }
- "AE" = @{
-  "ExitMessage" = "An error occurred during item creation and the Script cannot proceed."
-  "ExitResult" = "File/Folder Creation Failed"
-  "ExitType" = $SC.ExitTypes.E
- }
+        "Error" = @{
+                "ExitResult" = "Undocumented Error (See Event Log)"
+                "ExitType"   = $SC.ExitTypes.E
+        }
+        "A"     = @{
+                "ExitResult" = $SC.SuccessScriptResult
+                "ExitType"   = $SC.ExitTypes.A
+        }
+        "B"     = @{
+                "ExitResult" = "Partner Configuration File is Missing"
+                "ExitType"   = $SC.ExitTypes.B
+        }
+        "C"     = @{
+                "ExitResult" = "Partner Configuration is Invalid"
+                "ExitType"   = $SC.ExitTypes.B
+        }
+        "D"     = @{
+                "ExitResult" = "No Installation Sources Available"
+                "ExitType"   = $SC.ExitTypes.B
+        }
+        "E"     = @{
+                "ExitResult" = "Installer File is Missing"
+                "ExitType"   = $SC.ExitTypes.B
+        }
+        "F"     = @{
+                "ExitResult" = "Installer Version Mismatch"
+                "ExitType"   = $SC.ExitTypes.B
+        }
+        "G"     = @{
+                "ExitResult" = ("Unable to Reach " + $NC.Products.NCServer.Name)
+                "ExitType"   = $SC.ExitTypes.C
+        }
+        "H"     = @{
+                "ExitResult" = "Customer ID Parameter Required"
+                "ExitType"   = $SC.ExitTypes.B
+        }
+        "I"     = @{
+                "ExitResult" = "Customer ID Parameter Invalid"
+                "ExitType"   = $SC.ExitTypes.B
+        }
+        "J"     = @{
+                "ExitResult" = "Windows Installer Service Unavailable"
+                "ExitType"   = $SC.ExitTypes.D
+        }
+        "K"     = @{
+                "ExitResult" = ".NET Framework Installation Failed"
+                "ExitType"   = $SC.ExitTypes.D
+        }
+        "L"     = @{
+                "ExitResult" = "Agent Removal Failed"
+                "ExitType"   = $SC.ExitTypes.D
+        }
+        "M"     = @{
+                "ExitResult" = "No Installation Methods Remaining"
+                "ExitType"   = $SC.ExitTypes.D
+        }
+        "AA"    = @{
+                "ExitMessage" = "An invalid Parameter value or type was provided to a Script Function."
+                "ExitResult"  = "Invalid Parameter"
+                "ExitType"    = $SC.ExitTypes.E
+        }
+        "AB"    = @{
+                "ExitMessage" = ("The current " + $NC.Products.Agent.Name + " installation requires repair, but no Repairs were selected to be applied.")
+                "ExitResult"  = "No Repairs Selected"
+                "ExitType"    = $SC.ExitTypes.E
+        }
+        "AC"    = @{
+                "ExitMessage" = "An error occurred during a file transfer and the Script cannot proceed."
+                "ExitResult"  = "File Transfer Failed"
+                "ExitType"    = $SC.ExitTypes.E
+        }
+        "AD"    = @{
+                "ExitMessage" = "The file at the specified path does not exist."
+                "ExitResult"  = "File Not Found"
+                "ExitType"    = $SC.ExitTypes.E
+        }
+        "AE"    = @{
+                "ExitMessage" = "An error occurred during item creation and the Script cannot proceed."
+                "ExitResult"  = "File/Folder Creation Failed"
+                "ExitType"    = $SC.ExitTypes.E
+        }
 }
 # Install Constants
 $SC.InstallActions = @{
- "A" = "Install New"
- "B" = "Upgrade Existing"
- "C" = "Replace Existing"
+        "A" = "Install New"
+        "B" = "Upgrade Existing"
+        "C" = "Replace Existing"
 }
 $SC.InstallMethods = @{
- "Attempts" = @{
-  "A" = 1
-  "B" = 2
-  "C" = 1
-  "D" = 2
-  "E" = 3
-  "F" = 3
- }
- "Names" = @{
-  "A" = "Activation Key (Existing Installation)"
-  "B" = "Customer/Site ID (Existing Installation)"
-  "C" = "Activation Key (Historical Installation)"
-  "D" = "Customer/Site ID (Historical Installation)"
-  "E" = "Customer/Site ID (Current Script)"
-  "F" = "Customer/Site ID (Last Successful Script)"
- }
+        "Attempts" = @{
+                "A" = 1
+                "B" = 2
+                "C" = 1
+                "D" = 2
+                "E" = 3
+                "F" = 3
+        }
+        "Names"    = @{
+                "A" = "Activation Key (Existing Installation)"
+                "B" = "Customer/Site ID (Existing Installation)"
+                "C" = "Activation Key (Historical Installation)"
+                "D" = "Customer/Site ID (Historical Installation)"
+                "E" = "Customer/Site ID (Current Script)"
+                "F" = "Customer/Site ID (Last Successful Script)"
+        }
 }
 # Name Constants
 $SC.Names = @{
- "HistoryFile" = "AgentHistory.xml"
- "Launcher" = "LaunchInstaller"
- "LauncherFile" = "LaunchInstaller.bat"
- "LauncherProduct" = "Agent Setup Launcher"
- "LibraryFiles" = @("InstallAgent-Core.psm1")
- "PartnerConfig" = "PartnerConfig.xml"
- "Script" = "InstallAgent"
- "ScriptProduct" = "Agent Setup Script"
+        "HistoryFile"     = "AgentHistory.xml"
+        "Launcher"        = "LaunchInstaller"
+        "LauncherFile"    = "LaunchInstaller.bat"
+        "LauncherProduct" = "Agent Setup Launcher"
+        "LibraryFiles"    = @("InstallAgent-Core.psm1")
+        "PartnerConfig"   = "PartnerConfig.xml"
+        "Script"          = "InstallAgent"
+        "ScriptProduct"   = "Agent Setup Script"
 }
 # Path Constants
 $SC.Paths = @{
- "ExecutionKey" = "HKLM:\SOFTWARE\Solarwinds MSP Community"
- "ServiceKey" = "HKLM:\SYSTEM\CurrentControlSet\Services"
- "TempFolder" = Split-Path $MyInvocation.MyCommand.Path -Parent
+        "ExecutionKey" = "HKLM:\SOFTWARE\Solarwinds MSP Community"
+        "ServiceKey"   = "HKLM:\SYSTEM\CurrentControlSet\Services"
+        "TempFolder"   = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 $SC.Paths.EventServiceKey = @($SC.Paths.ServiceKey, "EventLog") -join '\'
 # Repair Constants
 $SC.RepairActions = @{
- "A" = "Install"
- "B" = "RestartServices"
+        "A" = "Install"
+        "B" = "RestartServices"
 }
 $SC.Repairs = @{
- "PostRepair" = @{
-  "Name" = "Post-Repair Actions"
- }
- "Recovery" = @{
-  "Name" = "Recovery Actions"
- }
- "A" = @{
-  "Name" = "Fix - Orphaned Appliance"
-  "PostRepairAction" = $SC.RepairActions.B
-  "RecoveryAction" = $null
- }
- "B" = @{
-  "Name" = "Fix - Incorrect Service Startup Type"
-  "PostRepairAction" = $null
-  "RecoveryAction" = $SC.RepairActions.A
- }
- "C" = @{
-  "Name" = "Fix - Incorrect Service Behavior"
-  "PostRepairAction" = $null
-  "RecoveryAction" = $SC.RepairActions.A
- }
- "D" = @{
-  "Name" = "Fix - Process/Service Not Running"
-  "PostRepairAction" = $null
-  "RecoveryAction" = $SC.RepairActions.A
- }
+        "PostRepair" = @{
+                "Name" = "Post-Repair Actions"
+        }
+        "Recovery"   = @{
+                "Name" = "Recovery Actions"
+        }
+        "A"          = @{
+                "Name"             = "Fix - Orphaned Appliance"
+                "PostRepairAction" = $SC.RepairActions.B
+                "RecoveryAction"   = $null
+        }
+        "B"          = @{
+                "Name"             = "Fix - Incorrect Service Startup Type"
+                "PostRepairAction" = $null
+                "RecoveryAction"   = $SC.RepairActions.A
+        }
+        "C"          = @{
+                "Name"             = "Fix - Incorrect Service Behavior"
+                "PostRepairAction" = $null
+                "RecoveryAction"   = $SC.RepairActions.A
+        }
+        "D"          = @{
+                "Name"             = "Fix - Process/Service Not Running"
+                "PostRepairAction" = $null
+                "RecoveryAction"   = $SC.RepairActions.A
+        }
 }
 # Sequence Constants
 $SC.SequenceMessages = @{
- "A" = $null
- "B" = "Validating execution requirements..."
- "C" = "Diagnosing existing Agent Installation..."
- "D" = "Selecting and performing applicable repairs..."
- "E" = "Checking installation requirements..."
+        "A" = $null
+        "B" = "Validating execution requirements..."
+        "C" = "Diagnosing existing Agent Installation..."
+        "D" = "Selecting and performing applicable repairs..."
+        "E" = "Checking installation requirements..."
 }
 $SC.SequenceNames = @{
- "A" = "Launcher"
- "B" = "Validation"
- "C" = "Diagnosis"
- "D" = "Repair"
- "E" = "Installation"
+        "A" = "Launcher"
+        "B" = "Validation"
+        "C" = "Diagnosis"
+        "D" = "Repair"
+        "E" = "Installation"
 }
 $SC.SequenceStatus = @{
- "A" = "COMPLETE"
- "B" = "EXITED"
- "C" = "IN PROGRESS"
- "D" = "SKIPPED"
- "E" = "ABORTED"
- "F" = "FAILED"
+        "A" = "COMPLETE"
+        "B" = "EXITED"
+        "C" = "IN PROGRESS"
+        "D" = "SKIPPED"
+        "E" = "ABORTED"
+        "F" = "FAILED"
 }
 # Validation Constants
 $SC.Validation = @{
- "Docs" = @{
-  $NC.Products.Agent.ApplianceConfig = "Appliance"
-  $NC.Products.Agent.InstallLog = "Appliance"
-  $NC.Products.Agent.ServerConfig = "Appliance"
-  $SC.Names.HistoryFile = "History"
-  "Registry" = "Registry"
- }
- "FileNameEXE" = '^((?![<>:"/\\|?*]).)+\.[Ee][Xx][Ee]$'
- "FileNameXML" = '^((?![<>:"/\\|?*]).)+\.[Xx][Mm][Ll]$'
- "InternalErrorCode" = '^1[0-9]{2}$'
- "ItemName" = '^((?![<>:"/\\|?*]).)+$'
- "LocalFilePathXML" = '^[a-zA-Z]:\\([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*\.[Xx][Mm][Ll]$'
- "LocalFolderPath" = '^[a-zA-Z]:\\([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*$'
- "RelativeItemPath" = '^([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*$'
- "TypicalErrorCode" = '^[0-9]{1,2}$'
- "VersionNumber" = @{
-  "Accepted" = '^[0-9]+(\.[0-9]+){1,3}$'
-  "Valid" = '^[0-9]+(\.[0-9]+){3}$' 
- }
- "VersionNumberDigits" = '^[2-4]$'
- "WholeNumberUpto2Digit" = '^[0-9]{1,2}$'
- "WholeNumberUpto3Digit" = '^[0-9]{1,3}$'
- "WholeNumberUpto4Digit" = '^[0-9]{1,4}$'
- "WholeNumberUpto5Digit" = '^[0-9]{1,5}$'
- "XMLElementName" = '^[a-zA-Z][a-zA-Z0-9_-]+$'
- "XMLElementPath" = '^/([a-zA-Z][a-zA-Z0-9_-]+/)+\*$'
+        "Docs"                  = @{
+                $NC.Products.Agent.ApplianceConfig = "Appliance"
+                $NC.Products.Agent.InstallLog      = "Appliance"
+                $NC.Products.Agent.ServerConfig    = "Appliance"
+                $SC.Names.HistoryFile              = "History"
+                "Registry"                         = "Registry"
+        }
+        "FileNameEXE"           = '^((?![<>:"/\\|?*]).)+\.[Ee][Xx][Ee]$'
+        "FileNameXML"           = '^((?![<>:"/\\|?*]).)+\.[Xx][Mm][Ll]$'
+        "InternalErrorCode"     = '^1[0-9]{2}$'
+        "ItemName"              = '^((?![<>:"/\\|?*]).)+$'
+        "LocalFilePathXML"      = '^[a-zA-Z]:\\([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*\.[Xx][Mm][Ll]$'
+        "LocalFolderPath"       = '^[a-zA-Z]:\\([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*$'
+        "RelativeItemPath"      = '^([^ <>:"/\\|?*]((?![<>:"/\\|?*]).)+((?<![ .])\\)?)*$'
+        "TypicalErrorCode"      = '^[0-9]{1,2}$'
+        "VersionNumber"         = @{
+                "Accepted" = '^[0-9]+(\.[0-9]+){1,3}$'
+                "Valid"    = '^[0-9]+(\.[0-9]+){3}$'
+        }
+        "VersionNumberDigits"   = '^[2-4]$'
+        "WholeNumberUpto2Digit" = '^[0-9]{1,2}$'
+        "WholeNumberUpto3Digit" = '^[0-9]{1,3}$'
+        "WholeNumberUpto4Digit" = '^[0-9]{1,4}$'
+        "WholeNumberUpto5Digit" = '^[0-9]{1,5}$'
+        "XMLElementName"        = '^[a-zA-Z][a-zA-Z0-9_-]+$'
+        "XMLElementPath"        = '^/([a-zA-Z][a-zA-Z0-9_-]+/)+\*$'
 }
 ### Retired Values - PLACE RETIRED VALUES HERE TO CLEANUP OLD SCRIPT ENTRIES
 $SC.Paths.Old = @{
- "ExecutionKeyTim" = "HKLM:\SOFTWARE\Tim Wiser"
- "ExecutionKey" = "HKLM:\SOFTWARE\N-Central"
- "EventKey" = "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\InstallAgent"
+        "ExecutionKeyTim" = "HKLM:\SOFTWARE\Tim Wiser"
+        "ExecutionKey"    = "HKLM:\SOFTWARE\N-Central"
+        "EventKey"        = "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\InstallAgent"
 }
 
 ######################################
@@ -503,130 +524,131 @@ $SC.Paths.Old = @{
 ### Create Variable Tables Required by Script
 # Script Table
 $Script = @{
- "Execution" = @{
-  "ScriptAction" = $SC.InitialScriptAction
-  "ScriptLastRan" = Get-Date -UFormat $SC.DateFormat.Full
-  "ScriptResult" = $SC.InitialScriptResult
-  "ScriptVersion" = [Version] $SC.ScriptVersion
- } 
- "Invocation" = $MyInvocation.MyCommand.Definition
- "Parameters" = $PSBoundParameters
- "Path" = @{
-  "InstallDrop" = @($SC.Paths.TempFolder, "Fetch") -join '\'
-  "Library" = @($SC.Paths.TempFolder, "Lib") -join '\'
-  "PartnerFile" = @($SC.Paths.TempFolder, $SC.Names.PartnerConfig) -join '\'
-  "TempFolder" = $SC.Paths.TempFolder
- }
- "Results" = @{
-  "EventLog" = $SC.ScriptEventLog
-  "LauncherKey" = @($SC.Paths.ExecutionKey, $SC.Names.Launcher) -join '\'
-  "LauncherSource" = $SC.Names.LauncherProduct
-  "ScriptEventKey" = @($SC.Paths.EventServiceKey, $SC.ScriptEventLog, $SC.Names.ScriptProduct) -join '\'
-  "ScriptDiagnosisKey" = @($SC.Paths.ExecutionKey, $SC.Names.Script, "Diagnosis") -join '\'
-  "ScriptInstallKey" = @($SC.Paths.ExecutionKey, $SC.Names.Script, "Installation") -join '\'
-  "ScriptKey" = @($SC.Paths.ExecutionKey, $SC.Names.Script) -join '\'
-  "ScriptRepairKey" = @($SC.Paths.ExecutionKey, $SC.Names.Script, "Repair") -join '\'
-  "ScriptSource" = $SC.Names.ScriptProduct
- }
- "Sequence" = @{
-  "Order" = @($SC.SequenceNames.A)
-  "Status" = @($SC.SequenceStatus.A)
- }
+        "Execution"  = @{
+                "ScriptAction"  = $SC.InitialScriptAction
+                "ScriptLastRan" = Get-Date -UFormat $SC.DateFormat.Full
+                "ScriptResult"  = $SC.InitialScriptResult
+                "ScriptVersion" = [Version] $SC.ScriptVersion
+        }
+        "Invocation" = $MyInvocation.MyCommand.Definition
+        "Parameters" = $PSBoundParameters
+        "Path"       = @{
+                "InstallDrop" = @($SC.Paths.TempFolder, "Fetch") -join '\'
+                "Library"     = @($SC.Paths.TempFolder, "Lib") -join '\'
+                "PartnerFile" = @($SC.Paths.TempFolder, $SC.Names.PartnerConfig) -join '\'
+                "TempFolder"  = $SC.Paths.TempFolder
+        }
+        "Results"    = @{
+                "EventLog"           = $SC.ScriptEventLog
+                "LauncherKey"        = @($SC.Paths.ExecutionKey, $SC.Names.Launcher) -join '\'
+                "LauncherSource"     = $SC.Names.LauncherProduct
+                "ScriptEventKey"     = @($SC.Paths.EventServiceKey, $SC.ScriptEventLog, $SC.Names.ScriptProduct) -join '\'
+                "ScriptDiagnosisKey" = @($SC.Paths.ExecutionKey, $SC.Names.Script, "Diagnosis") -join '\'
+                "ScriptInstallKey"   = @($SC.Paths.ExecutionKey, $SC.Names.Script, "Installation") -join '\'
+                "ScriptKey"          = @($SC.Paths.ExecutionKey, $SC.Names.Script) -join '\'
+                "ScriptRepairKey"    = @($SC.Paths.ExecutionKey, $SC.Names.Script, "Repair") -join '\'
+                "ScriptSource"       = $SC.Names.ScriptProduct
+        }
+        "Sequence"   = @{
+                "Order"  = @($SC.SequenceNames.A)
+                "Status" = @($SC.SequenceStatus.A)
+        }
 }
 $Script.CustomerID =
- if ($CustomerID -match $NC.Validation.CustomerID)
- { $CustomerID }
+if ($CustomerID -match $NC.Validation.CustomerID)
+{ $CustomerID }
+$Script.RegistrationToken = $RegistrationToken
 ### Create Variable Tables Required by Functions
 # Agent Info Table
 $Agent = @{
- "Appliance" = @{}
- "Docs" = @{
-  $NC.Products.Agent.ApplianceConfig = @{}
-  $NC.Products.Agent.InstallLog = @{}
-  $SC.Names.HistoryFile = @{}
-  "Registry" = @{}
- }
- "Health" = @{}
- "HealthOptional" = @{}
- "History" = @{}
- "Path" = @{}
- "Processes" = @{}
- "Registry" = @{}
- "Services" = @{
-  "Data" = @{
-   $NC.Products.Agent.Service = $null
-   $NC.Products.Agent.MaintenanceService = $null
-  }
-  "Failure" = @{}
- }
+        "Appliance"      = @{}
+        "Docs"           = @{
+                $NC.Products.Agent.ApplianceConfig = @{}
+                $NC.Products.Agent.InstallLog      = @{}
+                $SC.Names.HistoryFile              = @{}
+                "Registry"                         = @{}
+        }
+        "Health"         = @{}
+        "HealthOptional" = @{}
+        "History"        = @{}
+        "Path"           = @{}
+        "Processes"      = @{}
+        "Registry"       = @{}
+        "Services"       = @{
+                "Data"    = @{
+                        $NC.Products.Agent.Service            = $null
+                        $NC.Products.Agent.MaintenanceService = $null
+                }
+                "Failure" = @{}
+        }
 }
 # Device Info Table
 $Device = @{}
 # Function Info Table
 $Function = @{
- "Action" = $null
- "LineNumber" = $MyInvocation.ScriptLineNumber
- "Name" = '{0}' -f $MyInvocation.MyCommand
+        "Action"     = $null
+        "LineNumber" = $MyInvocation.ScriptLineNumber
+        "Name"       = '{0}' -f $MyInvocation.MyCommand
 }
 # Install Info Table
 $Install = @{
- "ChosenMethod" = @{}
- "MethodData" = @{}
- "MethodResults" = @{}
- "Results" = @{}
+        "ChosenMethod"  = @{}
+        "MethodData"    = @{}
+        "MethodResults" = @{}
+        "Results"       = @{}
 }
 # Partner Configuration Table
 $Config = @{}
 # Repair Info Table
 $Repair = @{
- "Required" = @()
- "Results" = @{}
+        "Required" = @()
+        "Results"  = @{}
 }
 ### Check for an Active Script Instance Before Logging Execution
 if (
- (
-  (
-   Get-ItemProperty $Script.Results.ScriptKey 2>$null |
-   Select-Object -ExpandProperty ScriptResult 2>$null
-  ) -eq $SC.InitialScriptResult
- ) -and
- (
-  (
-   Get-Date (
-    Get-ItemProperty $Script.Results.ScriptKey 2>$null | 
-    Select-Object -ExpandProperty ScriptLastRan 2>$null
-   )
-  ) -gt
-  (Get-Date).AddMinutes(-($SC.RunningInstanceTimeout))
- )
-)
-{ # Another Script is in Progress
-  # Create a New Key for the Event Source if Required
-  if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
-  { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
-  # Write the Event
-  $Message = (
-   "Another Instance of the " + $SC.Names.ScriptProduct + " is currently in progress. " +
-   "Please review the status of the current Instance by opening the Registry to [" +
-   $Script.Results.ScriptKey + "].`n"
-  )
-  Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
-  # Cleanup Working Folder
-  Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
-  exit
+        (
+                (
+                        Get-ItemProperty $Script.Results.ScriptKey 2>$null |
+                        Select-Object -ExpandProperty ScriptResult 2>$null
+                ) -eq $SC.InitialScriptResult
+        ) -and
+        (
+                (
+                        Get-Date (
+                                Get-ItemProperty $Script.Results.ScriptKey 2>$null |
+                                Select-Object -ExpandProperty ScriptLastRan 2>$null
+                        )
+                ) -gt
+                (Get-Date).AddMinutes( - ($SC.RunningInstanceTimeout))
+        )
+) {
+        # Another Script is in Progress
+        # Create a New Key for the Event Source if Required
+        if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
+        { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
+        # Write the Event
+        $Message = (
+                "Another Instance of the " + $SC.Names.ScriptProduct + " is currently in progress. " +
+                "Please review the status of the current Instance by opening the Registry to [" +
+                $Script.Results.ScriptKey + "].`n"
+        )
+        Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
+        # Cleanup Working Folder
+        Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
+        exit
 }
 ### Write Registry Values for Script Startup
 # Create Script Execution Key if Required
 if ((Test-Path $Script.Results.ScriptKey) -eq $false)
 { New-Item $Script.Results.ScriptKey -Force >$null }
-else
-{ # Remove Sequence Data from Previous Run
-  Get-ChildItem $Script.Results.ScriptKey | Remove-Item -Force
-  # Remove Transient Properties from Previous Run
-  Get-ItemProperty $Script.Results.ScriptKey 2>$null |
-  Get-Member -MemberType NoteProperty |
-  Where-Object { $_.Name -match '^Script' } |
-  ForEach-Object { Remove-ItemProperty $Script.Results.ScriptKey -Name $_.Name -Force }
+else {
+        # Remove Sequence Data from Previous Run
+        Get-ChildItem $Script.Results.ScriptKey | Remove-Item -Force
+        # Remove Transient Properties from Previous Run
+        Get-ItemProperty $Script.Results.ScriptKey 2>$null |
+        Get-Member -MemberType NoteProperty |
+        Where-Object { $_.Name -match '^Script' } |
+        ForEach-Object { Remove-ItemProperty $Script.Results.ScriptKey -Name $_.Name -Force }
 }
 # Update Execution Properties
 $Script.Execution.Keys |
@@ -634,48 +656,47 @@ ForEach-Object { New-ItemProperty -Path $Script.Results.ScriptKey -Name $_ -Valu
 ### Import Library Items
 $SC.Names.LibraryFiles |
 ForEach-Object {
-  $ModuleName = $_
-  try
-  { Import-Module $(@($Script.Path.Library, $ModuleName) -join '\') -ErrorAction Stop }
-  catch
-  { # Get the Exception Info
-    $ExceptionInfo = $_.Exception
-    # Create a New Key for the Event Source if Required
-    $Script.Execution.LastResult = $SC.ErrorScriptResult
-    if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
-    { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
-    # Write the Event
-    $Message = (
-      "The Function Library for the " + $SC.Names.ScriptProduct + " is either missing or corrupt. " +
-      "Please verify " + $ModuleName + " exists in the [" + $Script.Path.Library + "] folder, or restore the file to its original state.`n"
-    )
-    Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
-    # Update Execution Properties
-    $Script.Execution.Keys |
-    ForEach-Object { New-ItemProperty -Path $Script.Results.ScriptKey -Name $_ -Value $Script.Execution.$_ -Force >$null }
-    # Cleanup Working Folder
-    Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
-    exit
-  }
+        $ModuleName = $_
+        try
+        { Import-Module $(@($Script.Path.Library, $ModuleName) -join '\') -ErrorAction Stop }
+        catch {
+                # Get the Exception Info
+                $ExceptionInfo = $_.Exception
+                # Create a New Key for the Event Source if Required
+                $Script.Execution.LastResult = $SC.ErrorScriptResult
+                if ((Test-Path $Script.Results.ScriptEventKey) -eq $false)
+                { New-EventLog -Source $Script.Results.ScriptSource -LogName $Script.Results.EventLog }
+                # Write the Event
+                $Message = (
+                        "The Function Library for the " + $SC.Names.ScriptProduct + " is either missing or corrupt. " +
+                        "Please verify " + $ModuleName + " exists in the [" + $Script.Path.Library + "] folder, or restore the file to its original state.`n"
+                )
+                Write-EventLog -LogName $Script.Results.EventLog -Source $Script.Results.ScriptSource -EventID 9999 -EntryType "Error" -Message $Message -Category 0
+                # Update Execution Properties
+                $Script.Execution.Keys |
+                ForEach-Object { New-ItemProperty -Path $Script.Results.ScriptKey -Name $_ -Value $Script.Execution.$_ -Force >$null }
+                # Cleanup Working Folder
+                Remove-Item $Script.Path.TempFolder -Force -Recurse 2>$null
+                exit
+        }
 }
 ### Import Partner Configuration
 try
 { [Xml] $Partner = Get-Content $Script.Path.PartnerFile 2>&1 -ErrorAction Stop }
-catch
-{
-  $ExceptionInfo = $_.Exception
-  $InvocationInfo = $_.InvocationInfo
-  CatchError 1 ("Unable to read Partner Configuration at [" + $Script.Path.PartnerFile + "]") -Exit
+catch {
+        $ExceptionInfo = $_.Exception
+        $InvocationInfo = $_.InvocationInfo
+        CatchError 1 ("Unable to read Partner Configuration at [" + $Script.Path.PartnerFile + "]") -Exit
 }
 ### Get Local Device Info
 GetDeviceInfo
 ### Populate Agent Log Paths using Discovered Device Info
 $Agent.Path = @{
- "Checker" = @($Device.PF32, $NC.Paths.BinFolder, $NC.Products.Agent.InstallLog) -join '\'
- "ApplianceConfig" = @($Device.PF32, $NC.Paths.ConfigFolder, $NC.Products.Agent.ApplianceConfig) -join '\'
- "ApplianceConfigBackup" = @($Device.PF32, $NC.Paths.ConfigFolder, $NC.Products.Agent.ApplianceConfigBackup) -join '\'
- "ServerConfig" = @($Device.PF32, $NC.Paths.ConfigFolder, $NC.Products.Agent.ServerConfig) -join '\'
- "ServerConfigBackup" = @($Device.PF32, $NC.Paths.ConfigFolder, $NC.Products.Agent.ServerConfigBackup) -join '\'
+        "Checker"               = @($Device.PF32, $NC.Paths.BinFolder, $NC.Products.Agent.InstallLog) -join '\'
+        "ApplianceConfig"       = @($Device.PF32, $NC.Paths.ConfigFolder, $NC.Products.Agent.ApplianceConfig) -join '\'
+        "ApplianceConfigBackup" = @($Device.PF32, $NC.Paths.ConfigFolder, $NC.Products.Agent.ApplianceConfigBackup) -join '\'
+        "ServerConfig"          = @($Device.PF32, $NC.Paths.ConfigFolder, $NC.Products.Agent.ServerConfig) -join '\'
+        "ServerConfigBackup"    = @($Device.PF32, $NC.Paths.ConfigFolder, $NC.Products.Agent.ServerConfigBackup) -join '\'
 }
 ### Elevate Privilege and Re-Run if Required
 SelfElevate
@@ -684,52 +705,52 @@ SelfElevate
 ########## Main Execution Body ##########
 #########################################
 
-try
-{ ### VALIDATION SEQUENCE
-  ##################################################################
-  Log -BeginSequence -Message $SC.SequenceMessages.B -Sequence $SC.SequenceNames.B
-  # Validate Partner Configuration Values
-  ValidatePartnerConfig
-  # Validate Execution Mode
-  ValidateExecution
-  Log -EndSequence
-  ##################################################################
-  ###
+try {
+        ### VALIDATION SEQUENCE
+        ##################################################################
+        Log -BeginSequence -Message $SC.SequenceMessages.B -Sequence $SC.SequenceNames.B
+        # Validate Partner Configuration Values
+        ValidatePartnerConfig
+        # Validate Execution Mode
+        ValidateExecution
+        Log -EndSequence
+        ##################################################################
+        ###
 
-  ### DIAGNOSIS SEQUENCE
-  ##################################################################
-  Log -BeginSequence -Message $SC.SequenceMessages.C -Sequence $SC.SequenceNames.C
-  # Diagnose Current Installation Status
-  DiagnoseAgent
-  Log -EndSequence
-  ##################################################################
-  ###
+        ### DIAGNOSIS SEQUENCE
+        ##################################################################
+        Log -BeginSequence -Message $SC.SequenceMessages.C -Sequence $SC.SequenceNames.C
+        # Diagnose Current Installation Status
+        DiagnoseAgent
+        Log -EndSequence
+        ##################################################################
+        ###
 
-  ### REPAIR SEQUENCE
-  ##################################################################
-  Log -BeginSequence -Message $SC.SequenceMessages.D -Sequence $SC.SequenceNames.D
-  # Repair the Current Installation
-  RepairAgent
-  Log -EndSequence
-  ##################################################################
-  ###
+        ### REPAIR SEQUENCE
+        ##################################################################
+        Log -BeginSequence -Message $SC.SequenceMessages.D -Sequence $SC.SequenceNames.D
+        # Repair the Current Installation
+        RepairAgent
+        Log -EndSequence
+        ##################################################################
+        ###
 
-  ### INSTALL SEQUENCE
-  ##################################################################
-  Log -BeginSequence -Message $SC.SequenceMessages.E -Sequence $SC.SequenceNames.E
-  # Verify Install Prerequisites
-  VerifyPrerequisites
-  # Replace/Upgrade or Install a New Agent
-  InstallAgent
-  Log -EndSequence
-  ##################################################################
-  ###
+        ### INSTALL SEQUENCE
+        ##################################################################
+        Log -BeginSequence -Message $SC.SequenceMessages.E -Sequence $SC.SequenceNames.E
+        # Verify Install Prerequisites
+        VerifyPrerequisites
+        # Replace/Upgrade or Install a New Agent
+        InstallAgent
+        Log -EndSequence
+        ##################################################################
+        ###
 }
-catch
-{ # Terminate Abnormally (Undocumented Error Occurred)
-  $ExceptionInfo = $_.Exception
-  $InvocationInfo = $_.InvocationInfo
-  CatchError -Exit
+catch {
+        # Terminate Abnormally (Undocumented Error Occurred)
+        $ExceptionInfo = $_.Exception
+        $InvocationInfo = $_.InvocationInfo
+        CatchError -Exit
 }
 
 # Terminate Successfully

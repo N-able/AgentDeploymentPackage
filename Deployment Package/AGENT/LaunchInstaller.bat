@@ -54,6 +54,8 @@ REM - Setup Script Name
 SET SetupScript=Agent Setup Script
 REM - Default Customer ID
 SET CustomerID=%1%
+REM - Customer Registration Token
+SET RegistrationToken=%2%
 REM - Working Library Folder
 SET LibFolder=%TempFolder%\Lib
 REM - Deployment Folder
@@ -438,9 +440,15 @@ COPY /Y "%DeployLib%\*" "%LibFolder%" >NUL
 IF %ERRORLEVEL% EQU 0 (
   REM - Launch Agent Setup Script
   IF "%CustomerID%" NEQ "" (
-    START "" %WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoLogo -NoProfile -WindowStyle Hidden -File "%TempFolder%\InstallAgent.ps1" -CustomerID %CustomerID% -LauncherPath "%DeployFolder%
-    GOTO QuitSuccess
+    IF "%RegistrationToken%" NEQ "" (
+      START "" %WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoLogo -NoProfile -WindowStyle Hidden -File "%TempFolder%\InstallAgent.ps1" -CustomerID %CustomerID% -RegistrationToken %RegistrationToken% -LauncherPath "%DeployFolder%
+      GOTO QuitSuccess
+    ) ELSE (
+      SET "Message=If you specify a CustomerID, you need to provide a Registration Token and vice versa"
+      GOTO QuitFailure
+    )
   ) ELSE (
+    REM If no CustomerID is given, there is nothing done with the registration token.
     START "" %WINDIR%\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -NoLogo -NoProfile -WindowStyle Hidden -File "%TempFolder%\InstallAgent.ps1" -LauncherPath "%DeployFolder%
     GOTO QuitSuccess
   )
