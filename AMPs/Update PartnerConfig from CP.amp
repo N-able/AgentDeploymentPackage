@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><Policy ID="614f122a-c58f-43ee-89b3-3badef635bc8" Name="Update PartnerConfig from CP" Description="UmVmcmVzaGVzIHRoZSBSZWdpc3RyYXRpb25Ub2tlbiBmb3IgaW5zdGFsbGluZyB2aWEgdGhlIE4tQ2VudHJhbCBHUE8gZnJvbSBDdXN0b21lciBQcm9wZXJ0aWVz" Version="2.10.0.19" RemoteCategory="0" ExecutionType="Local" MinimumPSVersionRequired="0.0.0">
+  <Object ID="{bfe4d5f8-2bb7-4c76-a258-8a87977ca882}" Type="{B6FA6D8B-EEAA-47A6-8463-7F9A4F5BBB6E}" Data="&lt;xml&gt;&lt;Parameters&gt;&lt;Parameter ParameterName=&quot;RegistrationToken&quot; Label=&quot;Registration Token&quot; ParameterType=&quot;string&quot; Value=&quot;&quot; /&gt;&lt;Parameter ParameterName=&quot;CustomerID&quot; Label=&quot;Customer ID&quot; ParameterType=&quot;string&quot; Value=&quot;&quot; /&gt;&lt;Parameter ParameterName=&quot;LocalFolder&quot; Label=&quot;Local Folder&quot; ParameterType=&quot;string&quot; Value=&quot;C:\Windows\SecurityThroughObscurity&quot; /&gt;&lt;Parameter ParameterName=&quot;NetworkFolder&quot; Label=&quot;Network Folder&quot; ParameterType=&quot;string&quot; Value=&quot;Agent&quot; /&gt;&lt;Parameter ParameterName=&quot;SOAgentFileName&quot; Label=&quot;SO Agent File Name&quot; ParameterType=&quot;string&quot; Value=&quot;WindowsAgentSetup.exe&quot; /&gt;&lt;Parameter ParameterName=&quot;SOAgentVersion&quot; Label=&quot;SO Agent Version&quot; ParameterType=&quot;string&quot; Value=&quot;2020.1.5.425&quot; /&gt;&lt;Parameter ParameterName=&quot;SOAgentFileVersion&quot; Label=&quot;SO Agent File Version&quot; ParameterType=&quot;string&quot; Value=&quot;2020.1.50425.0&quot; /&gt;&lt;Parameter ParameterName=&quot;Branding&quot; Label=&quot;Branding&quot; ParameterType=&quot;string&quot; Value=&quot;My MSP @ MSP.com&quot; /&gt;&lt;Parameter ParameterName=&quot;AzNableProxyUri&quot; Label=&quot;AzNableProxyUri&quot; ParameterType=&quot;string&quot; Value=&quot;&quot; /&gt;&lt;Parameter ParameterName=&quot;AzNableAuthCode&quot; Label=&quot;AzNableAuthCode&quot; ParameterType=&quot;string&quot; Value=&quot;&quot; /&gt;&lt;/Parameters&gt;&lt;/xml&gt;" />
+  <LinkManager xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PolicyExecutor">
+    <hashset xmlns:d2p1="http://schemas.datacontract.org/2004/07/System" />
+  </LinkManager>
+  <Diagnostics OriginalVersion="2.16.1.15" />
+  <Activity mc:Ignorable="sads sap" x:Class="Policy Builder" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:p="clr-namespace:PolicyExecutor;assembly=PolicyExecutionEngine" xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Members>
+      <x:Property Name="PolicyGUID" Type="InArgument(x:String)" />
+    </x:Members>
+    <sap:VirtualizedContainerService.HintSize>490,571</sap:VirtualizedContainerService.HintSize>
+    <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
+    <p:PolicySequence DisplayName="Policy Builder" sap:VirtualizedContainerService.HintSize="490,571" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
+      <p:PolicySequence.Activities>
+        <p:RunPowerShellScript AssemblyName="PolicyExecutionEngine, Version=2.16.1.10, Culture=neutral, PublicKeyToken=null" DisplayName="Run PowerShell Script" sap:VirtualizedContainerService.HintSize="454,348" Moniker="dd009a38-df2a-4222-87b2-72e20176dca6" OutPut_64="[RunPowerShellScript_OutPut_64]" Result="[RunPowerShellScript_Result]" ResultString="[RunPowerShellScript_ResultString]" Results_x64="[RunPowerShellScript_Results_x64]" RunAsCurrentLoggedOnUser="False" ScriptExecutionMethod="ExecuteDebug" TypeName="RunPowerShellScript" genArgEvent="c962f0b0-e621-4f95-80af-61c7ca73c905" m_bTextLinkChange="False" script="IwAgAFIAZQBmAHIAZQBzAGgAVABvAGsAZQBuAA0ACgANAAoAIwAgAEcAZQB0ACAAbgBDAGUAbgB0AHIAYQBsACAAcwBlAHIAdgBlAHIAIABpAG4AZgBvACAAYgBhAHMAZQBkACAAbwBuACAAdABoAGUAIABpAG4AcwB0AGEAbABsAGUAZAAgAGEAZwBlAG4AdAANAAoAJABBAGcAZQBuAHQAQwBvAG4AZgBpAGcARgBvAGwAZABlAHIAIAA9ACAAKABHAGUAdAAtAFcAbQBpAE8AYgBqAGUAYwB0ACAAdwBpAG4AMwAyAF8AcwBlAHIAdgBpAGMAZQAgAC0AZgBpAGwAdABlAHIAIAAiAE4AYQBtAGUAIABsAGkAawBlACAAJwBXAGkAbgBkAG8AdwBzACAAQQBnAGUAbgB0ACAAUwBlAHIAdgBpAGMAZQAnACIAKQAuAFAAYQB0AGgATgBhAG0AZQANAAoAJABBAGcAZQBuAHQAQwBvAG4AZgBpAGcARgBvAGwAZABlAHIAIAA9ACAAJABBAGcAZQBuAHQAQwBvAG4AZgBpAGcARgBvAGwAZABlAHIALgBSAGUAcABsAGEAYwBlACgAIgBiAGkAbgBcAGEAZwBlAG4AdAAuAGUAeABlACIALAAgACIAYwBvAG4AZgBpAGcAIgApAC4AUgBlAHAAbABhAGMAZQAoACcAIgAnACwAIAAnACcAKQANAAoAJABTAGUAcgB2AGUAcgBDAG8AbgBmAGkAZwBYAE0ATAAgAD0AIABbAHgAbQBsAF0AKABHAGUAdAAtAEMAbwBuAHQAZQBuAHQAIAAiACQAQQBnAGUAbgB0AEMAbwBuAGYAaQBnAEYAbwBsAGQAZQByAFwAUwBlAHIAdgBlAHIAQwBvAG4AZgBpAGcALgB4AG0AbAAiACkADQAKACQAcwBlAHIAdgBlAHIASABvAHMAdAAgAD0AIAAkAFMAZQByAHYAZQByAEMAbwBuAGYAaQBnAFgATQBMAC4AUwBlAHIAdgBlAHIAQwBvAG4AZgBpAGcALgBTAGUAcgB2AGUAcgBJAFAADQAKAA0ACgAjACAARwBlAHQAIAAkAFAAYQByAHQAbgBlAHIAQwBvAG4AZgBpAGcARgBpAGwAZQAgAGIAYQBzAGUAZAAgAG8AbgAgAHQAaABlACAATgBlAHQATABvAGcAbwBuACAAcwBoAGEAcgBlACAAYQBuAGQAIAB0AGgAZQAgACQATgBlAHQAdwBvAHIAawBGAG8AbABkAGUAcgANAAoAJABOAGUAdABMAG8AZwBvAG4AUwBoAGEAcgBlACAAPQAgACgAZwBlAHQALQBzAG0AYgBzAGgAYQByAGUAIAAtAG4AYQBtAGUAIABOAGUAdABMAG8AZwBvAG4AIAAtAEUAcgByAG8AcgBBAGMAdABpAG8AbgAgAFMAaQBsAGUAbgB0AGwAeQBDAG8AbgB0AGkAbgB1AGUAKQAuAFAAYQB0AGgADQAKACMAIABGAGEAaQBsAHMAYQBmAGUAIAB0AG8AIAB0AHIAeQAgAGkAdAAgAHcAaQB0AGgAIABhACAAaABhAHIAZABjAG8AZABlAGQAIAB2AGUAcgBzAGkAbwBuACAAaQBmACAAbgBvACAATgBlAHQATABvAGcAbwBuACAAcwBoAGEAcgBlACAAaQBzACAAZgBvAHUAbgBkAA0ACgBJAGYAIAAoAC0AbgBvAHQAIAAkAE4AZQB0AEwAbwBnAG8AbgBTAGgAYQByAGUAKQAgAHsAIAAkAE4AZQB0AEwAbwBnAG8AbgBTAGgAYQByAGUAIAA9ACAAIgBDADoAXABXAGkAbgBkAG8AdwBzAFwAUwBZAFMAVgBPAEwAXABkAG8AbQBhAGkAbgBcAHMAYwByAGkAcAB0AHMAIgAgAH0ADQAKACQAUABhAHIAdABuAGUAcgBDAG8AbgBmAGkAZwBGAGkAbABlACAAPQAgACQATgBlAHQATABvAGcAbwBuAFMAaABhAHIAZQAgACsAIAAiAFwAIgAgACsAIAAkAE4AZQB0AHcAbwByAGsARgBvAGwAZABlAHIAIAArACAAIgBcAFAAYQByAHQAbgBlAHIAQwBvAG4AZgBpAGcALgB4AG0AbAAiAA0ACgANAAoAaQBmACAAKABUAGUAcwB0AC0AUABhAHQAaAAgACQAUABhAHIAdABuAGUAcgBDAG8AbgBmAGkAZwBGAGkAbABlACkAIAB7AA0ACgAgACAAIAAgAFsAeABtAGwAXQAkAHgAbQBsAEQAbwBjAHUAbQBlAG4AdAAgAD0AIABHAGUAdAAtAEMAbwBuAHQAZQBuAHQAIAAtAFAAYQB0AGgAIAAkAFAAYQByAHQAbgBlAHIAQwBvAG4AZgBpAGcARgBpAGwAZQANAAoADQAKACAAIAAgACAAIwAgAEIAcgBhAG4AZABpAG4AZwANAAoAIAAgACAAIAAkAHgAbQBsAEQAbwBjAHUAbQBlAG4AdAAuAEMAbwBuAGYAaQBnAC4AQgByAGEAbgBkAGkAbgBnAC4ARQByAHIAbwByAEMAbwBuAHQAYQBjAHQASQBuAGYAbwAgAD0AIAAkAEIAcgBhAG4AZABpAG4AZwANAAoADQAKACAAIAAgACAAIwAgAFMAZQByAHYAZQByAA0ACgAgACAAIAAgACQAeABtAGwARABvAGMAdQBtAGUAbgB0AC4AQwBvAG4AZgBpAGcALgBTAGUAcgB2AGUAcgAuAE4AQwBTAGUAcgB2AGUAcgBBAGQAZAByAGUAcwBzACAAPQAgACQAcwBlAHIAdgBlAHIASABvAHMAdAANAAoADQAKACAAIAAgACAAIwAjACMAIABEAGUAcABsAG8AeQBtAGUAbgB0AA0ACgAgACAAIAAgACMAIABMAG8AYwBhAGwARgBvAGwAZABlAHIALAAgAE4AZQB0AHcAbwByAGsARgBvAGwAZABlAHIADQAKACAAIAAgACAAJAB4AG0AbABEAG8AYwB1AG0AZQBuAHQALgBDAG8AbgBmAGkAZwAuAEQAZQBwAGwAbwB5AG0AZQBuAHQALgBMAG8AYwBhAGwARgBvAGwAZABlAHIAIAA9ACAAJABMAG8AYwBhAGwARgBvAGwAZABlAHIADQAKACAAIAAgACAAJAB4AG0AbABEAG8AYwB1AG0AZQBuAHQALgBDAG8AbgBmAGkAZwAuAEQAZQBwAGwAbwB5AG0AZQBuAHQALgBOAGUAdAB3AG8AcgBrAEYAbwBsAGQAZQByACAAPQAgACQATgBlAHQAdwBvAHIAawBGAG8AbABkAGUAcgANAAoADQAKACAAIAAgACAAIwAgAFQAeQBwAGkAYwBhAGwADQAKACAAIAAgACAAJAB4AG0AbABEAG8AYwB1AG0AZQBuAHQALgBDAG8AbgBmAGkAZwAuAEQAZQBwAGwAbwB5AG0AZQBuAHQALgBUAHkAcABpAGMAYQBsAC4AUwBPAEEAZwBlAG4AdABGAGkAbABlAE4AYQBtAGUAIAA9ACAAJABTAE8AQQBnAGUAbgB0AEYAaQBsAGUATgBhAG0AZQANAAoAIAAgACAAIAAkAHgAbQBsAEQAbwBjAHUAbQBlAG4AdAAuAEMAbwBuAGYAaQBnAC4ARABlAHAAbABvAHkAbQBlAG4AdAAuAFQAeQBwAGkAYwBhAGwALgBTAE8AQQBnAGUAbgB0AFYAZQByAHMAaQBvAG4AIAA9ACAAJABTAE8AQQBnAGUAbgB0AFYAZQByAHMAaQBvAG4ADQAKACAAIAAgACAAJAB4AG0AbABEAG8AYwB1AG0AZQBuAHQALgBDAG8AbgBmAGkAZwAuAEQAZQBwAGwAbwB5AG0AZQBuAHQALgBUAHkAcABpAGMAYQBsAC4AUwBPAEEAZwBlAG4AdABGAGkAbABlAFYAZQByAHMAaQBvAG4AIAA9ACAAJABTAE8AQQBnAGUAbgB0AEYAaQBsAGUAVgBlAHIAcwBpAG8AbgANAAoAIAAgACAAIAAjACAAKABDAHUAcwB0AG8AbQBlAHIAIABJAEQAIABhAG4AZAAgAFQAbwBrAGUAbgApAA0ACgAgACAAIAAgACQAeABtAGwARABvAGMAdQBtAGUAbgB0AC4AQwBvAG4AZgBpAGcALgBEAGUAcABsAG8AeQBtAGUAbgB0AC4AVAB5AHAAaQBjAGEAbAAuAEMAdQBzAHQAbwBtAGUAcgBJAGQAIAA9ACAAJABDAHUAcwB0AG8AbQBlAHIASQBkAA0ACgAgACAAIAAgACQAeABtAGwARABvAGMAdQBtAGUAbgB0AC4AQwBvAG4AZgBpAGcALgBEAGUAcABsAG8AeQBtAGUAbgB0AC4AVAB5AHAAaQBjAGEAbAAuAFIAZQBnAGkAcwB0AHIAYQB0AGkAbwBuAFQAbwBrAGUAbgAgAD0AIAAkAFIAZQBnAGkAcwB0AHIAYQB0AGkAbwBuAFQAbwBrAGUAbgANAAoADQAKACAAIAAgACAAIwAgAEEAegBOAGEAYgBsAGUAUAByAG8AeAB5ACAAcwBlAHIAdgBpAGMAZQAgAGIAeQAgAEsAZQBsAHYAaQBuACAAVABlAGcAZQBsAGEAYQByAA0ACgAgACAAIAAgACMAIABBAHoAdQByAGUAIABpAHMAIAB0AGgAZQAgAG0AbwByAGUAIABzAGUAYwB1AHIAZQAgAHcAYQB5ACAAdABvACAAcABhAHMAcwAgAHQAaABlACAAUgBlAGcAaQBzAHQAcgBhAHQAaQBvAG4AIAB0AG8AawBlAG4ALgAgAEMAaABlAGMAawAgAEsAZQBsAHYAaQBuACcAcwAgAEEAegBOAGEAYgBsAGUAUAByAG8AeAB5ACAAaAB0AHQAcABzADoALwAvAGcAaQB0AGgAdQBiAC4AYwBvAG0ALwBLAGUAbAB2AGkAbgBUAGUAZwBlAGwAYQBhAHIALwBBAHoATgBhAGIAbABlAFAAcgBvAHgAeQAgAA0ACgAgACAAIAAgACQAeABtAGwARABvAGMAdQBtAGUAbgB0AC4AQwBvAG4AZgBpAGcALgBEAGUAcABsAG8AeQBtAGUAbgB0AC4AVAB5AHAAaQBjAGEAbAAuAEEAegBOAGEAYgBsAGUAUAByAG8AeAB5AFUAcgBpACAAPQAgACQAQQB6AE4AYQBiAGwAZQBQAHIAbwB4AHkAVQByAGkADQAKACAAIAAgACAAJAB4AG0AbABEAG8AYwB1AG0AZQBuAHQALgBDAG8AbgBmAGkAZwAuAEQAZQBwAGwAbwB5AG0AZQBuAHQALgBUAHkAcABpAGMAYQBsAC4AQQB6AE4AYQBiAGwAZQBBAHUAdABoAEMAbwBkAGUAIAA9ACAAJABBAHoATgBhAGIAbABlAEEAdQB0AGgAQwBvAGQAZQANAAoADQAKACAAIAAgACAAJAB4AG0AbABEAG8AYwB1AG0AZQBuAHQALgBTAGEAdgBlACgAJABQAGEAcgB0AG4AZQByAEMAbwBuAGYAaQBnAEYAaQBsAGUAKQANAAoAIAAgACAAIABXAHIAaQB0AGUALQBIAG8AcwB0ACAAIgBTAGEAdgBpAG4AZwAgAEMAbwBuAGYAaQBnACAAdABvACAAJABQAGEAcgB0AG4AZQByAEMAbwBuAGYAaQBnAEYAaQBsAGUAIgANAAoAfQANAAoAZQBsAHMAZQAgAHsADQAKACAAIAAgACAAVwByAGkAdABlAC0ASABvAHMAdAAgACIAVQBuAGEAYgBsAGUAIAB0AG8AIABmAGkAbgBkACAAUABhAHIAdABuAGUAcgBDAG8AbgBmAGkAZwAgAGYAaQBsAGUAIQAiAA0ACgB9AA0ACgA=">
+          <p:RunPowerShellScript.InArgs>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="LocalFolder" ArgType="string" DisplayArg="Input Parameters.Local Folder" DisplayName="Local Folder" Name="LocalFolder" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[LocalFolder]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="NetworkFolder" ArgType="string" DisplayArg="Input Parameters.Network Folder" DisplayName="Network Folder" Name="NetworkFolder" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[NetworkFolder]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="SOAgentFileName" ArgType="string" DisplayArg="Input Parameters.SO Agent File Name" DisplayName="SO AgentFileName" Name="SOAgentFileName" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[SOAgentFileName]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="SOAgentVersion" ArgType="string" DisplayArg="Input Parameters.SO Agent Version" DisplayName="SO AgentVersion" Name="SOAgentVersion" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[SOAgentVersion]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="SOAgentFileVersion" ArgType="string" DisplayArg="Input Parameters.SO Agent File Version" DisplayName="SO AgentFileVersion" Name="SOAgentFileVersion" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[SOAgentFileVersion]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="CustomerId" ArgType="string" DisplayArg="Input Parameters.Customer ID" DisplayName="Customer ID" Name="CustomerId" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[CustomerID]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="RegistrationToken" ArgType="string" DisplayArg="Input Parameters.Registration Token" DisplayName="Registration Token" Name="RegistrationToken" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[RegistrationToken]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="Branding" ArgType="string" DisplayArg="Input Parameters.Branding" DisplayName="Branding" Name="Branding" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[Branding]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="AzNableProxyUri" ArgType="string" DisplayArg="Input Parameters.AzNableProxyUri" DisplayName="AzNableProxyUri" Name="AzNableProxyUri" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[AzNableProxyUri]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="AzNableAuthCode" ArgType="string" DisplayArg="Input Parameters.AzNableAuthCode" DisplayName="AzNableAuthCode" Name="AzNableAuthCode" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:String">[AzNableAuthCode]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+          </p:RunPowerShellScript.InArgs>
+          <p:RunPowerShellScript.OutArgs>
+            <scg:Dictionary x:TypeArguments="x:String, p:OutArg" />
+          </p:RunPowerShellScript.OutArgs>
+        </p:RunPowerShellScript>
+      </p:PolicySequence.Activities>
+      <p:PolicySequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_OutPut_64" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_ResultString" />
+        <Variable x:TypeArguments="scg:IEnumerable(x:Object)" Name="RunPowerShellScript_Results_x64" />
+        <Variable x:TypeArguments="x:Double" Name="RunPowerShellScript_Result" />
+        <Variable x:TypeArguments="x:String" Default="55e2ab85-4c86-f013-39b6-4f73d30e396a" Name="RegistrationToken" />
+        <Variable x:TypeArguments="x:String" Default="362" Name="CustomerID" />
+        <Variable x:TypeArguments="x:String" Default="C:\ITAdmin\Agent" Name="LocalFolder" />
+        <Variable x:TypeArguments="x:String" Default="PremierAgent" Name="NetworkFolder" />
+        <Variable x:TypeArguments="x:String" Default="WindowsAgentSetup.exe" Name="SOAgentFileName" />
+        <Variable x:TypeArguments="x:String" Default="2020.1.0.202" Name="SOAgentVersion" />
+        <Variable x:TypeArguments="x:String" Default="2020.1.1202.0" Name="SOAgentFileVersion" />
+        <Variable x:TypeArguments="x:String" Default="My MSP @ MSP.com" Name="Branding" />
+        <Variable x:TypeArguments="x:String" Name="AzNableProxyUri" />
+        <Variable x:TypeArguments="x:String" Name="AzNableAuthCode" />
+      </p:PolicySequence.Variables>
+    </p:PolicySequence>
+  </Activity>
+</Policy>

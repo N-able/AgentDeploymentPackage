@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><Policy ID="88f9bce5-332e-4363-8736-7f8370cdc657" Name="Agent Installer v6" Description="VmVyc2lvbiA2LjAuMCBvZiB0aGUgQWdlbnQgSW5zdGFsbGVyIFN0YXR1cyBmb3IgdGhlIG5ldyBQb3dlclNoZWxsIGJhc2VkIGRlcGxveW1lbnQgcGFja2FnZSAvIEluc3RhbGxBZ2VudA==" Version="2.10.0.19" RemoteCategory="0" ExecutionType="Local" MinimumPSVersionRequired="0.0.0">
+  <Object ID="{ca540efe-cec4-4bf6-bbb9-f6242906f58d}" Type="{B6FA6D8B-EEAA-47A6-8463-7F9A4F5BBB6E}" Data="&lt;xml&gt;&lt;OutputParameters&gt;&lt;Parameter ParameterName=&quot;ScriptAction&quot; Label=&quot;Script Action&quot; ParameterType=&quot;string&quot; Value=&quot;Run PowerShell Script.Script Action&quot; /&gt;&lt;Parameter ParameterName=&quot;ScriptExitCode&quot; Label=&quot;Script Exit Code&quot; ParameterType=&quot;number&quot; Value=&quot;Run PowerShell Script.Script Exit Code&quot; /&gt;&lt;Parameter ParameterName=&quot;ScriptLastRan&quot; Label=&quot;Script Last Ran&quot; ParameterType=&quot;date&quot; Value=&quot;Run PowerShell Script.Script Last Ran&quot; /&gt;&lt;Parameter ParameterName=&quot;ScriptMode&quot; Label=&quot;Script Mode&quot; ParameterType=&quot;string&quot; Value=&quot;Run PowerShell Script.Script Mode&quot; /&gt;&lt;Parameter ParameterName=&quot;ScriptResult&quot; Label=&quot;Script Result&quot; ParameterType=&quot;string&quot; Value=&quot;Run PowerShell Script.Script Result&quot; /&gt;&lt;Parameter ParameterName=&quot;ScriptSequence&quot; Label=&quot;Script Sequence&quot; ParameterType=&quot;string&quot; Value=&quot;Run PowerShell Script.Script Sequence&quot; /&gt;&lt;Parameter ParameterName=&quot;ScriptVersion&quot; Label=&quot;Script Version&quot; ParameterType=&quot;number&quot; Value=&quot;Run PowerShell Script.Script Version&quot; /&gt;&lt;Parameter ParameterName=&quot;AgentLastDiagnosed&quot; Label=&quot;Agent Last Diagnosed&quot; ParameterType=&quot;date&quot; Value=&quot;Run PowerShell Script.Agent Last Diagnosed&quot; /&gt;&lt;Parameter ParameterName=&quot;AgentLastInstalled&quot; Label=&quot;Agent Last Installed&quot; ParameterType=&quot;date&quot; Value=&quot;Run PowerShell Script.Agent Last Installed&quot; /&gt;&lt;/OutputParameters&gt;&lt;/xml&gt;" />
+  <LinkManager xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PolicyExecutor">
+    <hashset xmlns:d2p1="http://schemas.datacontract.org/2004/07/System">
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.ScriptAction</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>ScriptAction</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.ScriptExitCode</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>ScriptExitCode</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.ScriptLastRan</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>ScriptLastRan</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.ScriptMode</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>ScriptMode</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.ScriptResult</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>ScriptResult</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.ScriptSequence</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>ScriptSequence</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.AgentLastDiagnosed</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>AgentLastDiagnosed</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.AgentLastInstalled</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>AgentLastInstalled</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>14811824-0d40-43b6-8f73-e74d6e3706c9.ScriptVersion</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>ScriptVersion</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+    </hashset>
+  </LinkManager>
+  <Diagnostics OriginalVersion="2.16.1.15" />
+  <Activity mc:Ignorable="sads sap" x:Class="Policy Builder" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:p="clr-namespace:PolicyExecutor;assembly=PolicyExecutionEngine" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Members>
+      <x:Property Name="PolicyGUID" Type="InArgument(x:String)" />
+    </x:Members>
+    <sap:VirtualizedContainerService.HintSize>504,745</sap:VirtualizedContainerService.HintSize>
+    <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
+    <p:PolicySequence DisplayName="Policy Builder" sap:VirtualizedContainerService.HintSize="504,745" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
+      <p:PolicySequence.Activities>
+        <p:RunPowerShellScript AssemblyName="PolicyExecutionEngine, Version=2.16.1.15, Culture=neutral, PublicKeyToken=null" DisplayName="Run PowerShell Script" sap:VirtualizedContainerService.HintSize="468,522" Moniker="14811824-0d40-43b6-8f73-e74d6e3706c9" OutPut_64="[RunPowerShellScript_OutPut_64]" Result="[RunPowerShellScript_Result]" ResultString="[RunPowerShellScript_ResultString]" Results_x64="[RunPowerShellScript_Results_x64]" RunAsCurrentLoggedOnUser="False" ScriptExecutionMethod="ExecuteDebug" TypeName="RunPowerShellScript" genArgEvent="59fb273b-2be2-4085-b73e-ca18bccc6aec" m_bTextLinkChange="False" script="ZgB1AG4AYwB0AGkAbwBuACAAUgBlAGEAZABLAGUAeQAgAHsADQAKACAAIAAgACAAIwAjACMAIABQAGEAcgBhAG0AZQB0AGUAcgBzAA0ACgAgACAAIAAgACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMADQAKACAAIAAgACAAcABhAHIAYQBtACAAKAAkAEsAZQB5ACkADQAKACAAIAAgACAAIwAjACMAIABGAHUAbgBjAHQAaQBvAG4AIABCAG8AZAB5AA0ACgAgACAAIAAgACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMAIwAjACMADQAKACAAIAAgACAAIwAgAFQAZQBzAHQAIABpAGYAIAB0AGgAZQAgAEsAZQB5ACAAaQBmACAATQBpAHMAcwBpAG4AZwAgAGkAZgAgAHMAbwAgAHIAZQB0AHUAcgBuACAAJABuAHUAbABsAA0ACgAgACAAIAAgAGkAZgAgACgAKABUAGUAcwB0AC0AUABhAHQAaAAgACQASwBlAHkAKQAgAC0AZQBxACAAJABmAGEAbABzAGUAKQANAAoAIAAgACAAIAB7ACAAJABuAHUAbABsACAAfQAgAA0ACgAgACAAIAAgAGUAbABzAGUAIAB7AA0ACgAgACAAIAAgACAAIAAgACAARwBlAHQALQBJAHQAZQBtAFAAcgBvAHAAZQByAHQAeQAgACQASwBlAHkAIAB8ACAAUwBlAGwAZQBjAHQALQBPAGIAagBlAGMAdAAgACoAIAAtAEUAeABjAGwAdQBkAGUAUAByAG8AcABlAHIAdAB5ACAAUABTACoADQAKACAAIAAgACAAfQANAAoAfQANAAoADQAKACQAQQBnAGUAbgB0AFIAZQBnAFAAYQB0AGgAIAA9ACAAIgBIAEsATABNADoAXABTAE8ARgBUAFcAQQBSAEUAXABOAC0AQQBiAGwAZQAgAEMAbwBtAG0AdQBuAGkAdAB5AFwASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAIgANAAoAJABPAGwAZABBAGcAZQBuAHQAUgBlAGcAUABhAHQAaAAgAD0AIAAiAEgASwBMAE0AOgBcAFMATwBGAFQAVwBBAFIARQBcAFMAbwBsAGEAcgBXAGkAbgBkAHMAIABNAFMAUAAgAEMAbwBtAG0AdQBuAGkAdAB5AFwASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAIgANAAoAaQBmACAAKABUAGUAcwB0AC0AUABhAHQAaAAgACQAQQBnAGUAbgB0AFIAZQBnAFAAYQB0AGgAKQB7AA0ACgAgACAAIAAgACQAUABhAHQAaAAgAD0AIAAkAEEAZwBlAG4AdABSAGUAZwBQAGEAdABoACAADQAKAH0AIABlAGwAcwBlAGkAZgAgACgAVABlAHMAdAAtAFAAYQB0AGgAIAAkAE8AbABkAEEAZwBlAG4AdABSAGUAZwBQAGEAdABoACkAIAB7AA0ACgAgACAAIAAgACQAUABhAHQAaAAgAD0AIAAkAE8AbABkAEEAZwBlAG4AdABSAGUAZwBQAGEAdABoACAADQAKAH0ADQAKAA0ACgAkAEkAbgBzAHQAYQBsAGwAQQBnAGUAbgB0AFIAZQBzAHUAbAB0AHMAIAA9ACAAUgBlAGEAZABLAGUAeQAgACQAUABhAHQAaAANAAoADQAKACMAIABUAGgAZQBzAGUAIAB2AGEAbAB1AGUAIABpAHMAIABhAGwAbQBvAHMAdAAgAGEAbAB3AGEAeQBzACAAcAByAGUAcwBlAG4AdAANAAoAJABBAGcAZQBuAHQATABhAHMAdABEAGkAYQBnAG4AbwBzAGUAZAAgAD0AIABpAGYAIAAoACQAbgB1AGwAbAAgAC0AbgBlACAAJABJAG4AcwB0AGEAbABsAEEAZwBlAG4AdABSAGUAcwB1AGwAdABzAC4AQQBnAGUAbgB0AEwAYQBzAHQARABpAGEAZwBuAG8AcwBlAGQAKQAgAHsAIAAkAEkAbgBzAHQAYQBsAGwAQQBnAGUAbgB0AFIAZQBzAHUAbAB0AHMALgBBAGcAZQBuAHQATABhAHMAdABEAGkAYQBnAG4AbwBzAGUAZAAgAH0AZQBsAHMAZQAgAHsAIABHAGUAdAAtAEQAYQB0AGUAIAAxADkAMAAwACAAfQANAAoADQAKACMAIABUAGgAaQBzACAAdgBhAGwAdQBlACAAaQBzACAAcAByAGUAcwBlAG4AdAAgAGkAZgAgAHQAaABlACAAcwBjAHIAaQBwAHQAIABoAGEAcwAgAGkAbgBzAHQAYQBsAGwAZQBkACAAbwByACAAdQBwAGcAcgBhAGQAZQBkACAAYQB0ACAAcwBvAG0AZQAgAHAAbwBpAG4AdAANAAoAJABBAGcAZQBuAHQATABhAHMAdABJAG4AcwB0AGEAbABsAGUAZAAgAD0AIABpAGYAIAAoACQAbgB1AGwAbAAgAC0AbgBlACAAJABJAG4AcwB0AGEAbABsAEEAZwBlAG4AdABSAGUAcwB1AGwAdABzAC4AQQBnAGUAbgB0AEwAYQBzAHQASQBuAHMAdABhAGwAbABlAGQAKQAgAHsAIAAkAEkAbgBzAHQAYQBsAGwAQQBnAGUAbgB0AFIAZQBzAHUAbAB0AHMALgBBAGcAZQBuAHQATABhAHMAdABJAG4AcwB0AGEAbABsAGUAZAAgAH0AIABlAGwAcwBlACAAewAgAEcAZQB0AC0ARABhAHQAZQAgADEAOQAwADAAIAB9AA0ACgANAAoAIwAgAFQAaABlAHMAZQAgAHYAYQBsAHUAZQBzACAAYQByAGUAIABhAGwAdwBhAHkAcwAgAHAAcgBlAHMAZQBuAHQADQAKACQAUwBjAHIAaQBwAHQAQQBjAHQAaQBvAG4AIAA9ACAAaQBmACAAKAAkAG4AdQBsAGwAIAAtAG4AZQAgACQASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAUgBlAHMAdQBsAHQAcwAuAFMAYwByAGkAcAB0AEEAYwB0AGkAbwBuACkAIAB7ACAAJABJAG4AcwB0AGEAbABsAEEAZwBlAG4AdABSAGUAcwB1AGwAdABzAC4AUwBjAHIAaQBwAHQAQQBjAHQAaQBvAG4AIAB9ACAAZQBsAHMAZQAgAHsAIAAnAC0AJwAgAH0ADQAKACQAUwBjAHIAaQBwAHQARQB4AGkAdABDAG8AZABlACAAPQAgAGkAZgAgACgAJABuAHUAbABsACAALQBuAGUAIAAkAEkAbgBzAHQAYQBsAGwAQQBnAGUAbgB0AFIAZQBzAHUAbAB0AHMALgBTAGMAcgBpAHAAdABFAHgAaQB0AEMAbwBkAGUAKQAgAHsAIAAkAG4AdQBsAGwAIAAtAG4AZQAgACQASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAUgBlAHMAdQBsAHQAcwAuAFMAYwByAGkAcAB0AEUAeABpAHQAQwBvAGQAZQAgAH0AIABlAGwAcwBlACAAewAgADQAMAA0ACAAfQANAAoAJABTAGMAcgBpAHAAdABMAGEAcwB0AFIAYQBuACAAPQAgAGkAZgAgACgAJABuAHUAbABsACAALQBuAGUAIAAkAEkAbgBzAHQAYQBsAGwAQQBnAGUAbgB0AFIAZQBzAHUAbAB0AHMALgBTAGMAcgBpAHAAdABMAGEAcwB0AFIAYQBuACkAIAB7ACAAJABJAG4AcwB0AGEAbABsAEEAZwBlAG4AdABSAGUAcwB1AGwAdABzAC4AUwBjAHIAaQBwAHQATABhAHMAdABSAGEAbgAgAH0AIABlAGwAcwBlACAAewAgAEcAZQB0AC0ARABhAHQAZQAgADEAOQAwADAAIAB9AA0ACgAkAFMAYwByAGkAcAB0AE0AbwBkAGUAIAA9ACAAaQBmACAAKAAkAG4AdQBsAGwAIAAtAG4AZQAgACQASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAUgBlAHMAdQBsAHQAcwAuAFMAYwByAGkAcAB0AE0AbwBkAGUAKQAgAHsAIAAkAEkAbgBzAHQAYQBsAGwAQQBnAGUAbgB0AFIAZQBzAHUAbAB0AHMALgBTAGMAcgBpAHAAdABNAG8AZABlACAAfQAgAGUAbABzAGUAIAB7ACAAJwAtACcAIAB9AA0ACgAkAFMAYwByAGkAcAB0AFIAZQBzAHUAbAB0ACAAPQAgAGkAZgAgACgAJABuAHUAbABsACAALQBuAGUAIAAkAEkAbgBzAHQAYQBsAGwAQQBnAGUAbgB0AFIAZQBzAHUAbAB0AHMALgBTAGMAcgBpAHAAdABSAGUAcwB1AGwAdAApACAAewAgACQASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAUgBlAHMAdQBsAHQAcwAuAFMAYwByAGkAcAB0AFMAZQBxAHUAZQBuAGMAZQAgAH0AIABlAGwAcwBlACAAewAgACcALQAnACAAfQANAAoAJABTAGMAcgBpAHAAdABTAGUAcQB1AGUAbgBjAGUAIAA9ACAAaQBmACAAKAAkAG4AdQBsAGwAIAAtAG4AZQAgACQASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAUgBlAHMAdQBsAHQAcwAuAFMAYwByAGkAcAB0AFMAZQBxAHUAZQBuAGMAZQApACAAewAgACQASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAUgBlAHMAdQBsAHQAcwAuAFMAYwByAGkAcAB0AFMAZQBxAHUAZQBuAGMAZQAgAH0AIABlAGwAcwBlACAAewAgACcALQAnACAAfQANAAoAJABTAGMAcgBpAHAAdABWAGUAcgBzAGkAbwBuACAAPQAgAGkAZgAgACgAJABuAHUAbABsACAALQBuAGUAIAAkAEkAbgBzAHQAYQBsAGwAQQBnAGUAbgB0AFIAZQBzAHUAbAB0AHMALgBTAGMAcgBpAHAAdABWAGUAcgBzAGkAbwBuACkAIAB7ACAAWwBpAG4AdABdACQASQBuAHMAdABhAGwAbABBAGcAZQBuAHQAUgBlAHMAdQBsAHQAcwAuAFMAYwByAGkAcAB0AFYAZQByAHMAaQBvAG4ALgBSAGUAcABsAGEAYwBlACgAJwAuACcALAAgACcAJwApACAAfQAgAGUAbABzAGUAIAB7ACAANAAwADQAIAB9AA==">
+          <p:RunPowerShellScript.InArgs>
+            <scg:Dictionary x:TypeArguments="x:String, p:InArg" />
+          </p:RunPowerShellScript.InArgs>
+          <p:RunPowerShellScript.OutArgs>
+            <p:OutArg x:Key="ScriptAction" ArgType="string" DisplayName="Script Action" Name="ScriptAction">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:String">[RunPowerShellScript_ScriptAction]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="ScriptExitCode" ArgType="number" DisplayName="Script Exit Code" Name="ScriptExitCode">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:Double">[RunPowerShellScript_ScriptExitCode]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="ScriptLastRan" ArgType="date" DisplayName="Script Last Ran" Name="ScriptLastRan">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="s:DateTime">[RunPowerShellScript_ScriptLastRan]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="ScriptMode" ArgType="string" DisplayName="Script Mode" Name="ScriptMode">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:String">[RunPowerShellScript_ScriptMode]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="ScriptResult" ArgType="string" DisplayName="Script Result" Name="ScriptResult">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:String">[RunPowerShellScript_ScriptResult]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="ScriptSequence" ArgType="string" DisplayName="Script Sequence" Name="ScriptSequence">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:String">[RunPowerShellScript_ScriptSequence]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="ScriptVersion" ArgType="number" DisplayName="Script Version" Name="ScriptVersion">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:Double">[RunPowerShellScript_ScriptVersion]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="AgentLastDiagnosed" ArgType="date" DisplayName="Agent Last Diagnosed" Name="AgentLastDiagnosed">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="s:DateTime">[RunPowerShellScript_AgentLastDiagnosed]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="AgentLastInstalled" ArgType="date" DisplayName="Agent Last Installed" Name="AgentLastInstalled">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="s:DateTime">[RunPowerShellScript_AgentLastInstalled]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+          </p:RunPowerShellScript.OutArgs>
+        </p:RunPowerShellScript>
+      </p:PolicySequence.Activities>
+      <p:PolicySequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_OutPut_64" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_ResultString" />
+        <Variable x:TypeArguments="scg:IEnumerable(x:Object)" Name="RunPowerShellScript_Results_x64" />
+        <Variable x:TypeArguments="x:Double" Name="RunPowerShellScript_Result" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_ScriptAction" />
+        <Variable x:TypeArguments="x:Double" Name="RunPowerShellScript_ScriptExitCode" />
+        <Variable x:TypeArguments="s:DateTime" Name="RunPowerShellScript_ScriptLastRan" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_ScriptMode" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_ScriptResult" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_ScriptSequence" />
+        <Variable x:TypeArguments="s:DateTime" Name="RunPowerShellScript_AgentLastDiagnosed" />
+        <Variable x:TypeArguments="s:DateTime" Name="RunPowerShellScript_AgentLastInstalled" />
+        <Variable x:TypeArguments="x:Double" Name="RunPowerShellScript_ScriptVersion" />
+      </p:PolicySequence.Variables>
+    </p:PolicySequence>
+  </Activity>
+</Policy>

@@ -1,3 +1,0 @@
-- Download the desired Version of your SYSTEM-LEVEL N-Central Agent
-- Place it here, and call it by the same name of this text file (without the txt, of course!)
-- Or, optionally, rename it and update the <Deployment\Typical\SOAgentFileName> in PartnerConfig.xml!

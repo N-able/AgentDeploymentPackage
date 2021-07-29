@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><Policy ID="ea83da7e-ebc0-498e-8ac1-eea902112efd" Name="Agent AD Status" Description="R2V0J3MgdGhlIHN0YXR1cyBvZiB0aGUgQWdlbnQgQUQgSW5zdGFsbGF0aW9u" Version="2.10.0.19" RemoteCategory="0" ExecutionType="Local" MinimumPSVersionRequired="3.0">
+  <Object ID="{d3cf21f0-3380-4cb5-8c9b-244e4facd283}" Type="{B6FA6D8B-EEAA-47A6-8463-7F9A4F5BBB6E}" Data="&lt;xml&gt;&lt;Parameters&gt;&lt;Parameter ParameterName=&quot;NetworkFolder&quot; Label=&quot;NetworkFolder&quot; ParameterType=&quot;string&quot; Value=&quot;Agent&quot; /&gt;&lt;Parameter ParameterName=&quot;GPOName&quot; Label=&quot;GPO Name&quot; ParameterType=&quot;string&quot; Value=&quot;n-able - Install Agent (PS)&quot; /&gt;&lt;/Parameters&gt;&lt;OutputParameters&gt;&lt;Parameter ParameterName=&quot;PartnerConfigFileVersion&quot; Label=&quot;Partner Config File Version&quot; ParameterType=&quot;string&quot; Value=&quot;Run PowerShell Script.PartnerConfigFileVersion&quot; /&gt;&lt;Parameter ParameterName=&quot;NCentralVersion&quot; Label=&quot;NCentral Version&quot; ParameterType=&quot;string&quot; Value=&quot;Run PowerShell Script.NCentralVersion&quot; /&gt;&lt;Parameter ParameterName=&quot;InstallationFile&quot; Label=&quot;Installation File&quot; ParameterType=&quot;string&quot; Value=&quot;Run PowerShell Script.InstallationFile&quot; /&gt;&lt;Parameter ParameterName=&quot;CustomerID&quot; Label=&quot;CustomerID&quot; ParameterType=&quot;number&quot; Value=&quot;Run PowerShell Script.CustomerID&quot; /&gt;&lt;Parameter ParameterName=&quot;RegistrationToken&quot; Label=&quot;Registration Token&quot; ParameterType=&quot;string&quot; Value=&quot;Run PowerShell Script.RegistrationToken&quot; /&gt;&lt;Parameter ParameterName=&quot;GPOInstalled&quot; Label=&quot;GPOInstalled&quot; ParameterType=&quot;number&quot; Value=&quot;Run PowerShell Script.GPOInstalled&quot; /&gt;&lt;/OutputParameters&gt;&lt;GlobalVariables&gt;&lt;Parameter ParameterName=&quot;sysvol&quot; Label=&quot;Sysvol folder&quot; ParameterType=&quot;string&quot; Value=&quot;NOTFOUND&quot; /&gt;&lt;/GlobalVariables&gt;&lt;/xml&gt;" />
+  <LinkManager xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/PolicyExecutor">
+    <hashset xmlns:d2p1="http://schemas.datacontract.org/2004/07/System">
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>4a9980e8-bcbe-4987-a77e-80435f92de5c.PartnerConfigFileVersion</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>PartnerConfigFileVersion</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>4a9980e8-bcbe-4987-a77e-80435f92de5c.NCentralVersion</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>NCentralVersion</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>4a9980e8-bcbe-4987-a77e-80435f92de5c.InstallationFile</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>InstallationFile</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>4a9980e8-bcbe-4987-a77e-80435f92de5c.CustomerID</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>CustomerID</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>4a9980e8-bcbe-4987-a77e-80435f92de5c.RegistrationToken</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>RegistrationToken</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+      <d2p1:TupleOfstringstringstringstring>
+        <d2p1:m_Item1>4a9980e8-bcbe-4987-a77e-80435f92de5c.GPOInstalled</d2p1:m_Item1>
+        <d2p1:m_Item2>OutputObject</d2p1:m_Item2>
+        <d2p1:m_Item3></d2p1:m_Item3>
+        <d2p1:m_Item4>GPOInstalled</d2p1:m_Item4>
+      </d2p1:TupleOfstringstringstringstring>
+    </hashset>
+  </LinkManager>
+  <Diagnostics OriginalVersion="2.18.1.8" />
+  <Activity mc:Ignorable="sads sap" x:Class="Policy Builder" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:p="clr-namespace:PolicyExecutor;assembly=PolicyExecutionEngine" xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Members>
+      <x:Property Name="PolicyGUID" Type="InArgument(x:String)" />
+    </x:Members>
+    <sap:VirtualizedContainerService.HintSize>562,1761</sap:VirtualizedContainerService.HintSize>
+    <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
+    <p:PolicySequence DisplayName="Policy Builder" sap:VirtualizedContainerService.HintSize="562,1761" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
+      <p:PolicySequence.Activities>
+        <p:ListNetworkShares AssemblyName="PolicyExecutionEngine, Version=2.18.1.8, Culture=neutral, PublicKeyToken=null" DisplayName="List Network Shares" sap:VirtualizedContainerService.HintSize="526,81" Moniker="8b5ef9ba-2530-4580-8179-44d1c6091f87" Result="[ListNetworkShares_Result]" ResultString="[ListNetworkShares_ResultString]" RunAsCurrentLoggedOnUser="False" ScriptExecutionMethod="ExecuteDebug" ShareList="[ListNetworkShares_ShareList]" TypeName="ListNetworkShares" m_bTextLinkChange="False" />
+        <p:ForEachLoop CollectionName_Item="{x:Null}" CollectionName_ItemProp="{x:Null}" AssemblyName="PolicyExecutionEngine, Version=2.18.1.8, Culture=neutral, PublicKeyToken=null" CollectionName="[ListNetworkShares_ShareList]" CollectionName_DisplayArg="List Network Shares.ShareList" DisplayName="ForEach" sap:VirtualizedContainerService.HintSize="526,855" ItemValue="[ForEachLoop_ItemValue]" Moniker="79068d7c-927c-42f4-9278-3ca7c93867bf" Result="[ForEachLoop_Result]" ResultString="[ForEachLoop_ResultString]" RunAsCurrentLoggedOnUser="False" ScriptExecutionMethod="ExecuteDebug" TypeName="ForEachLoop" m_bTextLinkChange="False">
+          <p:ForEachLoop.Each>
+            <p:ForEachSequence DisplayName="Each" sap:VirtualizedContainerService.HintSize="494,755">
+              <p:ForEachSequence.Activities>
+                <p:IfObject CaseSensitive_Item="{x:Null}" CaseSensitive_ItemProp="{x:Null}" Condition_Item="{x:Null}" Condition_ItemProp="{x:Null}" Value_Item="{x:Null}" Value_ItemProp="{x:Null}" Variable="{x:Null}" VerboseOutput_Item="{x:Null}" VerboseOutput_ItemProp="{x:Null}" AssemblyName="PolicyExecutionEngine, Version=2.18.1.8, Culture=neutral, PublicKeyToken=null" CaseSensitive="True" CaseSensitive_DisplayArg="true" Condition="contains" Condition_DisplayArg="contains" DisplayName="If" sap:VirtualizedContainerService.HintSize="456,605" Moniker="fe1be136-bea0-42c1-b1a8-ccd4d802d49e" Result="[IfObject_Result]" ResultString="[IfObject_ResultString]" RunAsCurrentLoggedOnUser="False" ScriptExecutionMethod="None" TypeName="IfObject" Value_DisplayArg="NETLOGON" Value_Type="x:String" Variable_DisplayArg="ForEach.List Network Shares.ShareList.Name" Variable_Item="[ForEachLoop_ItemValue]" Variable_ItemProp="Name" Variable_Type="x:String" VerboseOutput="False" VerboseOutput_DisplayArg="" m_bTextLinkChange="False">
+                  <p:IfObject.IfOption>
+                    <p:SequenceActivity DisplayName="Then" sap:VirtualizedContainerService.HintSize="424,332" Name="SequenceActivity">
+                      <p:SequenceActivity.Activities>
+                        <p:Assignment Value="{x:Null}" Variable_Item="{x:Null}" Variable_ItemProp="{x:Null}" AssemblyName="PolicyExecutionEngine, Version=2.18.1.8, Culture=neutral, PublicKeyToken=null" DisplayName="Global Variable Assignment" sap:VirtualizedContainerService.HintSize="386,182" Moniker="44adf97e-61f6-4a04-8e45-24d882ac2e55" Result="[Assignment_Result]" ResultString="[Assignment_ResultString]" RunAsCurrentLoggedOnUser="False" ScriptExecutionMethod="None" TypeName="Assignment" Value_DisplayArg="ForEach.List Network Shares.ShareList.Path" Value_Item="[ForEachLoop_ItemValue]" Value_ItemProp="Path" Value_Type="x:String" Variable="[sysvol]" Variable_DisplayArg="Global Variables.Sysvol folder" Variable_Type="x:String" m_bTextLinkChange="False" />
+                      </p:SequenceActivity.Activities>
+                      <p:SequenceActivity.Variables>
+                        <Variable x:TypeArguments="x:String" Name="Assignment_ResultString" />
+                        <Variable x:TypeArguments="x:Double" Name="Assignment_Result" />
+                      </p:SequenceActivity.Variables>
+                    </p:SequenceActivity>
+                  </p:IfObject.IfOption>
+                  <p:IfObject.Value>
+                    <InArgument x:TypeArguments="x:Object">
+                      <p:ObjectLiteral Value="NETLOGON" />
+                    </InArgument>
+                  </p:IfObject.Value>
+                </p:IfObject>
+              </p:ForEachSequence.Activities>
+              <p:ForEachSequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="IfObject_ResultString" />
+                <Variable x:TypeArguments="x:Double" Name="IfObject_Result" />
+              </p:ForEachSequence.Variables>
+            </p:ForEachSequence>
+          </p:ForEachLoop.Each>
+        </p:ForEachLoop>
+        <p:RunPowerShellScript AssemblyName="PolicyExecutionEngine, Version=2.18.1.1, Culture=neutral, PublicKeyToken=null" DisplayName="Run PowerShell Script" sap:VirtualizedContainerService.HintSize="526,522" Moniker="4a9980e8-bcbe-4987-a77e-80435f92de5c" OutPut_64="[RunPowerShellScript_OutPut_64]" Result="[RunPowerShellScript_Result]" ResultString="[RunPowerShellScript_ResultString]" Results_x64="[RunPowerShellScript_Results_x64]" RunAsCurrentLoggedOnUser="False" ScriptExecutionMethod="ExecuteDebug" TypeName="RunPowerShellScript" genArgEvent="2b1df6db-0fc2-423c-abd3-39bb751141ba" m_bTextLinkChange="False" script="JABQAGEAcgB0AG4AZQByAEMAbwBuAGYAaQBnAEYAaQBsAGUAIAA9ACAAJABOAGUAdABMAG8AZwBvAG4AUwBoAGEAcgBlACAAKwAgACIAXAAiACAAKwAgACQATgBlAHQAdwBvAHIAawBGAG8AbABkAGUAcgAgACsAIAAiAFwAUABhAHIAdABuAGUAcgBDAG8AbgBmAGkAZwAuAHgAbQBsACIADQAKAA0ACgBUAHIAeQAgAHsADQAKACAAIAAgACAAWwB4AG0AbABdACQAUABDAFgAbQBsACAAPQAgAEcAZQB0AC0AQwBvAG4AdABlAG4AdAAgAC0AUABhAHQAaAAgACQAUABhAHIAdABuAGUAcgBDAG8AbgBmAGkAZwBGAGkAbABlAA0ACgAgACAAIAAgACQAUABhAHIAdABuAGUAcgBDAG8AbgBmAGkAZwBGAGkAbABlAFYAZQByAHMAaQBvAG4AIAA9ACAAJABQAEMAWABtAGwALgBDAG8AbgBmAGkAZwAuAFYAZQByAHMAaQBvAG4ADQAKACAAIAAgACAAJABOAEMAZQBuAHQAcgBhAGwAVgBlAHIAcwBpAG8AbgAgAD0AIAAkAFAAQwBYAG0AbAAuAGMAbwBuAGYAaQBnAC4ARABlAHAAbABvAHkAbQBlAG4AdAAuAFQAeQBwAGkAYwBhAGwALgBTAE8AQQBnAGUAbgB0AFYAZQByAHMAaQBvAG4ADQAKACAAIAAgACAAJABJAG4AcwB0AGEAbABsAGEAdABpAG8AbgBGAGkAbABlACAAPQAgAFQAcgB5ACAAewANAAoAIAAgACAAIAAgACAAIAAgACQATgBDAGUAbgB0AHIAYQBsAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAgAD0AIAAkAFAAQwBYAG0AbAAuAGMAbwBuAGYAaQBnAC4ARABlAHAAbABvAHkAbQBlAG4AdAAuAFQAeQBwAGkAYwBhAGwALgBTAE8AQQBnAGUAbgB0AEYAaQBsAGUAVgBlAHIAcwBpAG8AbgANAAoAIAAgACAAIAAgACAAIAAgACQAUwBPAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAgAD0AIABbAFMAeQBzAHQAZQBtAC4ARABpAGEAZwBuAG8AcwB0AGkAYwBzAC4ARgBpAGwAZQBWAGUAcgBzAGkAbwBuAEkAbgBmAG8AXQA6ADoARwBlAHQAVgBlAHIAcwBpAG8AbgBJAG4AZgBvACgAIgAkAE4AZQB0AEwAbwBnAG8AbgBTAGgAYQByAGUAXAAkAE4AZQB0AHcAbwByAGsARgBvAGwAZABlAHIAXAAkACgAJABQAEMAWABtAGwALgBjAG8AbgBmAGkAZwAuAEQAZQBwAGwAbwB5AG0AZQBuAHQALgBUAHkAcABpAGMAYQBsAC4ASQBuAHMAdABhAGwAbABGAG8AbABkAGUAcgApAFwAJAAoACQAUABDAHgAbQBsAC4AQwBvAG4AZgBpAGcALgBEAGUAcABsAG8AeQBtAGUAbgB0AC4AVAB5AHAAaQBjAGEAbAAuAFMATwBBAGcAZQBuAHQARgBpAGwAZQBOAGEAbQBlACkAIgApAC4ARgBpAGwAZQBWAGUAcgBzAGkAbwBuAA0ACgAgACAAIAAgACAAIAAgACAAaQBmACAAKAAkAE4AQwBlAG4AdAByAGEAbABGAGkAbABlAFYAZQByAHMAaQBvAG4AIAAtAGUAcQAgACIAJABTAE8ARgBpAGwAZQBWAGUAcgBzAGkAbwBuAC4AMAAiACkAIAB7ACAAIgBJAE4ARgBPADoAIABGAGkAbABlACAAdgBlAHIAcwBpAG8AbgAgAE8ASwAiACAAfQAgAGUAbABzAGUAIAB7ACAAIgBFAFIAUgBPAFIAOgAgAFcAcgBvAG4AZwAgAEkAbgBzAHQAYQBsAGwAZQByACAARgBpAGwAZQAiACAAfQANAAoAIAAgACAAIAB9AA0ACgAgACAAIAAgAEMAYQB0AGMAaAAgAHsADQAKACAAIAAgACAAIAAgACAAIAAiAEUAUgBSAE8AUgA6ACAAJAAoACQAUABDAHgAbQBsAC4AQwBvAG4AZgBpAGcALgBEAGUAcABsAG8AeQBtAGUAbgB0AC4AVAB5AHAAaQBjAGEAbAAuAFMATwBBAGcAZQBuAHQARgBpAGwAZQBOAGEAbQBlACkAIABmAGkAbABlACAAbgBvAHQAIABmAG8AdQBuAGQAIgANAAoAIAAgACAAIAB9AA0ACgAgACAAIAAgACQAQwB1AHMAdABvAG0AZQByAEkAZAAgAD0AIAAkAFAAQwBYAG0AbAAuAEMAbwBuAGYAaQBnAC4ARABlAHAAbABvAHkAbQBlAG4AdAAuAFQAeQBwAGkAYwBhAGwALgBDAHUAcwB0AG8AbQBlAHIASQBkAA0ACgAgACAAIAAgACQAUgBlAGcAaQBzAHQAcgBhAHQAaQBvAG4AVABvAGsAZQBuACAAPQAgAGkAZgAgACgAJABQAEMAWABtAGwALgBDAG8AbgBmAGkAZwAuAEQAZQBwAGwAbwB5AG0AZQBuAHQALgBUAHkAcABpAGMAYQBsAC4AUgBlAGcAaQBzAHQAcgBhAHQAaQBvAG4AVABvAGsAZQBuACkAIAB7ACAAIgBJAE4ARgBPADoAIABQAHIAZQBzAGUAbgB0ACIAIAB9ACAAZQBsAHMAZQAgAHsAIAAiAEUAUgBSAE8AUgA6ACAAUgBlAGcAaQBzAHQAcgBhAHQAaQBvAG4AIAB0AG8AawBlAG4AIABtAGkAcwBzAGkAbgBnACIAIAB9AA0ACgB9AA0ACgBDAGEAdABjAGgAIAB7AA0ACgAgACAAIAAgACQAUABhAHIAdABuAGUAcgBDAG8AbgBmAGkAZwBGAGkAbABlAFYAZQByAHMAaQBvAG4AIAA9ACAAIgBFAFIAUgBPAFIAOgAgAFAAYQByAHQAbgBlAHIAQwBvAG4AZgBpAGcALgB4AG0AbAAgAGYAaQBsAGUAIABuAG8AdAAgAGYAbwB1AG4AZAAiAA0ACgAgACAAIAAgACQATgBDAGUAbgB0AHIAYQBsAFYAZQByAHMAaQBvAG4AIAA9ACAAIgBFAFIAUgBPAFIAOgAgAFAAYQByAHQAbgBlAHIAQwBvAG4AZgBpAGcALgB4AG0AbAAgAGYAaQBsAGUAIABuAG8AdAAgAGYAbwB1AG4AZAAiAA0ACgAgACAAIAAgACQASQBuAHMAdABhAGwAbABhAHQAaQBvAG4ARgBpAGwAZQAgAD0AIAAiAEUAUgBSAE8AUgA6ACAAUABhAHIAdABuAGUAcgBDAG8AbgBmAGkAZwAuAHgAbQBsACAAZgBpAGwAZQAgAG4AbwB0ACAAZgBvAHUAbgBkACIADQAKACAAIAAgACAAJABDAHUAcwB0AG8AbQBlAHIASQBEACAAPQAgADAADQAKACAAIAAgACAAJABSAGUAZwBpAHMAdAByAGEAdABpAG8AbgBUAG8AawBlAG4AIAA9ACAAIgBFAFIAUgBPAFIAOgAgAFAAYQByAHQAbgBlAHIAQwBvAG4AZgBpAGcALgB4AG0AbAAgAGYAaQBsAGUAIABuAG8AdAAgAGYAbwB1AG4AZAAiAA0ACgB9AA0ACgANAAoAJABPAFMAVgBlAHIAcwBpAG8AbgAgAD0AIABbAHMAeQBzAHQAZQBtAC4AZQBuAHYAaQByAG8AbgBtAGUAbgB0AF0AOgA6AE8AUwBWAGUAcgBzAGkAbwBuAC4AVgBlAHIAcwBpAG8AbgANAAoAJABHAFAATwBJAG4AcwB0AGEAbABsAGUAZAAgAD0AIABpAGYAIAAoACgAJABPAFMAVgBlAHIAcwBpAG8AbgAuAE0AYQBqAG8AcgAgAC0AZQBxACAAMQAwACkAIAAtAG8AcgAgACgAKAAkAE8AUwBWAGUAcgBzAGkAbwBuAC4ATQBhAGoAbwByACAALQBlAHEAIAA2ACkAIAAtAGEAbgBkACAAKAAkAE8AUwBWAGUAcgBzAGkAbwBuAC4ATQBpAG4AbwByACAALQBnAGUAIAAyACkAKQApACAAewANAAoAIAAgACAAIAAoAGcAZQB0AC0AZwBwAG8AIAAtAG4AYQBtAGUAIAAkAEcAUABPAE4AYQBtAGUAIAAtAEUAcgByAG8AcgBBAGMAdABpAG8AbgAgAGkAZwBuAG8AcgBlACkALgBDAG8AdQBuAHQADQAKAH0ADQAKAGUAbABzAGUAIAB7AA0ACgAgACAAIAAgAC0AMQANAAoAfQA=">
+          <p:RunPowerShellScript.InArgs>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="NetworkFolder" ArgType="string" DisplayArg="Input Parameters.NetworkFolder" DisplayName="NerworkFolder" Name="NetworkFolder" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:Object">[NetworkFolder]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="GPOName" ArgType="string" DisplayArg="Input Parameters.GPO Name" DisplayName="GPO Name" Name="GPOName" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:Object">[GPOName]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+            <p:InArg Item="{x:Null}" ItemProp="{x:Null}" x:Key="NetLogonShare" ArgType="string" DisplayArg="Global Variables.Sysvol folder" DisplayName="NetLogonShare" Name="NetLogonShare" isRequired="False">
+              <p:InArg.Arg>
+                <InArgument x:TypeArguments="x:Object">[sysvol]</InArgument>
+              </p:InArg.Arg>
+            </p:InArg>
+          </p:RunPowerShellScript.InArgs>
+          <p:RunPowerShellScript.OutArgs>
+            <p:OutArg x:Key="PartnerConfigFileVersion" ArgType="string" DisplayName="PartnerConfigFileVersion" Name="PartnerConfigFileVersion">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:String">[RunPowerShellScript_PartnerConfigFileVersion]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="NCentralVersion" ArgType="string" DisplayName="NCentralVersion" Name="NCentralVersion">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:String">[RunPowerShellScript_NCentralVersion]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="InstallationFile" ArgType="string" DisplayName="InstallationFile" Name="InstallationFile">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:String">[RunPowerShellScript_InstallationFile]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="CustomerID" ArgType="number" DisplayName="CustomerID" Name="CustomerID">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:Double">[RunPowerShellScript_CustomerID]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="RegistrationToken" ArgType="string" DisplayName="RegistrationToken" Name="RegistrationToken">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:String">[RunPowerShellScript_RegistrationToken]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+            <p:OutArg x:Key="GPOInstalled" ArgType="number" DisplayName="GPOInstalled" Name="GPOInstalled">
+              <p:OutArg.Arg>
+                <OutArgument x:TypeArguments="x:Double">[RunPowerShellScript_GPOInstalled]</OutArgument>
+              </p:OutArg.Arg>
+            </p:OutArg>
+          </p:RunPowerShellScript.OutArgs>
+        </p:RunPowerShellScript>
+      </p:PolicySequence.Activities>
+      <p:PolicySequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_OutPut_64" />
+        <Variable x:TypeArguments="x:Double" Name="RunPowerShellScript_Result" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_ResultString" />
+        <Variable x:TypeArguments="scg:IEnumerable(x:Object)" Name="RunPowerShellScript_Results_x64" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_PartnerConfigFileVersion" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_NCentralVersion" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_InstallationFile" />
+        <Variable x:TypeArguments="x:Double" Name="RunPowerShellScript_CustomerID" />
+        <Variable x:TypeArguments="x:String" Name="RunPowerShellScript_RegistrationToken" />
+        <Variable x:TypeArguments="x:String" Default="Agent" Name="NetworkFolder" />
+        <Variable x:TypeArguments="x:Double" Name="RunPowerShellScript_GPOInstalled" />
+        <Variable x:TypeArguments="x:String" Default="n-able - Install Agent (PS)" Name="GPOName" />
+        <Variable x:TypeArguments="scg:IEnumerable(x:Object)" Name="ListNetworkShares_ShareList" />
+        <Variable x:TypeArguments="x:String" Name="ListNetworkShares_ResultString" />
+        <Variable x:TypeArguments="x:Double" Name="ListNetworkShares_Result" />
+        <Variable x:TypeArguments="x:Object" Name="ForEachLoop_ItemValue" />
+        <Variable x:TypeArguments="x:String" Name="ForEachLoop_ResultString" />
+        <Variable x:TypeArguments="x:Double" Name="ForEachLoop_Result" />
+        <Variable x:TypeArguments="x:String" Default="NOTFOUND" Name="sysvol" />
+      </p:PolicySequence.Variables>
+    </p:PolicySequence>
+  </Activity>
+</Policy>

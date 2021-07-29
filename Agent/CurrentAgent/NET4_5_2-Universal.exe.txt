@@ -1,0 +1,3 @@
+- Download the .NET Framework 4.5.2 Universal Installer from Microsoft by using the provided URL File in this Folder
+- Place it here, and call it by the same name of this text file (without the txt, of course!)
+- Or, optionally, rename it and update the <Deployment\Typical\NETFileName> Property in PartnerConfig.xml!
